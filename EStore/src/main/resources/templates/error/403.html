@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/layout/index::main-fragment(title=~{::title}, content=~{::#content})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Forbidden</title>
+</head>
+<body>
+<div class="container py-5 mb-lg-3" id="content">
+    <div class="row justify-content-center pt-lg-4 text-center">
+        <div class="col-lg-5 col-md-7 col-sm-9">
+            <img class="d-block mx-auto mb-5" th:src="@{/assets/user/img/pages/404.png}" width="340"
+                 th:alt="#{home.error.forbidden.title}">
+            <h1 class="h3" th:text="#{home.error.forbidden.title}"></h1>
+            <h3 class="h5 fw-normal mb-4" th:text="#{home.error.forbidden.message}"></h3>
+            <p class="fs-md mb-4" style="cursor: pointer" onclick="window.history.go(-1); return false;">
+                <u><i class="text-body ci-arrow-left-circle me-1"></i><span th:text="#{home.error.goBack}"></span></u>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

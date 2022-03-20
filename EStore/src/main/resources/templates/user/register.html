@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/layout/index::main-fragment(title=~{::title}, content=~{::#content})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+    <div class="container py-4 py-lg-5 my-4" id="content">
+        <div class="row justify-content-center px-3">
+            <div class="col-md-6 pt-4 mt-3 mt-md-0 shadow rounded pb-3">
+                <h2 class="h4 mb-3" th:text="#{home.register_form.title}"></h2>
+                <p class="fs-sm text-muted mb-4" th:text="#{home.register_form.note}"></p>
+                <form method="post" th:action="@{/register}" th:object="${user}">
+                    <div th:if="${failed != null}" th:text="${failed}" class="alert alert-danger" role="alert"></div>
+                    <div class="row gx-4 gy-3">
+                        <div class="col-sm-6">
+                            <label class="form-label" for="firstName" th:text="#{home.register_form.field1}"></label>
+                            <input class="form-control" id="firstName" type="text" th:field="*{firstName}"/>
+                            <span class="invalid-feedback" th:if="${#fields.hasErrors('firstName')}"
+                                  th:errors="*{firstName}"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="lastName" th:text="#{home.register_form.field2}"></label>
+                            <input class="form-control" id="lastName" type="text" th:field="*{lastName}" />
+                            <span class="invalid-feedback" th:if="${#fields.hasErrors('lastName')}"
+                                  th:errors="*{lastName}"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="email" th:text="#{home.register_form.field3}"></label>
+                            <input class="form-control" id="email" type="email" th:field="*{email}"/>
+                            <span class="invalid-feedback" th:if="${#fields.hasErrors('email')}"
+                                  th:errors="*{email}"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="username" th:text="#{home.register_form.field4}"></label>
+                            <input class="form-control" id="username" type="text" th:field="*{username}"/>
+                            <span class="invalid-feedback" th:if="${#fields.hasErrors('username')}"
+                                  th:errors="*{username}"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="password" th:text="#{home.register_form.field5}"></label>
+                            <input class="form-control" id="password" type="password" th:field="*{password}"/>
+                            <span class="invalid-feedback" th:if="${#fields.hasErrors('password')}"
+                                  th:errors="*{password}"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="passwordConfirm" th:text="#{home.register_form.field6}"></label>
+                            <input class="form-control" id="passwordConfirm" type="password" th:field="*{passwordConfirm}"/>
+                            <span class="invalid-feedback" th:if="${#fields.hasErrors('passwordConfirm')}"
+                                  th:errors="*{passwordConfirm}"></span>
+                        </div>
+                        <div class="col-12 text-end">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="ci-user me-2 ms-n1"></i><span th:text="#{global.sign_up}"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

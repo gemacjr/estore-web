@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <th:block th:replace="~{/layout/fragments::css-resources}"></th:block>
+</head>
+<body>
+    <input type="hidden" id="lang" th:value="${#locale.language}">
+    <input type="hidden" id="baseUrl" th:value="${#request.contextPath}">
+    <th:block th:replace="~{/layout/fragments::header-default}"></th:block>
+    <th:block th:replace="~{/layout/fragments::footer-default}"></th:block>
+    <th:block th:replace="~{/layout/fragments::script-resources}"></th:block>
+</body>
+</html>

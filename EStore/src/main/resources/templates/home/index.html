@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/layout/index::main-fragment(title=~{::title}, content=~{::#content}, script=~{::script})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<div id="content">
+    <!-- Hero (Banners + Slider)-->
+    <section class="bg-secondary py-4 pt-md-5">
+        <div class="container py-xl-2">
+            <div class="row">
+                <!-- Slider  -->
+                <div class="col-xl-9 pt-xl-4 order-xl-2">
+                    <div class="tns-carousel">
+                        <div class="tns-outer" id="tns1-ow">
+                            <div class="tns-liveregion tns-visually-hidden" aria-live="polite" aria-atomic="true">slide
+                                <span class="current">1</span> of 3
+                            </div>
+                            <div id="tns1-mw" class="tns-ovh">
+                                <div class="tns-inner" id="tns1-iw">
+                                    <div class="tns-carousel-inner  tns-slider tns-carousel tns-subpixel tns-calc tns-horizontal"
+                                         data-carousel-options="{&quot;items&quot;: 1, &quot;controls&quot;: false, &quot;loop&quot;: false}"
+                                         id="tns1"
+                                         style="transition-duration: 0s; transform: translate3d(0%, 0px, 0px);">
+                                        <div class="tns-item tns-slide-active" id="tns1-item0">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-6 order-md-2">
+                                                    <img class="d-block mx-auto"
+                                                         th:src="@{/assets/user/img/home/hero-slider/05.jpg}">
+                                                </div>
+                                                <div
+                                                        class="col-lg-5 col-md-6 offset-lg-1 order-md-1 pt-4 pb-md-4 text-center text-md-start">
+                                                    <h2 class="fw-light pb-1 from-bottom"
+                                                        th:text="#{home.slider1.title1}"></h2>
+                                                    <h1 class="display-4 from-bottom delay-1"
+                                                        th:text="#{home.slider1.title2}"></h1>
+                                                    <h5 class="fw-light pb-3 from-bottom delay-2"
+                                                        th:text="#{home.slider1.title3}"></h5>
+                                                    <div class="d-table scale-up delay-4 mx-auto mx-md-0">
+                                                        <a class="btn btn-primary btn-shadow"
+                                                           th:text="#{global.shop_now}"
+                                                           th:href="@{/product-list/headphone}">
+                                                            <i class="ci-arrow-right ms-2 me-n1"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tns-item" id="tns1-item1" aria-hidden="true" tabindex="-1">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-6 order-md-2">
+                                                    <img class="d-block mx-auto"
+                                                         th:src="@{/assets/user/img/home/hero-slider/06.jpg}">
+                                                </div>
+                                                <div
+                                                        class="col-lg-5 col-md-6 offset-lg-1 order-md-1 pt-4 pb-md-4 text-center text-md-start">
+                                                    <h2 class="fw-light pb-1 from-bottom"
+                                                        th:text="#{home.slider2.title1}"></h2>
+                                                    <h1 class="display-4 scale-up delay-1"
+                                                        th:text="#{home.slider2.title2}"></h1>
+                                                    <h5 class="fw-light pb-3 scale-up delay-2"
+                                                        th:text="#{home.slider2.title3}"></h5>
+                                                    <div class="d-table scale-up delay-4 mx-auto mx-md-0">
+                                                        <a class="btn btn-primary btn-shadow"
+                                                           th:text="#{global.shop_now}"
+                                                           th:href="@{/product-list/phone}">
+                                                            <i class="ci-arrow-right ms-2 me-n1"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Banner group-->
+                <div class="col-xl-3 order-xl-1 pt-4 mt-3 mt-xl-0 pt-xl-0">
+                    <div class="table-responsive" data-simplebar>
+                        <div class="d-flex d-xl-block">
+                            <a class="d-flex align-items-center bg-faded-info rounded-3 pt-2 ps-2 mb-4 me-4 me-xl-0"
+                               th:href="@{/product-list/smartwatch}" style="min-width: 16rem;">
+                                <img th:src="@{/assets/user/img/home/banners/banner-sm01.png}" width="125" alt="Banner">
+                                <div class="py-4 px-2">
+                                    <h5 class="mb-2">
+                                        [[#{home.banner1.title}]]
+                                        <div class="text-info fs-sm">
+                                            [[#{global.shop_now}]]
+                                            <i class="ci-arrow-right fs-xs ms-1"></i>
+                                        </div>
+                                    </h5>
+                                </div>
+                            </a>
+                            <a class="d-flex align-items-center bg-faded-warning rounded-3 pt-2 ps-2 mb-4 me-4 me-xl-0"
+                               th:href="@{/product-list/laptop}" style="min-width: 16rem;">
+                                <img th:src="@{/assets/user/img/home/banners/banner-sm02.png}" width="125" alt="Banner">
+                                <div class="py-4 px-2">
+                                    <h5 class="mb-2">
+                                        [[#{home.banner2.title}]]
+                                        <div class="text-warning fs-sm">
+                                            [[#{global.shop_now}]]
+                                            <i class="ci-arrow-right fs-xs ms-1"></i>
+                                        </div>
+                                </div>
+                            </a>
+                            <a class="d-flex align-items-center bg-faded-success rounded-3 pt-2 ps-2 mb-4"
+                               th:href="@{/product-list/tablet}" style="min-width: 16rem;">
+                                <img th:src="@{/assets/user/img/home/banners/banner-sm03.png}" width="125" alt="Banner">
+                                <div class="py-4 px-2">
+                                    <h5 class="mb-2">
+                                        [[#{home.banner3.title}]]
+                                    </h5>
+                                    <div class="text-success fs-sm">
+                                        [[#{global.shop_now}]]
+                                        <i class="ci-arrow-right fs-xs ms-1"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Products grid (Trending products)-->
+    <section class="container py-5">
+        <!-- Heading-->
+        <div class="d-flex flex-wrap justify-content-between align-items-center pt-1 border-bottom pb-4 mb-4">
+            <h2 class="h3 mb-0 pt-3 me-2" th:text="#{global.trending_products}"></h2>
+            <div class="pt-3">
+                <a class="btn btn-outline-accent btn-sm" th:href="@{/product-list}">
+                    [[#{global.more_products}]]<i class="ci-arrow-right ms-1 me-n1"></i>
+                </a>
+            </div>
+        </div>
+        <!-- Grid-->
+        <div class="row pt-2 mx-n2">
+            <!-- Product-->
+            <div th:each="product:${discountProducts.content}" th:object="${product}"
+                 class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4">
+                <div class="card product-card">
+                    <span class="badge bg-danger badge-shadow">
+                        <span th:if="${#locale.language == 'vi'}"
+                              th:text="*{'Giảm ' + #numbers.formatInteger(discount.saleOff, 0, 'POINT') + '%'}"></span>
+                        <span th:unless="${#locale.language == 'vi'}"
+                              th:text="*{#numbers.formatInteger(discount.saleOff, 0, 'POINT') + '% OFF'}"></span>
+                    </span>
+                    <div class="square-size-by-length d-flex align-items-center">
+                        <a class="card-img-top d-block overflow-hidden" th:href="@{|/product-detail/*{slug}}|">
+                            <img th:src="@{|*{image}|}" th:alt="*{name}" class="p-5">
+                        </a>
+                    </div>
+                    <div class="card-body py-2">
+                        <a class="product-meta d-block fs-xs pb-1" href="#">
+                            <span th:if="${#locale.language=='vi'}" th:text="*{category.nameVI}"></span>
+                            <span th:unless="${#locale.language=='vi'}" th:text="*{category.nameEN}"></span>
+                        </a>
+                        <h3 class="product-title fs-sm">
+                            <a th:href="@{|/product-detail/*{slug}|}" th:text="*{name}"></a>
+                        </h3>
+                        <div class="d-flex justify-content-between">
+                            <div class="product-price">
+                                <span class="text-accent"
+                                      th:text="*{#numbers.formatDecimal(getPromotionalPrice(),0,'COMMA',1,'POINT')+'₫'}"></span>
+                                <del class="fs-sm text-muted">
+                                    <small th:text="*{#numbers.formatDecimal(price,0,'COMMA',1,'POINT')+'₫'}"></small>
+                                </del>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body card-body-hidden">
+                        <button class="btn btn-primary btn-sm d-block w-100 mb-2" type="button"
+                                th:onclick="addToCart([[${product.id}]])">
+                            <i class="ci-cart fs-sm me-1"></i>
+                            [[#{global.add_to_cart}]]
+                        </button>
+                    </div>
+                </div>
+                <hr class="d-sm-none">
+            </div>
+            <nav class="d-flex justify-content-between mt-5" aria-label="Page navigation"
+                 th:if="${discountProducts.totalPages > 1}">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" th:if="${discountProducts.number > 0}"
+                           th:href="'?p=' + ${discountProducts.number - 1}">
+                            <i class="ci-arrow-left me-2"></i><span th:text="#{global.prev}"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="pagination">
+                    <li class="page-item d-sm-none">
+                        <span class="page-link page-link-static"
+                              th:text="${(discountProducts.number + 1)/(discountProducts.totalPages)}"></span>
+                    </li>
+                    <li th:each="item, state:${#numbers.sequence(0, discountProducts.totalPages - 1)}"
+                        class="page-item d-none d-sm-block"
+                        th:classappend="${discountProducts.number == item ? 'active' : ''}">
+                        <a class="page-link" th:href="'?p='+${item}">[[${item + 1}]]</a>
+                    </li>
+                </ul>
+                <ul class="pagination">
+                    <li class="page-item" th:if="${discountProducts.number < discountProducts.totalPages - 1}">
+                        <a class="page-link" aria-label="Next"
+                           th:href="'?p=' + ${discountProducts.number + 1}">
+                            <span th:utext="#{global.next}"></span><i class="ci-arrow-right ms-2"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        var scrollpos = sessionStorage.getItem('scrollpos');
+        if (scrollpos) window.scrollTo(0, scrollpos);
+        sessionStorage.removeItem('scrollpos');
+    });
+
+    window.onbeforeunload = function (e) {
+        sessionStorage.setItem('scrollpos', window.scrollY);
+    };
+</script>
+</body>
+</html>

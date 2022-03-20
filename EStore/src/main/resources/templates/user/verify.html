@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/layout/index::main-fragment(title=~{::title}, content=~{::#content})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify</title>
+</head>
+<body>
+<div class="container py-5 my-5" id="content">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <h2 class="mb-4" th:text="${titlePage}"></h2>
+            <p class="mb-4" th:if="${note != null}" th:text="${note}"></p>
+            <a class="text-decoration-underline" th:href="@{/login}" th:text="#{home.verify_account.button}"></a>
+            <div th:if="${message != null}" class="fs-md alert alert-success d-flex" role="alert">
+                <div class="alert-icon">
+                    <i class="ci-check-circle"></i>
+                </div>
+                <div th:text="${message}"></div>
+            </div>
+            <div th:if="${error != null}" class="fs-md alert alert-danger d-flex" role="alert">
+                <div class="alert-icon">
+                    <i class="ci-close-circle"></i>
+                </div>
+                <div th:text="${error}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

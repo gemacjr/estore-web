@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/layout/index::main-fragment(title=~{::title}, content=~{::#content})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <div class="container py-4 py-lg-5 my-4" id="content">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-sm-8">
+                <div class="card border-0 shadow">
+                    <div class="card-body">
+                        <h2 class="h4 mb-1" th:text="#{global.sign_in}"></h2>
+                        <div class="py-3">
+                            <div class="alert alert-danger" role="alert"
+                                 th:if="${param.error != null}"
+                                 th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"></div>
+                            <div class="alert alert-success" role="alert"
+                                 th:if="${param.success != null}" th:text="${param.success}"></div>
+                            <h3 class="d-inline-block align-middle fs-base fw-medium mb-2 me-2"
+                                th:text="#{home.login_form.note1}"></h3>
+                            <div class="d-inline-block align-middle">
+                                <a class="btn-social bs-google me-2 mb-2" href="#" data-bs-toggle="tooltip" title="Google">
+                                    <i class="ci-google"></i>
+                                </a>
+                                <a class="btn-social bs-facebook me-2 mb-2" href="#" data-bs-toggle="tooltip" title="Facebook">
+                                    <i class="ci-facebook"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <hr>
+                        <h3 class="fs-base pt-4 pb-2" th:text="#{home.login_form.note2}"></h3>
+                        <form class="needs-validation" th:action="@{/login}" method="POST" novalidate>
+                            <div class="input-group mb-3">
+                                <i class="ci-mail position-absolute top-50 translate-middle-y text-muted fs-base ms-3"></i>
+                                <input class="form-control rounded-start" type="email" th:placeholder="#{global.email}"
+                                       name="username" required>
+                            </div>
+                            <div class="input-group mb-3">
+                                <i class="ci-locked position-absolute top-50 translate-middle-y text-muted fs-base ms-3"></i>
+                                <div class="password-toggle w-100">
+                                    <input class="form-control" type="password" th:placeholder="#{global.password}"
+                                           name="password" required>
+                                    <label class="password-toggle-btn" aria-label="Show/hide password">
+                                        <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-wrap justify-content-between">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" checked id="remember_me" name="remember-me">
+                                    <label class="form-check-label" for="remember_me" th:text="#{global.remember_me}"></label>
+                                </div>
+                                <a class="nav-link-inline fs-sm" th:href="@{/forgot-password}" th:text="#{global.forgot_password}+'?'"></a>
+                            </div>
+                            <hr class="mt-4">
+                            <div class="text-end pt-4">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="ci-sign-in me-2 ms-n21"></i><span th:text="#{global.sign_in}"></span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

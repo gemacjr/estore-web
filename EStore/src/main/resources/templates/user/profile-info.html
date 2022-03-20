@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/layout/index::main-fragment(title=~{::title},content=~{::#content},script=~{::script})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Info</title>
+</head>
+<body>
+<div id="content">
+    <div class="page-title-overlap bg-dark pt-4">
+        <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+            <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+                        <li class="breadcrumb-item">
+                            <a class="text-nowrap" th:href="@{/home}" th:text="#{global.home}"></a>
+                        </li>
+                        <li class="breadcrumb-item text-nowrap active" aria-current="page"
+                            th:text="#{global.profile_info}"></li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+                <h1 class="h3 text-light mb-0" th:text="#{global.profile_info}"></h1>
+            </div>
+        </div>
+    </div>
+    <div class="container pb-5 mb-2 mb-md-4">
+        <!-- Toolbar-->
+        <div class="d-none d-lg-flex justify-content-between align-items-center pt-lg-3 pb-4 pb-lg-5 mb-lg-3">
+            <h6 class="fs-base text-light mb-0" th:text="#{home.userProfile.info}"></h6>
+            <form th:action="@{/logout}" method="post">
+                <button class="btn btn-primary btn-sm" type="submit">
+                    <i class="ci-sign-out me-2"></i><span th:text="#{global.sign_out}"></span>
+                </button>
+            </form>
+        </div>
+        <div class="row justify-content-center">
+            <!-- Content -->
+            <section class="col-lg-8">
+                <!-- Success alert -->
+                <div th:if="${success != null}" class="alert alert-success d-flex" role="alert">
+                    <div class="alert-icon">
+                        <i class="ci-check-circle"></i>
+                    </div>
+                    <div th:text="${success}"></div>
+                </div>
+                <!-- Danger alert -->
+                <div th:if="${failed != null}" class="alert alert-danger d-flex" role="alert">
+                    <div class="alert-icon">
+                        <i class="ci-close-circle"></i>
+                    </div>
+                    <div th:text="${failed}"></div>
+                </div>
+                <!-- Profile form-->
+                <form th:action="@{/user-profile}" th:object="${profile}" method="post" enctype="multipart/form-data">
+                    <div class="bg-secondary rounded-3 p-4 mb-4">
+                        <div class="d-flex align-items-center">
+                            <img class="rounded" id="avatar-preview" alt="Avatar" style="width: 90px; height: 90px"
+                                 th:src="@{|/assets/user/img/avatar/*{photo != null ? photo : 'default.png'}|}">
+                            <div class="ps-3">
+                                <input th:field="*{photoFile}" id="avatar-upload" class="form-control" type="file"
+                                       style="display:none;"/>
+                                <button id="avatar-upload-btn" class="btn btn-light btn-shadow btn-sm mb-2" type="button">
+                                    <i class="ci-loading me-2"></i>[[#{home.userProfile.uploadAvatar.button}]]
+                                </button>
+                                <div class="p mb-0 fs-ms text-muted">[[#{home.userProfile.uploadAvatar.required}]]</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row gx-4 gy-3">
+                        <div class="col-sm-6">
+                            <label class="form-label" for="username" th:text="#{home.userProfile.form.fieldName1}"></label>
+                            <input class="form-control" id="username" type="text" th:field="*{username}" disabled/>
+                            <span th:errors="*{username}" th:if="${#fields.hasErrors('username')}" class="invalid-feedback"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="email" th:text="#{home.userProfile.form.fieldName2}"></label>
+                            <input class="form-control" id="email" type="email" th:field="*{email}" disabled/>
+                            <span th:errors="*{email}" th:if="${#fields.hasErrors('email')}" class="invalid-feedback"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="fullname" th:text="#{home.userProfile.form.fieldName3}"></label>
+                            <input class="form-control" id="fullname" type="text" th:field="*{fullname}"/>
+                            <span th:errors="*{fullname}" th:if="${#fields.hasErrors('fullname')}" class="invalid-feedback"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="phoneNumber"
+                                   th:text="#{home.userProfile.form.fieldName4}"></label>
+                            <input class="form-control" id="phoneNumber" type="text" th:field="*{phoneNumber}"/>
+                            <span th:errors="*{phoneNumber}" th:if="${#fields.hasErrors('phoneNumber')}"
+                                  class="invalid-feedback"></span>
+                        </div>
+                        <div class="col-sm-12">
+                            <label class="form-label" for="address" th:text="#{home.userProfile.form.fieldName5}"></label>
+                            <input class="form-control" id="address" type="text" th:field="*{address}"/>
+                            <span th:errors="*{address}" th:if="${#fields.hasErrors('address')}" class="invalid-feedback"></span>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex flex-wrap justify-content-end align-items-center">
+                                <button class="btn btn-primary mt-3 mt-sm-0" type="submit">
+                                    [[#{home.userProfile.form.submitBtn}]]
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+<script>
+    // Show avatar
+    $(document).ready(function () {
+        let readURL = function (input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#avatar-preview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#avatar-upload").on('change', function () {
+            readURL(this);
+        });
+        $("#avatar-upload-btn").on('click', function () {
+            $("#avatar-upload").click();
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.swal2-styled{
+    width: 210px;
+}
+
+.icon {
+    margin-right: 8px;
+}
+
+.icon-search:hover {
+    color: #fe696a !important;
+}
+
+.invalid-feedback {
+    display: block;
+}
+
+.m_title {
+    display: inline-block; /* Thanks to Fanky (https://stackoverflow.com/users/2095642/fanky) */
+    text-transform: lowercase
+}
+
+.m_title:first-letter {
+    text-transform: uppercase
+}
+
+.square-size-by-length {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    height: 100%;
+}
+
+.product-thumbnail {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    height: 100%;
+    border: 2px dashed #dae1e7;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.product-video-thumbnail {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 1.75;
+    height: 100%;
+    border: 2px dashed #dae1e7;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.product-video-thumbnail::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(/assets/user/img/video-play-button.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
