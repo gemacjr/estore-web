@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/layout/index::main-fragment(title=~{::title}, content=~{::#content})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product List </title>
+</head>
+<body>
+<div id="content">
+    <div class="page-title-overlap bg-dark pt-4">
+        <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+            <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+                        <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/home}">
+                            <i class="ci-home"></i><span th:text="#{global.home}"></span></a></li>
+                        <li class="breadcrumb-item text-nowrap active" aria-current="page"
+                            th:text="#{global.cart}"></li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+                <h1 class="h3 text-light mb-0" th:text="#{global.your_cart}"></h1>
+            </div>
+        </div>
+    </div>
+    <div class="container pb-5 mb-2 mb-md-4">
+        <div class="row">
+            <!-- List of items-->
+            <section th:class="${productsInCart.size() > 0 ? 'col-lg-8' : 'col-lg-12'}">
+                <div class="d-flex justify-content-between align-items-center pt-3 pb-4 pb-sm-5 mt-1">
+                    <h2 class="h6 text-light mb-0" th:text="#{home.shoppingCart.products}"></h2>
+                    <a class="btn btn-outline-primary btn-sm ps-2" th:href="@{/product-list}">
+                        <i class="ci-arrow-left me-2"></i><span th:text="#{home.shoppingCart.continueShopping}"></span></a>
+                </div>
+                <!-- Item-->
+                <div class="d-sm-flex justify-content-between align-items-center my-2 pb-3 border-bottom"
+                     th:each="cart:${productsInCart}" th:object="${cart}">
+                    <div class="d-block d-sm-flex align-items-center text-center text-sm-start"><a
+                            class="d-inline-block flex-shrink-0 mx-auto me-sm-4"
+                            th:href="@{|/product-detail/*{product.slug}|}">
+                        <img th:src="*{product.image}" class="p-3" style="width: 130px; height: 130px"
+                             alt="Product"></a>
+                        <div class="pt-2">
+                            <h3 class="product-title fs-base mb-2"><a
+                                    th:href="@{|/product-detail/*{product.slug}|}" th:text="*{product.name}"></a>
+                            </h3>
+                            <div class="fs-lg text-accent pt-2">
+                                <span th:text="*{#numbers.formatDecimal(product.getPromotionalPrice(),0,'COMMA',0,'POINT')+'₫'}"></span>
+                                <del class="fs-sm text-muted">
+                                    <small th:text="*{#numbers.formatDecimal(product.price,0,'COMMA',0,'POINT')+'₫'}"></small>
+                                </del>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-2 pt-sm-0 ps-sm-3 mx-auto mx-sm-0 text-center text-sm-start"
+                         style="max-width: 9rem;">
+                        <label class="form-label" th:for="'quantity-' + *{id}"
+                               th:text="#{home.shoppingCart.quantity}"></label>
+                        <input class="form-control" type="number" th:id="'quantity' + *{id}"
+                               th:onchange="updateQuantity([[*{id}]], this.value)"
+                               oninput="validity.valid||(value='');" min="1" th:value="*{quantity}">
+                        <button class="btn btn-link px-0 text-danger" th:onclick="removeForCart([[*{id}]])"
+                                type="button">
+                            <i class="ci-close-circle me-2"></i><span
+                                class="fs-sm" th:text="#{home.shoppingCart.remove}"></span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+            <!-- Sidebar-->
+            <aside th:if="${productsInCart.size() > 0}" class="col-lg-4 pt-4 pt-lg-0 ps-xl-5">
+                <div class="bg-white rounded-3 shadow-lg p-4">
+                    <div class="py-2 px-xl-2">
+                        <div class="text-center mb-4 pb-3 border-bottom">
+                            <h2 class="h6 mb-3 pb-1" th:text="#{home.shoppingCart.subtotal}"></h2>
+                            <h3 class="fw-normal" th:text="${#numbers.formatDecimal(totalPrice,0,'COMMA',0,'POINT')+'₫'}"></h3>
+                        </div>
+                        <a class="btn btn-primary btn-shadow d-block w-100 mt-4" th:href="@{/checkout-detail}"
+                           id="checkout-button">
+                            <i class="ci-card fs-lg me-2"></i><span th:text="#{home.shoppingCart.checkout}"></span>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+</body>
+</html>

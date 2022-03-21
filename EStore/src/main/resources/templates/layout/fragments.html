@@ -73,10 +73,10 @@
                             <span th:text="${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 1, 'POINT')} + '₫'"></span>
                         </a>
                         <!-- Cart dropdown-->
-                        <div th:if="${productsInCart.size() >0}" class="dropdown-menu dropdown-menu-end">
+                        <div th:if="${productsInCart.size() > 0}" class="dropdown-menu dropdown-menu-end">
                             <div class="widget widget-cart px-3 pt-2 pb-3" style="width: 20rem;">
                                 <div style="height: 15rem;" data-simplebar data-simplebar-auto-hide="false">
-                                    <div th:each="cart : ${productsInCart}" th:object="cart"
+                                    <div th:each="cart : ${productsInCart}" th:object="${cart}"
                                          class="widget-cart-item py-2 border-bottom">
                                         <button class="btn-close text-danger btn-remove-cart"
                                                 th:onclick="removeForCart([[*{id}]])" type="button">
@@ -114,17 +114,17 @@
                                 <div class="btn-group w-100">
                                     <a class="btn btn-outline-secondary btn-sm" th:href="@{/shopping-cart}">
                                         <i class="ci-cart me-2 fs-base align-middle"></i>
-                                        <span th:text="global.view_cart"></span>
+                                        <span th:text="#{global.view_cart}"></span>
                                         <i class="ci-arrow-right ms-1 me-n1"></i>
                                     </a>
                                     <a class="btn btn-primary btn-sm" th:href="@{/checkout-detail}">
                                         <i class="ci-card me-2 fs-base align-middle"></i>
-                                        <span th:text="global.checkout"></span>
+                                        <span th:text="#{global.checkout}"></span>
                                     </a>
                                 </div>
                             </div>
                         </div>
-                        <div th:unless="${productsInCart.size() >0}"
+                        <div th:unless="${productsInCart.size() > 0}"
                              class="dropdown-menu dropdown-menu-end text-center py-4 px-3">
                             <div style="width: 16rem;"><img class="d-inline-block mb-2"
                                                             th:src="@{/assets/user/img/empty-cart.png}"
