@@ -35,6 +35,179 @@
             </div>
         </div>
     </div>
+    <div class="container">
+        <!-- Gallery + details-->
+        <div class="bg-light shadow-lg rounded-3 px-4 py-3 mb-5">
+            <div class="px-lg-3">
+                <div class="row">
+                    <!-- Product gallery-->
+                    <div class="col-lg-7 pe-lg-0 pt-lg-4">
+                        <div class="product-gallery">
+                            <div class="product-gallery-preview order-sm-2">
+                                <div class="product-gallery-preview-item d-flex align-items-center active" id="first">
+                                    <img class="image-zoom" th:src="${product.imagePreview1}"
+                                         th:attr="data-zoom=${product.imagePreview1}" th:alt="${product.name}">
+                                    <div class="image-zoom-pane"></div>
+                                </div>
+                                <div class="product-gallery-preview-item d-flex align-items-center" id="second">
+                                    <img class="image-zoom" th:src="${product.imagePreview2}"
+                                         th:attr="data-zoom=${product.imagePreview2}" th:alt="${product.name}">
+                                    <div class="image-zoom-pane"></div>
+                                </div>
+                                <div class="product-gallery-preview-item d-flex align-items-center" id="third">
+                                    <img class="image-zoom" th:src="${product.imagePreview3}"
+                                         th:attr="data-zoom=${product.imagePreview3}" th:alt="${product.name}">
+                                    <div class="image-zoom-pane"></div>
+                                </div>
+                                <div class="product-gallery-preview-item d-flex align-items-center" id="fourth">
+                                    <img class="image-zoom" th:src="${product.imagePreview4}"
+                                         th:attr="data-zoom=${product.imagePreview4}" th:alt="${product.name}">
+                                    <div class="image-zoom-pane"></div>
+                                </div>
+                            </div>
+                            <div class="product-gallery-thumblist order-sm-1">
+                                <a th:unless="${product.imagePreview1 == null}"
+                                   class="product-gallery-thumblist-item active" href="#first">
+                                    <img class="h-100" th:src="${product.imagePreview1}" alt="Product thumb">
+                                </a>
+                                <a th:unless="${product.imagePreview2 == null}" class="product-gallery-thumblist-item"
+                                   href="#second">
+                                    <img class="h-100" th:src="${product.imagePreview2}" alt="Product thumb">
+                                </a>
+                                <a th:unless="${product.imagePreview3 == null}" class="product-gallery-thumblist-item"
+                                   href="#third">
+                                    <img class="h-100" th:src="${product.imagePreview3}" alt="Product thumb">
+                                </a>
+                                <a th:unless="${product.imagePreview4 == null}" class="product-gallery-thumblist-item"
+                                   href="#fourth">
+                                    <img class="h-100" th:src="${product.imagePreview4}" alt="Product thumb">
+                                </a>
+                                <a th:src="${product.videoPreview == null}"
+                                   class="product-gallery-thumblist-item video-item"
+                                   th:href="@{|https://www.youtube.com/watch?v=${product.videoPreview}|}">
+                                    <div class="product-gallery-thumblist-item-text">
+                                        <i class="ci-video"></i>Video
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product details -->
+                    <div class="col-lg-5 pt-4 pt-lg-0">
+                        <div class="product-details ms-auto pb-3 mt-4 d-flex flex-column h-100">
+                            <div class="mb-3" th:if="${product.discount != null}"
+                                 th:with="money=${product.price - (product.price * product.discount.saleOff / 100)}">
+                                <span class="h3 fw-normal text-accent me-1"
+                                      th:text="${#numbers.formatDecimal(money,0,'COMMA',1,'POINT')}+'₫'"></span>
+                                <del class="text-muted fs-lg me-3"
+                                     th:text="${#numbers.formatDecimal(product.price,0,'COMMA',1,'POINT')}+'₫'"></del>
+                                <span class="badge bg-danger badge-shadow align-middle mt-n2">
+                                    <span th:if="${#locale.language == 'vi'}"
+                                          th:text="${'Giảm ' + #numbers.formatInteger(product.discount.saleOff, 0, 'POINT') + '%'}">
+                                    </span>
+                                    <span th:unless="${#locale.language == 'vi'}"
+                                          th:text="${#numbers.formatInteger(product.discount.saleOff, 0, 'POINT') + '% OFF'}">
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="mb-3" th:unless="${product.discount != null}">
+                                 <span class="h3 fw-normal text-accent me-1"
+                                       th:text="${#numbers.formatDecimal(product.price,0,'COMMA',1,'POINT')}+'₫'">
+                                 </span>
+                            </div>
+                            <div class="mb-3 flex-grow-1">
+                                <div class="position-relative me-n4 mb-3">
+                                    <h6 class="fs-base mb-2 pb-1" th:text="#{global.product_info}"></h6>
+                                    <div th:if="${product.available==0}" class="product-badge product-available mt-n1">
+                                        <i class="ci-security-check"></i>
+                                        <span th:text="#{global.in_stock}"></span>
+                                    </div>
+                                    <div th:if="${product.available==1}"
+                                         class="product-badge product-not-available mt-n1">
+                                        <i class="ci-security-close"></i>
+                                        <span th:text="#{global.out_of_stock}"></span>
+                                    </div>
+                                    <div th:if="${product.available==2}"
+                                         class="product-badge product-not-available mt-n1">
+                                        <i class="ci-security-prohibition"></i>
+                                        <span th:text="#{global.sold_out}"></span>
+                                    </div>
+                                </div>
+                                <div class="fs-sm text-muted" th:text="${product.description}"></div>
+                            </div>
+                            <div th:if="${product.available == 0}">
+                                <form class="mb-grid-gutter">
+                                    <div class="mb-3 d-flex align-items-center">
+                                        <select class="form-select me-3" style="width: 5rem;" id="select-quantity">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                        <button class="btn btn-primary btn-shadow d-block w-100" type="button"
+                                                th:onclick="addToCart([[${product.id}]])">
+                                            <i class="ci-cart fs-lg me-2"></i>
+                                            <span th:text="#{global.add_to_cart}"></span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Product carousel-->
+    <div class="container pt-lg-2 pb-5 mb-md-3">
+        <h2 class="h3 text-center pb-4" th:text="#{global.you_may_also_like}"></h2>
+        <div class="tns-carousel tns-controls-static tns-controls-outside">
+            <div class="tns-carousel-inner"
+                 data-carousel-options="{&quot;items&quot;: 2, &quot;controls&quot;: true, &quot;nav&quot;: false, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;500&quot;:{&quot;items&quot;:2, &quot;gutter&quot;: 18},&quot;768&quot;:{&quot;items&quot;:3, &quot;gutter&quot;: 20}, &quot;1100&quot;:{&quot;items&quot;:4, &quot;gutter&quot;: 30}}}">
+                <!-- Product-->
+                <div class="card product-card" th:each="product:${discountProducts}" th:object="${product}">
+                    <span class="badge bg-danger badge-shadow">
+                        <span th:if="${#locale.language == 'vi'}"
+                              th:text="*{'Giảm ' + #numbers.formatInteger(discount.saleOff, 0, 'POINT') + '%'}">
+                        </span>
+                        <span th:unless="${#locale.language == 'vi'}"
+                              th:text="*{#numbers.formatInteger(discount.saleOff, 0, 'POINT') + '% OFF'}">
+                        </span>
+                    </span>
+                    <div class="square-size-by-length d-flex align-items-center">
+                        <a class="card-img-top d-block overflow-hidden" th:href="@{|/product-detail/*{slug}|}">
+                            <img th:src="*{image}" th:alt="*{name}" class="p-5">
+                        </a>
+                    </div>
+                    <div class="card-body py-2">
+                        <a class="product-meta d-block fs-xs pb-1" href="#"
+                           th:text="${#locale.language=='vi'}?*{category.nameVI}:*{category.nameEN}">
+                        </a>
+                        <h3 class="product-title fs-sm">
+                            <a th:href="@{|/product-detail/*{slug}|}" th:text="*{name}"></a>
+                        </h3>
+                        <div class="d-flex justify-content-between">
+                            <div class="product-price">
+                                <span class="text-accent"
+                                      th:text="*{#numbers.formatDecimal(getPromotionalPrice(),0,'COMMA',1,'POINT')+'₫'}"></span>
+                                <del class="fs-sm text-muted">
+                                    <small th:text="*{#numbers.formatDecimal(price,0,'COMMA',1,'POINT')+'₫'}"></small>
+                                </del>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body card-body-hidden">
+                        <button class="btn btn-primary btn-sm d-block w-100 mb-2" type="button"
+                                th:onclick="addToCart([[*{id}]])">
+                            <i class="ci-cart fs-sm me-1"></i>
+                            <span th:text="#{global.add_to_cart}"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
 </script>

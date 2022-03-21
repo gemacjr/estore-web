@@ -141,9 +141,11 @@
                             <div class="card product-card">
                                 <span th:if="*{discount != null}" class="badge bg-danger badge-shadow">
                                     <span th:if="${#locale.language == 'vi'}"
-                                          th:text="*{'Giảm ' + #numbers.formatInteger(discount.saleOff, 0, 'POINT') + '%'}"></span>
+                                          th:text="*{'Giảm ' + #numbers.formatInteger(discount.saleOff, 0, 'POINT') + '%'}">
+                                    </span>
                                     <span th:unless="${#locale.language == 'vi'}"
-                                          th:text="*{#numbers.formatInteger(discount.saleOff, 0, 'POINT') + '% OFF'}"></span>
+                                          th:text="*{#numbers.formatInteger(discount.saleOff, 0, 'POINT') + '% OFF'}">
+                                    </span>
                                 </span>
                                 <div class="square-size-by-length d-flex align-items-center">
                                     <a class="card-img-top d-block overflow-hidden"

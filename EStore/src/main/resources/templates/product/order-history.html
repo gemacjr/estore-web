@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/layout/index::main-fragment(title=~{::title}, content=~{::#content})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product List </title>
+</head>
+<body>
+<div id="content">
+    <!-- Page Title-->
+    <div class="page-title bg-dark py-4">
+        <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+            <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+                        <li class="breadcrumb-item">
+                            <a class="text-nowrap" th:href="@{/home}"><i
+                                    class="ci-home"></i><span th:text="#{global.home}"></span>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item text-nowrap active" aria-current="page"
+                            th:text="#{home.order.ordersHistory}">
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+                <h1 class="h3 text-light mb-0" th:text="#{home.order.myOrders}"></h1>
+            </div>
+        </div>
+    </div>
+    <div class="container py-3 my-2 my-md-4">
+        <div class="row">
+            <!-- Content  -->
+            <section class="col-lg-12">
+                <!-- Orders list-->
+                <div class="table-responsive fs-md mb-4">
+                    <table id="order-history-table" class="table table-hover mb-0">
+                        <thead>
+                        <tr>
+                            <th th:text="#{global.order} + ' #'"></th>
+                            <th th:text="#{global.date_purchased}">/th>
+                            <th th:text="#{global.status}"></th>
+                            <th th:text="#{global.total}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="order:${orders}" th:object="${order}">
+                            <td class="py-3">
+                                <a class="nav-link-style fw-medium fs-sm"
+                                   th:href="'#order-details-' + ${order.id}" th:text="${order.orderCode}"
+                                   data-bs-toggle="modal"></a>
+                            </td>
+                            <td class="py-3 text-capitalize"
+                                th:text="*{#dates.format(createdDate, 'dd/MM/yyyy hh:mm:ss')}">
+                            </td>
+                            <td class="py-3">
+                                <span class="badge bg-info m-0" th:text="#{global.in_progress}"
+                                      th:if="*{status == 0}"></span>
+                                <span class="badge bg-success m-0" th:text="#{global.delivered}"
+                                      th:if="*{status == 1}"></span>
+                                <span class="badge bg-warning m-0" th:text="#{global.delayed}"
+                                      th:if="*{status == 2}"></span>
+                                <span class="badge bg-danger m-0" th:text="#{global.canceled}"
+                                      th:if="*{status == 3}"></span>
+                            </td>
+                            <td class="py-3"
+                                th:text="*{#numbers.formatDecimal(getTotal(),0,'COMMA',0,'POINT')+'₫'}"></td>
+                            <!-- Order Details Modal-->
+                            <div class="modal fade" th:id="'order-details-'+*{id}" style="display: none;"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title"
+                                                th:text="#{global.order_no}+' - '+*{orderCode}"></h5>
+                                            <button class="btn-close" type="button" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body pb-0">
+                                            <!-- Item-->
+                                            <div class="order-detail-item d-sm-flex justify-content-between mb-4 pb-3 pb-sm-2 border-bottom"
+                                                 th:each="orderDetail:${order.orderDetails}">
+                                                <div class="d-sm-flex text-center text-sm-start">
+                                                    <a class="d-inline-block flex-shrink-0 mx-auto"
+                                                       th:href="@{|/product-detail/${orderDetail.product.slug}|}"
+                                                       style="width: 10rem;">
+                                                        <img th:src="${orderDetail.product.image}" class="p-2"
+                                                             style="width: 100px; height: 100px" alt="Product">
+                                                    </a>
+                                                    <div class="ps-sm-4 pt-2">
+                                                        <h3 class="product-title fs-base mb-2">
+                                                            <a th:href="@{|/product-detail/${orderDetail.product.slug}|}"
+                                                               th:text="${orderDetail.product.name}">
+                                                            </a>
+                                                        </h3>
+                                                        <div class="fs-lg text-accent pt-2"
+                                                             th:text="${#numbers.formatDecimal(orderDetail.product.getPromotionalPrice(),0,'COMMA',0,'POINT')+'₫'}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="pt-2 ps-sm-3 mx-auto mx-sm-0 text-center">
+                                                    <div class="text-muted mb-2"
+                                                         th:text="#{global.quantity} +': ' +${orderDetail.quantity}"></div>
+                                                </div>
+                                                <div class="pt-2 ps-sm-3 mx-auto mx-sm-0 text-center">
+                                                    <div class="text-muted mb-2" th:text="#{global.subtotal}"></div>
+                                                    <span th:text="${#numbers.formatDecimal(orderDetail.getSubtotal(),0,'COMMA',0,'POINT')+'₫'}"></span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Footer-->
+                                        <div class="modal-footer flex-wrap justify-content-end bg-secondary fs-md">
+                                            <div class="px-2 py-1">
+                                                <span class="text-muted" th:text="#{global.total}"></span>
+                                                <span class="fs-lg"
+                                                      th:text="${#numbers.formatDecimal(order.getTotal(),0,'COMMA',0,'POINT')+'₫'}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+</html>
