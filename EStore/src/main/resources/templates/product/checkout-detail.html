@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/layout/index::main-fragment(title=~{::title}, content=~{::#content})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product List </title>
+</head>
+<body>
+<div id="content">
+    <div class="page-title-overlap bg-dark pt-4">
+        <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+            <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+                        <li class="breadcrumb-item"><a class="text-nowrap" href="/home">
+                            <i class="ci-home"></i><span th:text="#{global.home}"></span></a>
+                        </li>
+                        <li class="breadcrumb-item text-nowrap active" aria-current="page"
+                            th:text="#{global.checkout}"></li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+                <h1 class="h3 text-light mb-0" th:text="#{global.checkout}"></h1>
+            </div>
+        </div>
+    </div>
+    <div class="container pb-5 mb-2 mb-md-4">
+        <div class="row">
+            <section class="col-lg-8">
+                <!-- Steps-->
+                <div class="steps steps-light pt-2 pb-3 mb-5">
+                    <a class="step-item active" th:href="@{/shopping-cart}">
+                        <div class="step-progress"><span class="step-count">1</span></div>
+                        <div class="step-label"><i class="ci-cart"></i><span th:text="#{global.cart}"></span></div>
+                    </a>
+                    <a class="step-item active current" th:href="@{/checkout-detail}">
+                        <div class="step-progress"><span class="step-count">2</span></div>
+                        <div class="step-label">
+                            <i class="ci-user-circle"></i><span th:text="#{global.detail}"></span>
+                        </div>
+                    </a>
+                </div>
+                <!-- Shipping address-->
+                <form id="checkout-frm" class="needs-validation" th:object="${user}" novalidate>
+                    <h2 class="h6 pt-1 pb-3 mb-3 border-bottom" th:text="#{home.checkout.shipmentDetails}"></h2>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="form-label" for="checkout-fullname" th:text="#{global.full_name}"></label>
+                                <input class="form-control" type="text" id="checkout-fullname" th:field="*{fullname}"
+                                       required>
+                                <div class="invalid-tooltip" th:text="#{NotBlank.fullName}"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="form-label" for="checkout-email" th:text="#{global.email}"></label>
+                                <input class="form-control" type="email" id="checkout-email" th:field="*{email}"
+                                       required>
+                                <div class="invalid-tooltip" th:text="#{NotBlank.email}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="form-label" for="checkout-address" th:text="#{global.address}"></label>
+                                <input class="form-control" type="text" id="checkout-address" th:field="*{address}"
+                                       required>
+                                <div class="invalid-tooltip" th:text="#{NotBlank.address}"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label class="form-label" for="checkout-phone" th:text="#{global.phone_number}"></label>
+                                <input class="form-control" type="number" id="checkout-phone" th:field="*{phoneNumber}"
+                                       required>
+                                <div class="invalid-tooltip" th:text="#{NotBlank.phoneNumber}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- Navigation (desktop)-->
+                <div class="d-none d-lg-flex pt-4 mt-3">
+                    <div class="w-50 pe-3">
+                        <a class="btn btn-secondary d-block w-100" th:href="@{/shopping-cart}">
+                            <i class="ci-arrow-left mt-sm-0 me-1"></i><span
+                                class="d-none d-sm-inline" th:text="#{home.checkout.backToCart}"></span><span
+                                class="d-inline d-sm-none" th:text="#{global.back}"></span>
+                        </a>
+                    </div>
+                    <div class="w-50 ps-2">
+                        <button class="btn btn-primary d-block w-100" form="checkout-frm" type="submit">
+                            <span class="d-none d-sm-inline" th:text="#{home.checkout.completeOrder}"></span><span
+                                class="d-inline d-sm-none" th:text="#{global.next}"></span><i
+                                class="ci-arrow-right mt-sm-0 ms-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+            <!-- Sidebar-->
+            <aside class="col-lg-4 pt-4 pt-lg-0 ps-xl-5">
+                <div class="bg-white rounded-3 shadow-lg p-4 ms-lg-auto">
+                    <div class="py-2 px-xl-2">
+                        <div class="widget mb-3">
+                            <h2 class="widget-title text-center" th:text="#{home.checkout.orderSummary}"></h2>
+                            <div th:each="cart:${productsInCart}" th:object="${cart}"
+                                 class="d-flex align-items-center py-2 border-bottom">
+                                <a class="d-block flex-shrink-0" th:href="@{|/product-detail/*{product.slug}|}">
+                                    <img th:src="*{product.image}" width="64" th:alt="*{product.name}">
+                                </a>
+                                <div class="ps-2">
+                                    <h6 class="widget-product-title">
+                                        <a th:href="@{|/product-detail/*{product.slug}|}" th:text="*{product.name}"></a>
+                                    </h6>
+                                    <div class="widget-product-meta">
+                                        <span class="text-accent me-2"
+                                              th:text="*{#numbers.formatDecimal(product.getPromotionalPrice(),0,'COMMA',0,'POINT')+'₫'}">
+                                        </span>
+                                        <span class="text-muted" th:text="'x '+*{quantity}"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="fw-normal text-center my-4"
+                            th:text="${#numbers.formatDecimal(totalPrice,0,'COMMA',0,'POINT')+'₫'}">
+                        </h3>
+                    </div>
+                </div>
+            </aside>
+        </div>
+        <!-- Navigation (mobile)-->
+        <div class="row d-lg-none">
+            <div class="col-lg-8">
+                <div class="d-flex pt-4 mt-3">
+                    <div class="w-50 pe-3">
+                        <a class="btn btn-secondary d-block w-100" th:href="@{/shopping-cart}">
+                            <i class="ci-arrow-left mt-sm-0 me-1"></i>
+                            <span class="d-none d-sm-inline" th:text="#{home.checkout.backToCart}"></span>
+                            <span class="d-inline d-sm-none" th:text="#{global.back}"></span></a></div>
+                    <div class="w-50 ps-2">
+                        <button class="btn btn-primary d-block w-100" form="checkout-frm" type="submit">
+                            <span class="d-none d-sm-inline" th:text="#{home.checkout.completeOrder}"></span>
+                            <span class="d-inline d-sm-none" th:text="#{global.next}"></span><i
+                                class="ci-arrow-right mt-sm-0 ms-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
