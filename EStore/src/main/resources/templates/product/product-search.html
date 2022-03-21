@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/layout/index::main-fragment(title=~{::title}, content=~{::#content})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Product List </title>
+</head>
+<body>
+<div id="content">
+    <!-- Page Title (Shop Alt)-->
+    <div class="bg-dark pt-4">
+        <div class="container pt-2 pb-3 pt-lg-3 pb-lg-4">
+            <div class="d-lg-flex justify-content-between pb-3">
+                <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+                            <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/home}">
+                                <i class="ci-home"></i><span th:text="#{global.home}"></span></a></li>
+                            </li>
+                            <li class="breadcrumb-item text-nowrap active" aria-current="page"
+                                th:text="#{global.search}"></li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+                    <h1 class="h3 text-light mb-0">
+                        <span th:text="#{global.found}+' '+${products.size()}"></span>
+                        <span th:text="#{global.results_with_keyword}"></span> "[[${keyword}]]"
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Products List -->
+    <div class="container py-5 mb-2 mb-md-4">
+        <!-- Products grid-->
+        <div class="row mx-n2">
+            <!-- Product-->
+            <div th:each="product:${products}" th:object="${product}" class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4">
+                <div class="card product-card">
+                    <span th:if="*{discount != null}" class="badge bg-danger badge-shadow">
+                        <span th:if="${#locale.language == 'vi'}"
+                              th:text="*{'Giảm ' + #numbers.formatInteger(discount.saleOff, 0, 'POINT') + '%'}">
+                        </span>
+                        <span th:unless="${#locale.language == 'vi'}"
+                              th:text="*{#numbers.formatInteger(discount.saleOff, 0, 'POINT') + '% OFF'}">
+                        </span>
+                    </span>
+                    <div class="square-size-by-length d-flex align-items-center">
+                        <a class="card-img-top d-block overflow-hidden" th:href="@{|/product-detail/*{slug}|}">
+                            <img th:src="*{image}" th:alt="*{name}" class="p-5">
+                        </a>
+                    </div>
+                    <div class="card-body py-2">
+                        <a class="product-meta d-block fs-xs pb-1" href="#"
+                           th:text="${#locale.language=='vi'}?*{category.nameVI}:*{category.nameEN}"></a>
+                        <h3 class="product-title fs-sm">
+                            <a th:href="@{|/product-detail/*{slug}|}" th:text="*{name}"></a>
+                        </h3>
+                        <div class="d-flex justify-content-between">
+                            <div class="product-price">
+                                <div th:if="*{discount != null}">
+                                    <span th:text="*{#numbers.formatInteger(price - (price * discount.saleOff / 100), 0, 'POINT')+'₫'}"></span>
+                                    <del class="fs-sm text-muted">
+                                        <small th:text="*{#numbers.formatInteger(price, 0, 'POINT')+'₫'}"></small>
+                                    </del>
+                                </div>
+                                <div th:unless="*{discount != null}">
+                                    <span th:text="*{#numbers.formatInteger(price, 0, 'POINT')+'₫'}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body card-body-hidden">
+                            <button class="btn btn-primary btn-sm d-block w-100 mb-2" type="button">
+                                <i class="ci-cart fs-sm me-1"></i>
+                                <span th:text="#{global.add_to_cart}"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <hr class="d-sm-none">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
