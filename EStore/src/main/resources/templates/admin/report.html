@@ -25,7 +25,7 @@
             <div class="bg-secondary h-100 rounded-3 p-4 text-center">
                 <h3 class="fs-sm text-muted" th:text="#{admin.report.totalRevenue}+' (VND)'">
                 </h3>
-                <p class="h2 mb-2" th:text="${#numbers.formatDecimal(revenue,0,'COMMA',0,'POINT')}"></p>
+                <p class="h2 mb-2" th:text="${#numbers.formatDecimal(revenue,0,'POINT',0,'NONE')}"></p>
             </div>
         </div>
     </div>
@@ -62,7 +62,7 @@
                         <tr th:each="category:${categoryList}" th:object="${category}">
                             <td th:text="${#locale.language=='vi'}?*{nameVI}:*{nameEN}"></td>
                             <td class="text-center"
-                                th:text="*{#numbers.formatDecimal(getTotalPrice(),0,'COMMA',0,'POINT')}"></td>
+                                th:text="*{#numbers.formatDecimal(getTotalPrice(),0,'POINT',0,'NONE')}"></td>
                             <td class="text-center" th:text="*{products.size()}"></td>
                         </tr>
                         </tbody>
@@ -101,7 +101,7 @@
                         <tr th:each="saleReport:${saleReports}" th:object="${saleReport}">
                             <td th:text="*{#locale.language=='vi'}?*{category.nameVI}:*{category.nameEN}"></td>
                             <td class="text-center"
-                                th:text="*{#numbers.formatDecimal(revenue,0,'COMMA',0,'POINT')}">
+                                th:text="*{#numbers.formatDecimal(revenue,0,'POINT',0,'NONE')}">
                             </td>
                             <td class="text-center" th:text="*{quantity}"></td>
                         </tr>

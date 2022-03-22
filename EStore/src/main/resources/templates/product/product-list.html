@@ -141,10 +141,10 @@
                             <div class="card product-card">
                                 <span th:if="*{discount != null}" class="badge bg-danger badge-shadow">
                                     <span th:if="${#locale.language == 'vi'}"
-                                          th:text="*{'Giảm ' + #numbers.formatInteger(discount.saleOff, 0, 'POINT') + '%'}">
+                                          th:text="*{'Giảm ' + #numbers.formatInteger(discount.saleOff, 0, 'NONE') + '%'}">
                                     </span>
                                     <span th:unless="${#locale.language == 'vi'}"
-                                          th:text="*{#numbers.formatInteger(discount.saleOff, 0, 'POINT') + '% OFF'}">
+                                          th:text="*{#numbers.formatInteger(discount.saleOff, 0, 'NONE') + '% OFF'}">
                                     </span>
                                 </span>
                                 <div class="square-size-by-length d-flex align-items-center">
@@ -167,15 +167,15 @@
                                             <div class="product-price"
                                                  th:with="money = *{price - (price * discount.saleOff / 100)}">
                                                 <span class="text-accent"
-                                                      th:text="${#numbers.formatDecimal(money,0,'COMMA',1,'POINT')}+'₫'"></span>
+                                                      th:text="${#numbers.formatDecimal(money,0,'POINT',0,'NONE')}+'₫'"></span>
                                                 <del class="fs-sm text-muted">
-                                                    <small th:text="*{#numbers.formatDecimal(price,0,'COMMA',1,'POINT')}+'₫'"></small>
+                                                    <small th:text="*{#numbers.formatDecimal(price,0,'POINT',0,'NONE')}+'₫'"></small>
                                                 </del>
                                             </div>
                                         </div>
                                         <div th:unless="${item.discount != null}">
                                             <span class="text-accent"
-                                                  th:text="*{#numbers.formatDecimal(price,0,'COMMA',1,'POINT')}+'₫'"></span>
+                                                  th:text="*{#numbers.formatDecimal(price,0,'POINT',0,'NONE')}+'₫'"></span>
                                         </div>
                                     </div>
                                 </div>

@@ -39,10 +39,10 @@
                 <div class="card product-card">
                     <span th:if="*{discount != null}" class="badge bg-danger badge-shadow">
                         <span th:if="${#locale.language == 'vi'}"
-                              th:text="*{'Giảm ' + #numbers.formatInteger(discount.saleOff, 0, 'POINT') + '%'}">
+                              th:text="*{'Giảm ' + #numbers.formatInteger(discount.saleOff, 0, 'NONE') + '%'}">
                         </span>
                         <span th:unless="${#locale.language == 'vi'}"
-                              th:text="*{#numbers.formatInteger(discount.saleOff, 0, 'POINT') + '% OFF'}">
+                              th:text="*{#numbers.formatInteger(discount.saleOff, 0, 'NONE') + '% OFF'}">
                         </span>
                     </span>
                     <div class="square-size-by-length d-flex align-items-center">
@@ -59,13 +59,13 @@
                         <div class="d-flex justify-content-between">
                             <div class="product-price">
                                 <div th:if="*{discount != null}">
-                                    <span th:text="*{#numbers.formatInteger(price - (price * discount.saleOff / 100), 0, 'POINT')+'₫'}"></span>
+                                    <span th:text="*{#numbers.formatInteger(price - (price * discount.saleOff / 100), 0, 'NONE')+'₫'}"></span>
                                     <del class="fs-sm text-muted">
-                                        <small th:text="*{#numbers.formatInteger(price, 0, 'POINT')+'₫'}"></small>
+                                        <small th:text="*{#numbers.formatInteger(price, 0, 'NONE')+'₫'}"></small>
                                     </del>
                                 </div>
                                 <div th:unless="*{discount != null}">
-                                    <span th:text="*{#numbers.formatInteger(price, 0, 'POINT')+'₫'}"></span>
+                                    <span th:text="*{#numbers.formatInteger(price, 0, 'NONE')+'₫'}"></span>
                                 </div>
                             </div>
                         </div>

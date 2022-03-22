@@ -46,9 +46,9 @@
                                     th:href="@{|/product-detail/*{product.slug}|}" th:text="*{product.name}"></a>
                             </h3>
                             <div class="fs-lg text-accent pt-2">
-                                <span th:text="*{#numbers.formatDecimal(product.getPromotionalPrice(),0,'COMMA',0,'POINT')+'₫'}"></span>
+                                <span th:text="*{#numbers.formatDecimal(product.getPromotionalPrice(),0,'POINT',0,'NONE')+'₫'}"></span>
                                 <del class="fs-sm text-muted">
-                                    <small th:text="*{#numbers.formatDecimal(product.price,0,'COMMA',0,'POINT')+'₫'}"></small>
+                                    <small th:text="*{#numbers.formatDecimal(product.price,0,'POINT',0,'NONE')+'₫'}"></small>
                                 </del>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                     <div class="py-2 px-xl-2">
                         <div class="text-center mb-4 pb-3 border-bottom">
                             <h2 class="h6 mb-3 pb-1" th:text="#{home.shoppingCart.subtotal}"></h2>
-                            <h3 class="fw-normal" th:text="${#numbers.formatDecimal(totalPrice,0,'COMMA',0,'POINT')+'₫'}"></h3>
+                            <h3 class="fw-normal" th:text="${#numbers.formatDecimal(totalPrice,0,'POINT',0,'NONE')+'₫'}"></h3>
                         </div>
                         <a class="btn btn-primary btn-shadow d-block w-100 mt-4" th:href="@{/checkout-detail}"
                            id="checkout-button">

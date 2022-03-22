@@ -12,7 +12,7 @@
             <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
-                        <li class="breadcrumb-item"><a class="text-nowrap" href="/home">
+                        <li class="breadcrumb-item"><a class="text-nowrap" th:href="@{/home}">
                             <i class="ci-home"></i><span th:text="#{global.home}"></span></a>
                         </li>
                         <li class="breadcrumb-item text-nowrap active" aria-current="page"
@@ -116,14 +116,14 @@
                                     </h6>
                                     <div class="widget-product-meta">
                                         <span class="text-accent me-2"
-                                              th:text="*{#numbers.formatDecimal(product.getPromotionalPrice(),0,'COMMA',0,'POINT')+'₫'}">
+                                              th:text="*{#numbers.formatDecimal(product.getPromotionalPrice(),0,'POINT',0,'NONE')+'₫'}">
                                         </span>
                                         <span class="text-muted" th:text="'x '+*{quantity}"></span></div>
                                 </div>
                             </div>
                         </div>
                         <h3 class="fw-normal text-center my-4"
-                            th:text="${#numbers.formatDecimal(totalPrice,0,'COMMA',0,'POINT')+'₫'}">
+                            th:text="${#numbers.formatDecimal(totalPrice,0,'POINT',0,'NONE')+'₫'}">
                         </h3>
                     </div>
                 </div>

@@ -70,7 +70,7 @@
                         </a>
                         <a class="navbar-tool-text" th:href="@{/shopping-cart}" th:if="${totalQuantity != 0}">
                             <small th:text="#{global.my_cart}"></small>
-                            <span th:text="${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 1, 'POINT')} + '₫'"></span>
+                            <span th:text="${#numbers.formatDecimal(totalPrice, 0, 'POINT', 0, 'NONE')} + '₫'"></span>
                         </a>
                         <!-- Cart dropdown-->
                         <div th:if="${productsInCart.size() > 0}" class="dropdown-menu dropdown-menu-end">
@@ -95,7 +95,7 @@
                                                 </h6>
                                                 <div class="widget-product-meta">
                                                         <span class="text-accent me-2">
-                                                            <span th:text="*{#numbers.formatDecimal(product.getPromotionalPrice(), 0, 'COMMA', 1, 'POINT')} + '₫'"></span>
+                                                            <span th:text="*{#numbers.formatDecimal(product.getPromotionalPrice(), 0, 'POINT', 0, 'NONE')} + '₫'"></span>
                                                         </span>
                                                     <span class="text-muted" th:text="'x' + *{quantity}"></span>
                                                 </div>
@@ -108,7 +108,7 @@
                                     <div class="fs-sm me-2 py-2">
                                         <span class="text-muted" th:text="#{global.subtotal} + ':'"></span>
                                         <span class="text-accent fs-base ms-1"
-                                              th:text="${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 1, 'POINT')} + '₫'"></span>
+                                              th:text="${#numbers.formatDecimal(totalPrice, 0, 'POINT', 0, 'NONE')} + '₫'"></span>
                                     </div>
                                 </div>
                                 <div class="btn-group w-100">

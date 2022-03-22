@@ -65,7 +65,7 @@
                                       th:if="*{status == 3}"></span>
                             </td>
                             <td class="py-3"
-                                th:text="*{#numbers.formatDecimal(getTotal(),0,'COMMA',0,'POINT')+'₫'}"></td>
+                                th:text="*{#numbers.formatDecimal(getTotal(),0,'POINT',0,'NONE')+'₫'}"></td>
                             <!-- Order Details Modal-->
                             <div class="modal fade" th:id="'order-details-'+*{id}" style="display: none;"
                                  aria-hidden="true">
@@ -95,7 +95,7 @@
                                                             </a>
                                                         </h3>
                                                         <div class="fs-lg text-accent pt-2"
-                                                             th:text="${#numbers.formatDecimal(orderDetail.product.getPromotionalPrice(),0,'COMMA',0,'POINT')+'₫'}">
+                                                             th:text="${#numbers.formatDecimal(orderDetail.product.getPromotionalPrice(),0,'POINT',0,'NONE')+'₫'}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -105,7 +105,7 @@
                                                 </div>
                                                 <div class="pt-2 ps-sm-3 mx-auto mx-sm-0 text-center">
                                                     <div class="text-muted mb-2" th:text="#{global.subtotal}"></div>
-                                                    <span th:text="${#numbers.formatDecimal(orderDetail.getSubtotal(),0,'COMMA',0,'POINT')+'₫'}"></span>
+                                                    <span th:text="${#numbers.formatDecimal(orderDetail.getSubtotal(),0,'POINT',0,'NONE')+'₫'}"></span>
                                                 </div>
                                             </div>
 
@@ -115,7 +115,7 @@
                                             <div class="px-2 py-1">
                                                 <span class="text-muted" th:text="#{global.total}"></span>
                                                 <span class="fs-lg"
-                                                      th:text="${#numbers.formatDecimal(order.getTotal(),0,'COMMA',0,'POINT')+'₫'}"></span>
+                                                      th:text="${#numbers.formatDecimal(order.getTotal(),0,'POINT',0,'NONE')+'₫'}"></span>
                                             </div>
                                         </div>
                                     </div>

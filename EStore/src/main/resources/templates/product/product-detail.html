@@ -98,21 +98,21 @@
                             <div class="mb-3" th:if="${product.discount != null}"
                                  th:with="money=${product.price - (product.price * product.discount.saleOff / 100)}">
                                 <span class="h3 fw-normal text-accent me-1"
-                                      th:text="${#numbers.formatDecimal(money,0,'COMMA',1,'POINT')}+'₫'"></span>
+                                      th:text="${#numbers.formatDecimal(money,0,'POINT',0,'NONE')}+'₫'"></span>
                                 <del class="text-muted fs-lg me-3"
-                                     th:text="${#numbers.formatDecimal(product.price,0,'COMMA',1,'POINT')}+'₫'"></del>
+                                     th:text="${#numbers.formatDecimal(product.price,0,'POINT',0,'NONE')}+'₫'"></del>
                                 <span class="badge bg-danger badge-shadow align-middle mt-n2">
                                     <span th:if="${#locale.language == 'vi'}"
-                                          th:text="${'Giảm ' + #numbers.formatInteger(product.discount.saleOff, 0, 'POINT') + '%'}">
+                                          th:text="${'Giảm ' + #numbers.formatInteger(product.discount.saleOff, 0, 'NONE') + '%'}">
                                     </span>
                                     <span th:unless="${#locale.language == 'vi'}"
-                                          th:text="${#numbers.formatInteger(product.discount.saleOff, 0, 'POINT') + '% OFF'}">
+                                          th:text="${#numbers.formatInteger(product.discount.saleOff, 0, 'NONE') + '% OFF'}">
                                     </span>
                                 </span>
                             </div>
                             <div class="mb-3" th:unless="${product.discount != null}">
                                  <span class="h3 fw-normal text-accent me-1"
-                                       th:text="${#numbers.formatDecimal(product.price,0,'COMMA',1,'POINT')}+'₫'">
+                                       th:text="${#numbers.formatDecimal(product.price,0,'POINT',1,'NONE')}+'₫'">
                                  </span>
                             </div>
                             <div class="mb-3 flex-grow-1">
@@ -169,10 +169,10 @@
                 <div class="card product-card" th:each="product:${discountProducts}" th:object="${product}">
                     <span class="badge bg-danger badge-shadow">
                         <span th:if="${#locale.language == 'vi'}"
-                              th:text="*{'Giảm ' + #numbers.formatInteger(discount.saleOff, 0, 'POINT') + '%'}">
+                              th:text="*{'Giảm ' + #numbers.formatInteger(discount.saleOff, 0, 'NONE') + '%'}">
                         </span>
                         <span th:unless="${#locale.language == 'vi'}"
-                              th:text="*{#numbers.formatInteger(discount.saleOff, 0, 'POINT') + '% OFF'}">
+                              th:text="*{#numbers.formatInteger(discount.saleOff, 0, 'NONE') + '% OFF'}">
                         </span>
                     </span>
                     <div class="square-size-by-length d-flex align-items-center">
@@ -190,9 +190,9 @@
                         <div class="d-flex justify-content-between">
                             <div class="product-price">
                                 <span class="text-accent"
-                                      th:text="*{#numbers.formatDecimal(getPromotionalPrice(),0,'COMMA',1,'POINT')+'₫'}"></span>
+                                      th:text="*{#numbers.formatDecimal(getPromotionalPrice(),0,'POINT',0,'NONE')+'₫'}"></span>
                                 <del class="fs-sm text-muted">
-                                    <small th:text="*{#numbers.formatDecimal(price,0,'COMMA',1,'POINT')+'₫'}"></small>
+                                    <small th:text="*{#numbers.formatDecimal(price,0,'POINT',0,'NONE')+'₫'}"></small>
                                 </del>
                             </div>
                         </div>
