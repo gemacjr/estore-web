@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +64,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public void createOrder(String fullname, String email, String address, String phoneNumber) {
         User user = userRepo.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -46,6 +47,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
+    @Transactional
     public Discount saveDiscount(DiscountDTO discountDTO) {
         Discount discount = null;
         if (discountDTO.getId() == null) {
@@ -64,6 +66,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
+    @Transactional
     public void deleteDiscount(Integer id) {
         Discount discount = discountRepository.findById(id).get();
         discount.setIsActive(false);

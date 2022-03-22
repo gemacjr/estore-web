@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public ShoppingCart addProductToCart(Integer productId, Integer quantity) {
         User user = userRepo.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         Product product = productRepo.getById(productId);
@@ -51,11 +53,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public void deleteProductFromCart(Integer cartId) {
         cartRepo.delete(cartRepo.getById(cartId));
     }
 
     @Override
+    @Transactional
     public ShoppingCart updateProductInCart(Integer cartId, Integer quantity) {
         ShoppingCart cart = cartRepo.getById(cartId);
         cart.setQuantity(quantity);

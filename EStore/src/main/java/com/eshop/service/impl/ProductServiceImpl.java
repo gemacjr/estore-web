@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -80,11 +81,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void remove(String slug) {
         productRepo.delete(productRepo.findBySlug(slug));
     }
 
     @Override
+    @Transactional
     public ProductToSave save(ProductToSave productToSave) {
         Product product = MapperUtils.map(productToSave, Product.class);
         product.setCategory(categoryRepository.getById(Integer.parseInt(productToSave.getCategoryId())));

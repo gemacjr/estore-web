@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.servlet.ServletContext;
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -130,6 +131,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User register(Register register) throws UserAlreadyExistException, MessagingException {
         if (existsByEmail(register.getEmail())) {
             throw new UserAlreadyExistException("There is an account with that email address: " + register.getEmail());
@@ -170,6 +172,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public String verifyRegistrationWithToken(String verificationToken, Locale locale) {
         User user = userRepository.findByVerificationTokenToken(verificationToken);
         if (!verificationToken.contains("register") || user == null) {
@@ -212,6 +215,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void updatePasswordWithToken(String token, String newPassword) {
         User user = userRepository.findByVerificationTokenToken(token);
         user.setPassword(passwordEncoder.encode(newPassword));
@@ -220,12 +224,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User changePassword(User user, String newPassword) {
         user.setPassword(passwordEncoder.encode(newPassword));
         return userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public User updateProfile(User user, Profile profile) {
         user.setFullname(profile.getFullname());
         user.setAddress(profile.getAddress());
@@ -237,6 +243,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User save(UserDTO userDTO) {
         User user = null;
         if (userDTO.getId() == null) {
@@ -267,6 +274,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void delete(Integer id) {
         userRepository.deleteById(id);
     }

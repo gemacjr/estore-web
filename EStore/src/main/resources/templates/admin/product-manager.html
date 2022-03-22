@@ -108,7 +108,7 @@
                             <select class="form-select" id="unp-discount" name="discountId">
                                 <option value="" th:text="#{global.no_promotion}"></option>
                                 <option th:each="discount:${discounts}" th:value="${discount.id}"
-                                        th:text="${#numbers.formatInteger(discount.saleOff,0,'COMMA')+'%'}">
+                                        th:text="${#numbers.formatInteger(discount.saleOff,0,'NONE')+'%'}">
                                 </option>
                             </select>
                         </div>
@@ -283,9 +283,9 @@
                                    th:text="#{global.promotion}"></label>
                             <select class="form-select" th:id="'unp-discount-'+*{id}" name="discountId">
                                 <option value="" th:text="#{global.no_promotion}"></option>
-                                <option th:each="discount:${discounts}"
+                                <option th:each="discount:${discounts}" th:value="${discount.id}"
                                         th:selected="${discount.id == (product.discount == null ? '' : product.discount.id)}"
-                                        th:text="${#numbers.formatInteger(discount.saleOff,0,'COMMA')+'%'}"></option>
+                                        th:text="${#numbers.formatInteger(discount.saleOff,0,'NONE')+'%'}"></option>
                             </select>
                         </div>
                         <div class="mb-3 pb-2">
@@ -329,9 +329,9 @@
                                        th:text="#{admin.productPage.productPrice}"></label>
                                 <div class="input-group"><span class="input-group-text"><i
                                         class="fa-solid fa-money-bill-simple"></i></span>
-                                    <input class="form-control number-input" type="number" name="price"
+                                    <input class="form-control number-input" type="text" name="price"
                                            th:id="'unp-product-price-'+*{id}"
-                                           th:value="*{#numbers.formatDecimal(price,0,'COMMA',0,'POINT')}"
+                                           th:value="*{#numbers.formatDecimal(price,0,'NONE',0,'NONE')}"
                                            th:required="*{available==0}">
                                 </div>
                             </div>
@@ -376,6 +376,59 @@
                         class="fs-2 fa-regular fa-circle-plus"></i></a>
             </div>
         </div>
+    </div>
+    <!-- Color borders on tables -->
+    <div class="table-responsive">
+        <table class="table" id="product-table">
+            <thead>
+            <tr>
+                <th th:text="#{global.photo}"></th>
+                <th th:text="#{global.name}"></th>
+                <th th:text="#{global.brand}"></th>
+                <th class="text-center" th:text="#{global.quantity}"></th>
+                <th class="text-center" th:text="#{global.price}"></th>
+                <th class="text-center" th:text="#{global.status}"></th>
+                <th class="text-center" th:text="#{global.promotion}"></th>
+                <th class="text-center"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product:${products}" th:object="${product}">
+                <td class="align-middle">
+                    <img class="img-fluid" th:src="@{|*{image}|}" th:alt="*{name}" style="width: 100px; height: 100px"/>
+                </td>
+                <td class="align-middle">
+                    <a class="link-primary" th:href="@{|/product-detail/*{slug}|}" th:text="*{name}"></a>
+                </td>
+                <td class="align-middle text-center" th:text="*{brand.name}"></td>
+                <td class="align-middle text-center" th:text="*{quantity}"></td>
+                <td class="align-middle text-center"
+                    th:text="*{#numbers.formatDecimal(price,0,'POINT',0,'NONE')+'₫'}"></td>
+                <td class="align-middle text-center fs-lg">
+                    <span th:if="*{available==0}" th:text="#{global.in_stock}" class="badge bg-success"></span>
+                    <span th:if="*{available==1}" th:text="#{global.out_of_stock}" class="badge bg-warning"></span>
+                    <span th:if="*{available==2}" th:text="#{global.sold_out}" class="badge bg-danger"></span>
+                </td>
+                <td class="align-middle text-center fs-lg">
+                    <span class="badge bg-danger rounded-pill" th:if="*{discount != null}"
+                        th:text="*{#numbers.formatInteger(discount.saleOff,0,'NONE')+'%'}">
+                    </span>
+                </td>
+                <td class="align-middle text-center fs-5">
+                    <div class="d-flex justify-content-center">
+                        <a class="btn bg-faded-accent btn-icon me-2" href="javascript:void(0)" data-bs-toggle="modal"
+                            th:attr="data-bs-target='#productDetailModal'+*{id}">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </a>
+                        <a class="btn bg-faded-danger btn-icon" href="javascript:void(0)"
+                           th:onclick="removeProduct([[${product.slug}]])">
+                            <i class="fa-regular fa-circle-minus"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>
