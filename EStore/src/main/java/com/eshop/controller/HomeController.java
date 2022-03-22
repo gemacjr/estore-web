@@ -42,11 +42,6 @@ public class HomeController {
         return "redirect:/home";
     }
 
-    @RequestMapping("/test")
-    public String showTestPage(Model model) {
-        return "/home/index";
-    }
-
     @RequestMapping("/home")
     public String showHomePage(Model model, @RequestParam("p") Optional<Integer> p) {
         int page = p.orElse(0);
