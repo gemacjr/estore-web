@@ -1,9 +1,12 @@
 package com.eshop.controller.admin;
 
-import java.text.ParseException;
-import java.util.List;
-import java.util.Optional;
-
+import com.eshop.dto.*;
+import com.eshop.entity.Brand;
+import com.eshop.entity.Discount;
+import com.eshop.entity.Product;
+import com.eshop.entity.User;
+import com.eshop.service.*;
+import com.eshop.utils.MapperUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,22 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.eshop.dto.BrandDTO;
-import com.eshop.dto.CategoryDTO;
-import com.eshop.dto.OrderDTO;
-import com.eshop.dto.OrderReport;
-import com.eshop.dto.SaleReport;
-import com.eshop.entity.Brand;
-import com.eshop.entity.Discount;
-import com.eshop.entity.Product;
-import com.eshop.entity.User;
-import com.eshop.service.BrandService;
-import com.eshop.service.CategoryService;
-import com.eshop.service.DiscountService;
-import com.eshop.service.OrderService;
-import com.eshop.service.ProductService;
-import com.eshop.service.UserService;
-import com.eshop.utils.MapperUtils;
+import java.text.ParseException;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/dashboard")
@@ -98,7 +88,7 @@ public class AdminController {
         if (brand.isPresent()) {
             String brandSlug = brand.get();
             categoryList = MapperUtils.mapAll(categoryService.getByBrand(brandSlug), CategoryDTO.class);
-            model.addAttribute("brandSlug", brandSlug);
+            model.addAttribute("brandSlugSelected", brandSlug);
         } else {
             categoryList = MapperUtils.mapAll(categoryService.getAll(), CategoryDTO.class);
         }

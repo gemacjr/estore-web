@@ -7,6 +7,160 @@
 </head>
 <body>
 <div id="content">
+    <h2 class="h3 py-2 text-center text-sm-start" th:text="#{admin.report.summaryStatistics}"></h2>
+    <div class="row mx-n2 pt-2">
+        <div class="col-md-4 col-sm-6 px-2 mb-4">
+            <div class="bg-secondary h-100 rounded-3 p-4 text-center">
+                <h3 class="fs-sm text-muted" th:text="#{admin.report.totalProducts}"></h3>
+                <p class="h2 mb-2" th:text="${products.size()}"></p>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 px-2 mb-4">
+            <div class="bg-secondary h-100 rounded-3 p-4 text-center">
+                <h3 class="fs-sm text-muted" th:text="#{admin.report.totalOrders}"></h3>
+                <p class="h2 mb-2" th:text="${orders.size()}"></p>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12 px-2 mb-4">
+            <div class="bg-secondary h-100 rounded-3 p-4 text-center">
+                <h3 class="fs-sm text-muted" th:text="#{admin.report.totalRevenue}+' (VND)'">
+                </h3>
+                <p class="h2 mb-2" th:text="${#numbers.formatDecimal(revenue,0,'COMMA',0,'POINT')}"></p>
+            </div>
+        </div>
+    </div>
+    <!-- Masonry grid -->
+    <div class="masonry-grid" data-columns="2">
+        <!-- Item -->
+        <div class="masonry-grid-item">
+            <div class="card border-accent">
+                <div class="card-body fs-sm">
+                    <div class="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom border-accent">
+                        <h3 class="fs-sm m-0" th:text="#{admin.report.inventoryByCategory}"></h3>
+                        <div class="d-flex flex-nowrap align-items-center">
+                            <label class="form-label fw-normal text-nowrap mb-0 me-2"
+                                   for="select-brand" th:text="#{global.brand}"></label>
+                            <select class="form-select form-select-sm" id="select-brand"
+                                    name="brandId">
+                                <option value="default" th:text="#{global.all}"></option>
+                                <option th:each="brand:${brands}"
+                                        th:value="${brand.slug}"
+                                        th:selected="${brand.slug == brandSlugSelected}"
+                                        th:text="${brand.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="table table-accent table-bordered border-accent" id="inventory-by-category-table">
+                        <thead>
+                        <tr>
+                            <th th:text="#{global.name}"></th>
+                            <th class="text-center" th:text="#{global.totalPrice}+' (VND)'"></th>
+                            <th class="text-center" th:text="#{admin.report.productNumber}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="category:${categoryList}" th:object="${category}">
+                            <td th:text="${#locale.language=='vi'}?*{nameVI}:*{nameEN}"></td>
+                            <td class="text-center"
+                                th:text="*{#numbers.formatDecimal(getTotalPrice(),0,'COMMA',0,'POINT')}"></td>
+                            <td class="text-center" th:text="*{products.size()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Item -->
+        <div class="masonry-grid-item">
+            <div class="card border-info">
+                <div class="card-body fs-sm">
+                    <div class="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom border-accent">
+                        <h3 class="fs-sm m-0" th:text="#{admin.report.sales}"></h3>
+                        <!-- Date range -->
+                        <div class="input-group ms-2" style="max-width: 350px">
+                        <span class="input-group-text">
+                            <i class="fa-duotone fa-calendar"></i>
+                        </span>
+                            <input th:unless="${#strings.isEmpty(period)}" class="form-control form-control-sm"
+                                   type="text" id="range-date"
+                                   th:placeholder="${period}">
+                            <input th:if="${#strings.isEmpty(period)}" class="form-control form-control-sm" type="text"
+                                   id="range-date"
+                                   th:placeholder="#{admin.report.chooseATimePeriod}">
+                        </div>
+                    </div>
+                    <table class="table table-info table-bordered border-info" id="sale-report-table">
+                        <thead>
+                        <tr>
+                            <th th:text="#{admin.report.productType}"></th>
+                            <th class="text-center" th:text="#{admin.report.revenue}"></th>
+                            <th class="text-center" th:text="#{global.quantity}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="saleReport:${saleReports}" th:object="${saleReport}">
+                            <td th:text="*{#locale.language=='vi'}?*{category.nameVI}:*{category.nameEN}"></td>
+                            <td class="text-center"
+                                th:text="*{#numbers.formatDecimal(revenue,0,'COMMA',0,'POINT')}">
+                            </td>
+                            <td class="text-center" th:text="*{quantity}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Item -->
+        <div class="masonry-grid-item">
+            <div class="card border-danger">
+                <div class="card-body fs-sm">
+                    <div class="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom border-danger">
+                        <h3 class="fs-sm m-0" th:text="#{global.order}"></h3>
+                    </div>
+                    <table class="table table-danger table-bordered border-danger"> <!-- id="order-statistics-table" -->
+                        <thead>
+                        <tr>
+                            <th th:text="#{global.status}"></th>
+                            <th class="text-center" th:text="#{global.quantity}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="order:${inventoryByOrders}" th:object="${order}" th:switch="${order.status}">
+                            <tr th:case="0" class="table-accent">
+                                <td>
+                                    <span class="badge fs-ms rounded-pill bg-info m-0"
+                                          th:text="#{global.in_progress}"></span>
+                                </td>
+                                <td class="text-center" th:text="*{quantity}"></td>
+                            </tr>
+                            <tr th:case="1" class="table-success">
+                                <td>
+                                    <span class="badge fs-ms rounded-pill bg-success m-0"
+                                          th:text="#{global.delivered}"></span>
+                                </td>
+                                <td class="text-center" th:text="*{quantity}"></td>
+                            </tr>
+                            <tr th:case="2" class="table-warning">
+                                <td>
+                                    <span class="badge fs-ms rounded-pill bg-warning m-0"
+                                          th:text="#{global.delayed}"></span>
+                                </td>
+                                <td class="text-center" th:text="*{quantity}"></td>
+                            </tr>
+                            <tr th:case="3" class="table-danger">
+                                <td>
+                                    <span class="badge fs-ms rounded-pill bg-danger m-0"
+                                          th:text="#{global.canceled}"></span>
+                                </td>
+                                <td class="text-center" th:text="*{quantity}"></td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
