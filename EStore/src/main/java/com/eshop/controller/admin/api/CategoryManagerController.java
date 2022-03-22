@@ -1,4 +1,4 @@
-package com.eshop.controller.admin;
+package com.eshop.controller.admin.api;
 
 import com.eshop.dto.CategoryDTO;
 import com.eshop.entity.Category;

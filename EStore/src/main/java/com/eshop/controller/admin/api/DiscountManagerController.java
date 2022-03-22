@@ -1,4 +1,4 @@
-package com.eshop.controller.admin;
+package com.eshop.controller.admin.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

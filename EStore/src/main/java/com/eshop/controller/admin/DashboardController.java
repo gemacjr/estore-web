@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/dashboard")
-public class AdminController {
+public class DashboardController {
     @Autowired
     private UserService userService;
     @Autowired

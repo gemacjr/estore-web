@@ -1,4 +1,4 @@
-package com.eshop.controller.admin;
+package com.eshop.controller.admin.api;
 
 import com.eshop.dto.UserDTO;
 import com.eshop.entity.User;
