@@ -49,7 +49,6 @@ public class AdminController {
     public String showBrandManager(Model model) {
         List<Brand> brands = brandService.getAll();
         model.addAttribute("brands", brands);
-        model.addAttribute("stt", 0);
         return "admin/brand-manager";
     }
 
