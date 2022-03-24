@@ -45,9 +45,8 @@ public class HomeController {
     @RequestMapping("/home")
     public String showHomePage(Model model, @RequestParam("p") Optional<Integer> p) {
         int page = p.orElse(0);
-        int size = 4;
+        int size = 8;
 
-        //List<ProductDTO> discountProducts = MapperUtils.mapAll(productService.getPromotionalProducts(), ProductDTO.class);
         Page<ProductDTO> discountProducts = productService.getPromotionalProducts(page, size);
 
         model.addAttribute("discountProducts", discountProducts);

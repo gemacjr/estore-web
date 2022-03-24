@@ -51,8 +51,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<ProductDTO> getPromotionalProducts(int page, int size) {
         Page<Product> products = productRepo.findByDiscountNotNull(PageRequest.of(page, size));
-        Page<ProductDTO> productDTOs = MapperUtils.mapAll(products, ProductDTO.class);
-        return productDTOs;
+        if (products.getTotalElements() == 0) {
+            products = productRepo.findTop4ByOrderByCreatedDateDesc(PageRequest.of(page, size));
+            System.out.println(products.getTotalElements());
+        }
+        return MapperUtils.mapAll(products, ProductDTO.class);
     }
 
     @Override
