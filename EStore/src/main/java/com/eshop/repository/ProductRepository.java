@@ -10,7 +10,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByDiscountNotNull();
     Page<Product> findByDiscountNotNull(Pageable pageable);
-    Page<Product> findTop4ByOrderByCreatedDateDesc(Pageable pageable);
+    List<Product> findTop8ByOrderByCreatedDateDesc();
     List<Product> findByNameContainingAllIgnoreCase(String name);
     List<Product> findByCategorySlugAndBrandSlug(String slug, String brand);
     Page<Product> findByCategorySlugAndBrandSlug(String slug, String brand, Pageable pageable);

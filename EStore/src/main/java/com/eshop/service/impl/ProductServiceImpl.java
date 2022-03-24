@@ -12,6 +12,7 @@ import com.eshop.utils.MapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -45,15 +46,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getPromotionalProducts() {
-        return productRepo.findByDiscountNotNull();
+        List<Product> products = productRepo.findByDiscountNotNull();
+        if (products.size() == 0) {
+            products = productRepo.findTop8ByOrderByCreatedDateDesc();
+        }
+        return products;
     }
 
     @Override
     public Page<ProductDTO> getPromotionalProducts(int page, int size) {
         Page<Product> products = productRepo.findByDiscountNotNull(PageRequest.of(page, size));
         if (products.getTotalElements() == 0) {
-            products = productRepo.findTop4ByOrderByCreatedDateDesc(PageRequest.of(page, size));
-            System.out.println(products.getTotalElements());
+            List<Product> lstProduct = productRepo.findTop8ByOrderByCreatedDateDesc();
+            products = new PageImpl<Product>(lstProduct, PageRequest.of(page, size), lstProduct.size());
         }
         return MapperUtils.mapAll(products, ProductDTO.class);
     }
