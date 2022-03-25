@@ -83,13 +83,13 @@ public class UserController {
 
     @GetMapping("/forgot-password")
     public String showForgotPasswordPage(@ModelAttribute("forgotPass") ForgotPass forgotPass) {
-        return "user/forgot-password";
+        return "user/forgot_password";
     }
 
     @PostMapping("/forgot-password")
     public String processForgotPassword(@ModelAttribute("forgotPass") @Valid ForgotPass forgotPass, Errors errors, Model model) {
         if (errors.hasErrors()) {
-            return "user/forgot-password";
+            return "user/forgot_password";
         }
         try {
             userService.sendTokenResetPassword(forgotPass.getEmail());
@@ -110,7 +110,7 @@ public class UserController {
             String message = messages.getMessage("Auth.verificationToken.failed", null, localeResolver.resolveLocale(request));
             model.addAttribute("error", message);
         }
-        return "user/reset-password";
+        return "user/reset_password";
     }
 
     @PostMapping("/reset-password")
@@ -137,7 +137,7 @@ public class UserController {
     @GetMapping("/change-password")
     @PreAuthorize("isAuthenticated()")
     public String showChangePasswordPage(@ModelAttribute("changePass") ChangePass changePass, Model model) {
-        return "user/change-password";
+        return "user/change_password";
     }
 
     @PostMapping("/change-password")
@@ -158,7 +158,7 @@ public class UserController {
             String message = messages.getMessage("Auth.changePass.failed", null, localeResolver.resolveLocale(request));
             model.addAttribute("failed", message);
         }
-        return "user/change-password";
+        return "user/change_password";
     }
 
     @GetMapping("/user-profile")
@@ -188,7 +188,7 @@ public class UserController {
             String message = messages.getMessage("Auth.updateProfile.failed", null, localeResolver.resolveLocale(request));
             model.addAttribute("failed", message);
         }
-        return "user/profile-info";
+        return "user/profile_info";
     }
 
 }

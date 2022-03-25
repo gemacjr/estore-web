@@ -31,20 +31,20 @@ public class CartController {
 
     @RequestMapping("/shopping-cart")
     public String showShoppingCartPage(Model model) {
-        return "cart/shopping-cart";
+        return "cart/shopping_cart";
     }
 
     @RequestMapping("/checkout-detail")
     public String showCheckoutDetailPage(Model model) {
         User user = userService.getCurrentUser();
         model.addAttribute("user", user);
-        return "cart/checkout-detail";
+        return "cart/checkout_detail";
     }
 
     @GetMapping("/order-history")
     public String showOrderHistoryPage(Model model) {
         List<OrderDTO> orders = MapperUtils.mapAll(orderService.getByUser(), OrderDTO.class);
         model.addAttribute("orders", orders);
-        return "cart/order-history";
+        return "cart/order_history";
     }
 }
