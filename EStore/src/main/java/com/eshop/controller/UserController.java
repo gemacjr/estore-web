@@ -100,7 +100,7 @@ public class UserController {
             model.addAttribute("error", ex.getMessage());
         }
 
-        return "user/forgot-password";
+        return "user/forgot_password";
     }
 
     @GetMapping("/reset-password")
@@ -120,7 +120,7 @@ public class UserController {
                 String message = messages.getMessage(Objects.requireNonNull(error.getCode()), null, localeResolver.resolveLocale(request));
                 model.addAttribute(error.getCode(), message);
             });
-            return "user/reset-password";
+            return "user/reset_password";
         }
         if (userService.tokenValidation(resetPass.getToken())) {
             String message = messages.getMessage("Auth.verificationToken.failed", null, localeResolver.resolveLocale(request));
@@ -147,7 +147,7 @@ public class UserController {
                 String message = messages.getMessage(Objects.requireNonNull(error.getCode()), null, localeResolver.resolveLocale(request));
                 model.addAttribute(error.getCode(), message);
             });
-            return "user/change-password";
+            return "user/change_password";
         }
         User user = userService.getCurrentUser();
         User result = userService.changePassword(user, changePass.getNewPassword());
@@ -167,7 +167,7 @@ public class UserController {
         User user = userService.getCurrentUser();
         profile = mapper.map(user, Profile.class);
         model.addAttribute("profile", profile);
-        return "user/profile-info";
+        return "user/profile_info";
     }
 
     @PostMapping("/user-profile")
@@ -176,7 +176,7 @@ public class UserController {
 
         if (errors.hasErrors()) {
             model.addAttribute("profile", profile);
-            return "user/profile-info";
+            return "user/profile_info";
         }
         User result = userService.updateProfile(user, profile);
         if (result != null) {
