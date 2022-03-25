@@ -54,7 +54,7 @@ function addToCart(productId) {
     }
     let quantity = $('#select-quantity').val();
     $.ajax({
-        url: baseUrl + '/shopping-cart/add/' + productId,
+        url: baseUrl + '/api/shopping-cart/add/' + productId,
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
@@ -84,7 +84,7 @@ function addToCart(productId) {
 /* Remove product of cart */
 function removeForCart(productId) {
     $.ajax({
-        url: baseUrl + '/shopping-cart/delete/' + productId,
+        url: baseUrl + '/api/shopping-cart/delete/' + productId,
         type: 'DELETE',
         success: function () {
             location.reload();
@@ -95,7 +95,7 @@ function removeForCart(productId) {
 /* Update quantity product of cart */
 function updateQuantity(id, quantity) {
     $.ajax({
-        url: baseUrl + '/shopping-cart/update/' + id,
+        url: baseUrl + '/api/shopping-cart/update/' + id,
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({
