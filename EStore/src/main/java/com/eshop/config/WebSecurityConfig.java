@@ -86,7 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout()
 				.deleteCookies("JSESSIONID")
     			.permitAll();
-        http.exceptionHandling().accessDeniedPage("/error/403");
+        http.exceptionHandling().accessDeniedPage("/error/forbidden");
         http.rememberMe()
     	        .key("uniqueAndSecret")
     	        .tokenRepository(persistentTokenRepository())
