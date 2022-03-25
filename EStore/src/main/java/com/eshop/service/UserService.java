@@ -1,7 +1,7 @@
 package com.eshop.service;
 
-import com.eshop.custom.exception.UserAlreadyExistException;
-import com.eshop.custom.exception.UserNotFoundException;
+import com.eshop.customer.exception.UserAlreadyExistException;
+import com.eshop.customer.exception.UserNotFoundException;
 import com.eshop.dto.UserDTO;
 import com.eshop.dto.account.Profile;
 import com.eshop.dto.account.Register;

@@ -1,7 +1,7 @@
 package com.eshop.dto.account;
 
-import com.eshop.custom.validator.annotation.ExistsEmail;
-import com.eshop.custom.validator.annotation.ValidEmail;
+import com.eshop.customer.validator.annotation.ExistsEmail;
+import com.eshop.customer.validator.annotation.ValidEmail;
 import lombok.Getter;
 import lombok.Setter;
 

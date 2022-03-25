@@ -1,8 +1,8 @@
 package com.eshop.dto.account;
 
-import com.eshop.custom.validator.annotation.ExistsPassword;
-import com.eshop.custom.validator.annotation.NotExistsPassword;
-import com.eshop.custom.validator.annotation.PasswordMatches;
+import com.eshop.customer.validator.annotation.ExistsPassword;
+import com.eshop.customer.validator.annotation.NotExistsPassword;
+import com.eshop.customer.validator.annotation.PasswordMatches;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

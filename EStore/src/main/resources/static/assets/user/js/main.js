@@ -1,17 +1,16 @@
-let lang = $('#lang').val();
+let lang = document.getElementById('lang').value;
 let baseUrl = window.location.origin;
-let isLogin = $("#isLogin").val();
+let isLogin = document.getElementById('isLogin').value;
 
 // Change the language
-$("a[href*=lang]").on("click", function () {
-    let param = $(this).attr("href");
-    $.ajax({
-        url: "/home" + param,
-        success: function () {
-            location.reload();
-        }
+document.querySelectorAll('a[href*=lang]').forEach(function (element) {
+    element.addEventListener('click', function (event) {
+        event.preventDefault();
+        let param = element.getAttribute('href');
+        fetch(baseUrl + param).then(function (response) {
+            window.location.reload();
+        });
     });
-    return false;
 });
 
 // Add novalidate form

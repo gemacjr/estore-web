@@ -1,8 +1,8 @@
 package com.eshop.config;
 
-import com.eshop.custom.CustomAuthenticationFailureHandler;
-import com.eshop.custom.CustomLoginSuccessHandler;
-import com.eshop.custom.CustomerUserDetailService;
+import com.eshop.customer.CustomerAuthenticationFailureHandler;
+import com.eshop.customer.CustomerLoginSuccessHandler;
+import com.eshop.customer.CustomerUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Bean
     public AuthenticationSuccessHandler successHandler() {
-        return new CustomLoginSuccessHandler("/home");
+        return new CustomerLoginSuccessHandler("/home");
     }
     
     @Bean
@@ -63,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
+        return new CustomerAuthenticationFailureHandler();
     }
 
     @Override
