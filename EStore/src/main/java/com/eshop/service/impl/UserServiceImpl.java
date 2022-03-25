@@ -158,7 +158,7 @@ public class UserServiceImpl implements UserService {
         String subject = "Welcome to EShop";
         String body = "";
         try {
-            Resource resource = resourceLoader.getResource("classpath:templates/register.html");
+            Resource resource = resourceLoader.getResource("classpath:templates/user/email_register_success.html");
             Reader reader = new InputStreamReader(resource.getInputStream());
             body = FileCopyUtils.copyToString(reader)
                     .replace("${name}", register.getFullname())
