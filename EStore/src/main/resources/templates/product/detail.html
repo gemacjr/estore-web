@@ -146,7 +146,7 @@
                                             <option value="5">5</option>
                                         </select>
                                         <button class="btn btn-primary btn-shadow d-block w-100" type="button"
-                                                th:onclick="addToCart([[${product.id}]])">
+                                                th:onclick="'addToCart([[${product.id}]])'">
                                             <i class="ci-cart fs-lg me-2"></i>
                                             <span th:text="#{global.add_to_cart}"></span>
                                         </button>
@@ -199,7 +199,7 @@
                     </div>
                     <div class="card-body card-body-hidden">
                         <button class="btn btn-primary btn-sm d-block w-100 mb-2" type="button"
-                                th:onclick="addToCart([[*{id}]])">
+                                th:onclick="'addToCart([[*{id}]])'">
                             <i class="ci-cart fs-sm me-1"></i>
                             <span th:text="#{global.add_to_cart}"></span>
                         </button>

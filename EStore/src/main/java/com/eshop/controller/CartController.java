@@ -1,67 +1,50 @@
 package com.eshop.controller;
 
-import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.eshop.dto.OrderDTO;
+import com.eshop.entity.User;
+import com.eshop.service.CartService;
+import com.eshop.service.OrderService;
+import com.eshop.service.UserService;
+import com.eshop.utils.MapperUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.eshop.entity.ShoppingCart;
-import com.eshop.service.CartService;
-import com.eshop.utils.MessageUtils;
+import java.util.List;
 
-@RestController
-@CrossOrigin("*")
-@RequestMapping("/shopping-cart")
+@Controller
 public class CartController {
     @Autowired
     CartService cartService;
+
+    @Autowired
+    OrderService orderService;
+
+    @Autowired
+    UserService userService;
+
     @Autowired
     ModelMapper mapper;
-    @Autowired
-    MessageUtils messageUtils;
 
-    @SuppressWarnings("rawtypes")
-	@PostMapping("/add/{productId}")
-    public ResponseEntity addToCart(@PathVariable("productId") Integer productId, @RequestBody Map<String, Object> data,
-                                    Principal principal) {
-        Map<String, Object> response = new HashMap<>();
-
-        ShoppingCart result = cartService.addProductToCart(productId, Integer.parseInt(data.get("quantity").toString()));
-        if (result == null) {
-            String message = messageUtils.getMessage("ShoppingCart.addToCart.failed");
-            response.put("status", "failed");
-            response.put("message", message);
-            return ResponseEntity.badRequest().body(response);
-        } else {
-            String message = messageUtils.getMessage("ShoppingCart.addToCart.success");
-            response.put("status", "success");
-            response.put("message", message);
-            return ResponseEntity.ok().body(response);
-        }
+    @RequestMapping("/shopping-cart")
+    public String showShoppingCartPage(Model model) {
+        return "cart/shopping-cart";
     }
 
-    @SuppressWarnings("rawtypes")
-	@PutMapping("/update/{id}")
-    public ResponseEntity updateCart(@PathVariable("id") Integer cartId, @RequestBody Map<String, Object> data) {
-        ShoppingCart result = cartService.updateProductInCart(cartId, Integer.parseInt(data.get("quantity").toString()));
-        return result == null ? ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
+    @RequestMapping("/checkout-detail")
+    public String showCheckoutDetailPage(Model model) {
+        User user = userService.getCurrentUser();
+        model.addAttribute("user", user);
+        return "cart/checkout-detail";
     }
 
-    @SuppressWarnings("rawtypes")
-	@DeleteMapping("/delete/{id}")
-    public ResponseEntity deleteProductOfCart(@PathVariable("id") Integer id) {
-        cartService.deleteProductFromCart(id);
-        return ResponseEntity.ok().build();
+    @GetMapping("/order-history")
+    public String showOrderHistoryPage(Model model) {
+        List<OrderDTO> orders = MapperUtils.mapAll(orderService.getByUser(), OrderDTO.class);
+        model.addAttribute("orders", orders);
+        return "cart/order-history";
     }
 }

@@ -58,7 +58,7 @@ public class ProductController {
         model.addAttribute("productPage", productPage);
         model.addAttribute("category", MapperUtils.map(categoryService.getBySlug(categorySlug), CategoryDTO.class));
         model.addAttribute("brands", MapperUtils.mapAll(brandService.getByCategory(categorySlug), BrandDTO.class));
-        return "product/product-list";
+        return "product/list";
     }
 
     @RequestMapping("/product-search")
@@ -69,7 +69,7 @@ public class ProductController {
         List<ProductDTO> products = MapperUtils.mapAll(productService.getByProduct(kw), ProductDTO.class);
         model.addAttribute("products", products);
         model.addAttribute("keyword", kw);
-        return "product/product-search";
+        return "product/search";
     }
 
     @RequestMapping("/product-detail/{productSlug}")
@@ -80,6 +80,6 @@ public class ProductController {
         model.addAttribute("discountProducts", MapperUtils.mapAll(productService.getPromotionalProducts(), ProductDTO.class));
         ProductDTO product = MapperUtils.map(productService.getProduct(productSlug), ProductDTO.class);
         model.addAttribute("product", product);
-        return "product/product-detail";
+        return "product/detail";
     }
 }
