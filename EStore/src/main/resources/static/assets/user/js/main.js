@@ -1,6 +1,6 @@
 let lang = $('#lang').val();
 let baseUrl = window.location.origin;
-let isLogin = $(#isLogin).val();
+let isLogin = $('#isLogin').val();
 
 // Change the language
 $("a[href*=lang]").on("click", function () {
