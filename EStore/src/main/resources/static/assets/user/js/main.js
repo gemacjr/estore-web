@@ -1,27 +1,26 @@
-let lang = document.getElementById('lang').value;
+let lang = $('#lang').val();
 let baseUrl = window.location.origin;
-let isLogin = document.getElementById('isLogin').value;
+let isLogin = $(#isLogin).val();
 
 // Change the language
-document.querySelectorAll('a[href*=lang]').forEach(function (element) {
-    element.addEventListener('click', function (event) {
-        event.preventDefault();
-        let param = element.getAttribute('href');
-        axios.get(baseUrl + param).then(function (response) {
+$("a[href*=lang]").on("click", function () {
+    let param = $(this).attr("href");
+    $.ajax({
+        url: "/home" + param,
+        success: function () {
             location.reload();
-        });
+        }
     });
+    return false;
 });
 
 // Add novalidate form
-document.querySelectorAll('.needs-validation').forEach(function (element) {
-    element.setAttribute('novalidate', true);
-});
+$(".needs-validation").attr("novalidate", true);
 
 // Validate Search Input Submit
-document.getElementById('search-form').addEventListener('submit', function (event) {
-    if (document.getElementById('search-input').value.trim().length === 0) {
-        event.preventDefault();
+$("#search-form").submit(function () {
+    if ($("#search-input").val().trim().length === 0) {
+        return false;
     }
 });
 
