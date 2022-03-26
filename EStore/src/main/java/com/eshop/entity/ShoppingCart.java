@@ -1,12 +1,13 @@
 package com.eshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Getter @Setter
@@ -14,18 +15,19 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Entity
 @Table(name = "Shopping_Cart")
-public class ShoppingCart {
+public class ShoppingCart implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -7517737458304376333L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", nullable = false)
     private Integer id;
 
-    @JsonIgnore
     @ManyToOne(optional = false)
     @JoinColumn(name = "UserId", nullable = false)
     private User user;
 
-    @JsonIgnore
     @ManyToOne(optional = false)
     @JoinColumn(name = "ProductId", nullable = false)
     private Product product;

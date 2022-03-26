@@ -9,15 +9,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
 @Entity
-public class Product {
+public class Product implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -6097525782101457663L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", nullable = false)
@@ -63,25 +70,24 @@ public class Product {
     @Column(name = "Available", nullable = false)
     private Integer available;
 
-    @JsonIgnore
     @ManyToOne(optional = false)
     @JoinColumn(name = "CategoryId", nullable = false)
     private Category category;
 
-    @JsonIgnore
     @ManyToOne(optional = false)
     @JoinColumn(name = "BrandId", nullable = false)
     private Brand brand;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "DiscountId")
     private Discount discount;
 
-    @OneToMany(mappedBy = "product")
-    private List<ShoppingCart> shoppingCarts = new ArrayList<>();
-
+    @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<OrderDetail> orderDetails = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product")
+    private Set<ShoppingCart> shoppingCarts = new LinkedHashSet<>();
 
 }

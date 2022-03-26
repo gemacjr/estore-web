@@ -1,11 +1,14 @@
 package com.eshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +19,10 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "\"Order\"")
-public class Order {
+public class Order implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -5239065962046661917L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", nullable = false)
@@ -47,6 +53,7 @@ public class Order {
     @Column(name = "Email", nullable = false, length = 128)
     private String email;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails = new ArrayList<>();
 

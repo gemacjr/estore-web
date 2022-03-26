@@ -1,38 +1,28 @@
-let lang = document.getElementById('lang').value;
+let lang = $('#lang').val();
 let baseUrl = window.location.origin;
-let isLogin = document.getElementById('isLogin').value;
+let isLogin = $('#isLogin').val();
 
 // Change the language
-document.querySelectorAll('a[href*=lang]').forEach(function (element) {
-    element.addEventListener('click', function (event) {
-        event.preventDefault();
-        let param = element.getAttribute('href');
-        $.ajax({
-            url: "/home" + param,
-            success: function () {
-                location.reload();
-            }
-        });
+$("a[href*=lang]").on("click", function () {
+    let param = $(this).attr("href");
+    $.ajax({
+        url: "/home" + param,
+        success: function () {
+            location.reload();
+        }
     });
+    return false;
 });
 
 // Add novalidate form
-document.querySelectorAll('.needs-validation').forEach(function (element) {
-    element.setAttribute('novalidate', true);
-});
+$(".needs-validation").attr("novalidate", true);
 
 // Validate Search Input Submit
-document.getElementById('search-form').addEventListener('submit', function (event) {
-    if (document.getElementById('search-input').value.trim().length === 0) {
-        event.preventDefault();
+$("#search-form").submit(function () {
+    if ($("#search-input").val().trim().length === 0) {
+        return false;
     }
 });
-
-// Fetch API
-const fetchAPI = async (url, option) => {
-    let response = await fetch(url, option);
-    return await response.json();
-};
 
 /* Products --------------------------------------------------------------------------------------------------------- */
 
@@ -55,37 +45,27 @@ function changePageNumber(pageNumber, categorySlug) {
     }
 }
 /* Cart ------------------------------------------------------------------------------------------------------------- */
-
-const getCarts = async () => {
-    return await fetchAPI(baseUrl + '/api/shopping-cart', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
+// Add to cart
+function addToCart(productId) {
+    let quantity = $('#select-quantity').val();
+    $.ajax({
+        url: baseUrl + '/api/shopping-cart',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            productId: productId,
+            quantity: !quantity ? 1 : quantity
+        }),
+        success: function(res) {
+            location.reload();
         }
     });
-};
-
-const addToCart = async (productId) => {
-    let quantity = document.getElementById('select-quantity');
-    let result =  await fetchAPI(baseUrl + '/api/shopping-cart', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            productId: productId,
-            quantity: !quantity ? 1 : quantity.value
-        })
-    });
-    if (result) {
-        location.reload();
-    }
-};
+}
 
 /* Remove product of cart */
 function removeForCart(productId) {
     $.ajax({
-        url: baseUrl + '/api/shopping-cart/delete/' + productId,
+        url: baseUrl + '/api/shopping-cart/' + productId,
         type: 'DELETE',
         success: function () {
             location.reload();
@@ -96,7 +76,7 @@ function removeForCart(productId) {
 /* Update quantity product of cart */
 function updateQuantity(id, quantity) {
     $.ajax({
-        url: baseUrl + '/api/shopping-cart/update/' + id,
+        url: baseUrl + '/api/shopping-cart/' + id,
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({

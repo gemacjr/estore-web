@@ -6,13 +6,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 
 @Setter @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "Order_Detail")
-public class OrderDetail {
+public class OrderDetail implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 7668265606530429093L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", nullable = false)

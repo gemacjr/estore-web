@@ -42,14 +42,14 @@ public class CartRestController {
     }
 
     @SuppressWarnings("rawtypes")
-	@PutMapping("/update/{id}")
+	@PutMapping("/{id}")
     public ResponseEntity updateCart(@PathVariable("id") Integer cartId, @RequestBody Map<String, Object> data) {
         ShoppingCart result = cartService.updateProductInCart(cartId, Integer.parseInt(data.get("quantity").toString()));
         return result == null ? ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
     }
 
     @SuppressWarnings("rawtypes")
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/{id}")
     public ResponseEntity deleteProductOfCart(@PathVariable("id") Integer id) {
         cartService.deleteProductFromCart(id);
         return ResponseEntity.ok().build();
