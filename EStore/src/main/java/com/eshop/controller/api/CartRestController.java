@@ -2,14 +2,15 @@ package com.eshop.controller.api;
 
 import com.eshop.entity.ShoppingCart;
 import com.eshop.service.CartService;
+import com.eshop.service.UserService;
 import com.eshop.utils.MessageUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,28 +20,25 @@ public class CartRestController {
     @Autowired
     CartService cartService;
     @Autowired
+    UserService userService;
+    @Autowired
     ModelMapper mapper;
     @Autowired
     MessageUtils messageUtils;
 
-    @SuppressWarnings("rawtypes")
-	@PostMapping("/add/{productId}")
-    public ResponseEntity addToCart(@PathVariable("productId") Integer productId, @RequestBody Map<String, Object> data,
-                                    Principal principal) {
-        Map<String, Object> response = new HashMap<>();
+    @GetMapping
+    public ResponseEntity<List<ShoppingCart>> getCart(Authentication auth) {
+        List<ShoppingCart> result = cartService.getAllCartByUser(userService.getByEmail(auth.getName()));
+        return ResponseEntity.ok().body(result);
+    }
 
-        ShoppingCart result = cartService.addProductToCart(productId, Integer.parseInt(data.get("quantity").toString()));
-        if (result == null) {
-            String message = messageUtils.getMessage("ShoppingCart.addToCart.failed");
-            response.put("status", "failed");
-            response.put("message", message);
-            return ResponseEntity.badRequest().body(response);
-        } else {
-            String message = messageUtils.getMessage("ShoppingCart.addToCart.success");
-            response.put("status", "success");
-            response.put("message", message);
-            return ResponseEntity.ok().body(response);
-        }
+    @PostMapping
+    public ResponseEntity<ShoppingCart> addToCart(@RequestBody Map<String, Object> data) {
+        Integer productId = Integer.parseInt(data.get("productId").toString());
+        Integer quantity = Integer.parseInt(data.get("quantity").toString());
+
+        ShoppingCart result = cartService.addProductToCart(productId, quantity);
+        return result == null ? ResponseEntity.badRequest().build() : ResponseEntity.ok().body(result);
     }
 
     @SuppressWarnings("rawtypes")

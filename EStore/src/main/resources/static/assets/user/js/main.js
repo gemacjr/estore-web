@@ -1,28 +1,38 @@
-let lang = $('#lang').val();
+let lang = document.getElementById('lang').value;
 let baseUrl = window.location.origin;
-let isLogin = $('#isLogin').val();
+let isLogin = document.getElementById('isLogin').value;
 
 // Change the language
-$("a[href*=lang]").on("click", function () {
-    let param = $(this).attr("href");
-    $.ajax({
-        url: "/home" + param,
-        success: function () {
-            location.reload();
-        }
+document.querySelectorAll('a[href*=lang]').forEach(function (element) {
+    element.addEventListener('click', function (event) {
+        event.preventDefault();
+        let param = element.getAttribute('href');
+        $.ajax({
+            url: "/home" + param,
+            success: function () {
+                location.reload();
+            }
+        });
     });
-    return false;
 });
 
 // Add novalidate form
-$(".needs-validation").attr("novalidate", true);
+document.querySelectorAll('.needs-validation').forEach(function (element) {
+    element.setAttribute('novalidate', true);
+});
 
 // Validate Search Input Submit
-$("#search-form").submit(function () {
-    if ($("#search-input").val().trim().length === 0) {
-        return false;
+document.getElementById('search-form').addEventListener('submit', function (event) {
+    if (document.getElementById('search-input').value.trim().length === 0) {
+        event.preventDefault();
     }
 });
+
+// Fetch API
+const fetchAPI = async (url, option) => {
+    let response = await fetch(url, option);
+    return await response.json();
+};
 
 /* Products --------------------------------------------------------------------------------------------------------- */
 
@@ -46,40 +56,31 @@ function changePageNumber(pageNumber, categorySlug) {
 }
 /* Cart ------------------------------------------------------------------------------------------------------------- */
 
-// Add to cart
-function addToCart(productId) {
-    if (isLogin === "false") {
-        location.href = "/login";
-        return false;
-    }
-    let quantity = $('#select-quantity').val();
-    $.ajax({
-        url: baseUrl + '/api/shopping-cart/add/' + productId,
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            quantity: !quantity ? 1 : quantity
-        }),
-        success: function(res) {
-            if (res.status === 'success') {
-                Swal.fire({
-                    icon: 'success',
-                    title: lang === 'vi' ? 'Thành công' : 'Success',
-                    text: res.message,
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#fe696a'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        location.reload();
-                    }
-                });
-            }
-        },
-        error: function(err) {
-            location.href = baseUrl + '/login';
+const getCarts = async () => {
+    return await fetchAPI(baseUrl + '/api/shopping-cart', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
         }
     });
-}
+};
+
+const addToCart = async (productId) => {
+    let quantity = document.getElementById('select-quantity');
+    let result =  await fetchAPI(baseUrl + '/api/shopping-cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            productId: productId,
+            quantity: !quantity ? 1 : quantity.value
+        })
+    });
+    if (result) {
+        location.reload();
+    }
+};
 
 /* Remove product of cart */
 function removeForCart(productId) {

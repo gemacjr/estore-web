@@ -27,8 +27,8 @@ public class CartServiceImpl implements CartService {
     UserRepository userRepo;
 
     @Override
-    public List<ShoppingCart> getAllProductsInCart() {
-        return cartRepo.findByUser(userRepo.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()));
+    public List<ShoppingCart> getAllCartByUser(User user) {
+        return cartRepo.findByUser(user);
     }
 
     @Override
