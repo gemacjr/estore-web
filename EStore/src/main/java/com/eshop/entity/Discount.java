@@ -10,8 +10,6 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,10 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter @Setter
 @Entity
-public class Discount implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 4419901573202170305L;
-
+public class Discount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", nullable = false)

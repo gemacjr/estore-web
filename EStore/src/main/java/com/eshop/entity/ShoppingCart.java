@@ -15,10 +15,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Entity
 @Table(name = "Shopping_Cart")
-public class ShoppingCart implements Serializable {
-    @Serial
-    private static final long serialVersionUID = -7517737458304376333L;
-
+public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", nullable = false)

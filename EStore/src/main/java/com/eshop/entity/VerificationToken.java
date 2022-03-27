@@ -5,8 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Date;
 
 @Getter
@@ -14,9 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "Verification_Token")
-public class VerificationToken implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 6807629567418906171L;
+public class VerificationToken {
     public static final int EXPIRATION = 10;
     
     @Id

@@ -1,13 +1,12 @@
 package com.eshop.entity;
 
-import java.io.Serial;
-import java.io.Serializable;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 @Getter @Setter
 @NoArgsConstructor

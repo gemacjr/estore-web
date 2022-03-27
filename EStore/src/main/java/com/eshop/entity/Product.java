@@ -10,7 +10,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serial;
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -21,10 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter @Setter
 @Entity
-public class Product implements Serializable {
-    @Serial
-    private static final long serialVersionUID = -6097525782101457663L;
-
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", nullable = false)

@@ -18,9 +18,6 @@ import java.util.List;
 @Getter @Setter
 @Entity
 public class Brand {
-    @Serial
-    private static final long serialVersionUID = -5948936122236863342L;
-
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="Id", unique=true, nullable=false, precision=10)

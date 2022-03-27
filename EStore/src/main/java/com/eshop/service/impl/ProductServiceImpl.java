@@ -26,11 +26,11 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductRepository productRepo;
     @Autowired
-    CategoryRepository categoryRepository;
+    CategoryRepository categoryRepo;
     @Autowired
-    BrandRepository brandRepository;
+    BrandRepository brandRepo;
     @Autowired
-    DiscountRepository discountRepository;
+    DiscountRepository discountRepo;
     @Autowired
     ModelMapper mapper;
 
@@ -98,11 +98,11 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductToSave save(ProductToSave productToSave) {
         Product product = MapperUtils.map(productToSave, Product.class);
-        product.setCategory(categoryRepository.getById(Integer.parseInt(productToSave.getCategoryId())));
-        product.setBrand(brandRepository.getById(Integer.parseInt(productToSave.getBrandId())));
+        product.setCategory(categoryRepo.getById(Integer.parseInt(productToSave.getCategoryId())));
+        product.setBrand(brandRepo.getById(Integer.parseInt(productToSave.getBrandId())));
         product.setCreatedDate(new Timestamp(System.currentTimeMillis()));
         if (!productToSave.getDiscountId().isBlank()) {
-            product.setDiscount(discountRepository.getById(Integer.parseInt(productToSave.getDiscountId())));
+            product.setDiscount(discountRepo.getById(Integer.parseInt(productToSave.getDiscountId())));
         } else {
             product.setDiscount(null);
         }

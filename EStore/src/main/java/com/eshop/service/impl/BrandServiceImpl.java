@@ -13,46 +13,46 @@ import java.util.List;
 @Service
 public class BrandServiceImpl implements BrandService {
     @Autowired
-    BrandRepository brandDAO;
+    BrandRepository brandRepo;
 
     @Autowired
     ModelMapper mapper;
 
     @Override
     public List<Brand> getByCategory(String categorySlug) {
-        return brandDAO.findDistinctByProductsCategorySlug(categorySlug);
+        return brandRepo.findDistinctByProductsCategorySlug(categorySlug);
     }
 
     @Override
     public List<Brand> getAll() {
-        return brandDAO.findAll();
+        return brandRepo.findAll();
     }
 
     @Override
     public Brand getBrand(String slug) {
-        return brandDAO.findBySlug(slug);
+        return brandRepo.findBySlug(slug);
     }
 
     @Override
     @Transactional
     public void createBrand(Brand brand) {
-        brandDAO.save(brand);
+        brandRepo.save(brand);
     }
 
     @Override
     @Transactional
     public void removeBrand(String slug){
-        brandDAO.delete(brandDAO.findBySlug(slug));
+        brandRepo.delete(brandRepo.findBySlug(slug));
     }
 
     @Override
     @Transactional
     public Brand updateBrand(String slug, Brand brand) {
-        Brand brandToUpdate = brandDAO.findBySlug(slug);
+        Brand brandToUpdate = brandRepo.findBySlug(slug);
         if (brandToUpdate != null) {
             brandToUpdate.setName(brand.getName());
             brandToUpdate.setSlug(brand.getSlug());
-            return brandDAO.save(brandToUpdate);
+            return brandRepo.save(brandToUpdate);
         }
         return null;
     }

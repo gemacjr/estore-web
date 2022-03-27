@@ -125,7 +125,7 @@ INSERT INTO `EStore`.`Authority` (`UserId` ,`RoleId`) VALUES
 (2, 1),
 (3, 1),
 (3, 2),
-(3, 3),
+(3, 3);
 
 -- ----------------------------------------------------------------------------
 -- Table EStore.Product

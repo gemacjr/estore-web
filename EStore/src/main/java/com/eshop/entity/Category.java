@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Setter @Getter
 @Entity
-public class Category implements Serializable {
-	@Serial
-    private static final long serialVersionUID = 8881463429899590891L;
-
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", nullable = false)
