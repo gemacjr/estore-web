@@ -51,7 +51,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
         /* Category */
         req.setAttribute("categories", MapperUtils.mapAll(categoryService.getAll(), CategoryDTO.class));
         /* Cart */
-        List<ShoppingCart> list = cartService.getAllCartByUser(userService.getCurrentUser());
+        List<ShoppingCart> list = cartService.getCartByUser(userService.getCurrentUser());
         List<ShoppingCartDTO> productsInCart = list.stream()
                 .map(cart -> mapper.map(cart, ShoppingCartDTO.class)).toList();
         Double totalPrice = productsInCart.stream()

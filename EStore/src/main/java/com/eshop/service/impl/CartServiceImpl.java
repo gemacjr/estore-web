@@ -27,13 +27,13 @@ public class CartServiceImpl implements CartService {
     UserRepository userRepo;
 
     @Override
-    public List<ShoppingCart> getAllCartByUser(User user) {
+    public List<ShoppingCart> getCartByUser(User user) {
         return cartRepo.findByUser(user);
     }
 
     @Override
     @Transactional
-    public ShoppingCart addProductToCart(Integer productId, Integer quantity) {
+    public ShoppingCart addCart(Integer productId, Integer quantity) {
         User user = userRepo.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         Product product = productRepo.getById(productId);
 
@@ -54,13 +54,13 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public void deleteProductFromCart(Integer cartId) {
+    public void deleteCart(Integer cartId) {
         cartRepo.delete(cartRepo.getById(cartId));
     }
 
     @Override
     @Transactional
-    public ShoppingCart updateProductInCart(Integer cartId, Integer quantity) {
+    public ShoppingCart updateCart(Integer cartId, Integer quantity) {
         ShoppingCart cart = cartRepo.getById(cartId);
         cart.setQuantity(quantity);
         return cartRepo.save(cart);

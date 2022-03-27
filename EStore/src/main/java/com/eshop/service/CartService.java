@@ -6,11 +6,11 @@ import com.eshop.entity.User;
 import java.util.List;
 
 public interface CartService {
-    List<ShoppingCart> getAllCartByUser(User user);
+    List<ShoppingCart> getCartByUser(User user);
 
-    ShoppingCart addProductToCart(Integer productId, Integer quantity);
+    ShoppingCart addCart(Integer productId, Integer quantity);
 
-    ShoppingCart updateProductInCart(Integer cartId, Integer quantity);
+    ShoppingCart updateCart(Integer cartId, Integer quantity);
 
-    void deleteProductFromCart(Integer cartId);
+    void deleteCart(Integer cartId);
 }

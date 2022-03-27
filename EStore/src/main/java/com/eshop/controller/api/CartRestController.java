@@ -28,30 +28,28 @@ public class CartRestController {
 
     @GetMapping
     public ResponseEntity<List<ShoppingCart>> getCart(Authentication auth) {
-        List<ShoppingCart> result = cartService.getAllCartByUser(userService.getByEmail(auth.getName()));
+        List<ShoppingCart> result = cartService.getCartByUser(userService.getByEmail(auth.getName()));
         return ResponseEntity.ok().body(result);
     }
 
     @PostMapping
-    public ResponseEntity<ShoppingCart> addToCart(@RequestBody Map<String, Object> data) {
+    public ResponseEntity<ShoppingCart> addCart(@RequestBody Map<String, Object> data) {
         Integer productId = Integer.parseInt(data.get("productId").toString());
         Integer quantity = Integer.parseInt(data.get("quantity").toString());
 
-        ShoppingCart result = cartService.addProductToCart(productId, quantity);
+        ShoppingCart result = cartService.addCart(productId, quantity);
         return result == null ? ResponseEntity.badRequest().build() : ResponseEntity.ok().body(result);
     }
 
-    @SuppressWarnings("rawtypes")
-	@PutMapping("/{id}")
-    public ResponseEntity updateCart(@PathVariable("id") Integer cartId, @RequestBody Map<String, Object> data) {
-        ShoppingCart result = cartService.updateProductInCart(cartId, Integer.parseInt(data.get("quantity").toString()));
-        return result == null ? ResponseEntity.badRequest().build() : ResponseEntity.ok().build();
+	@PutMapping("/{cartId}")
+    public ResponseEntity<ShoppingCart> updateCart(@PathVariable("cartId") Integer cartId, @RequestBody Map<String, Object> data) {
+        ShoppingCart result = cartService.updateCart(cartId, Integer.parseInt(data.get("quantity").toString()));
+        return result == null ? ResponseEntity.badRequest().build() : ResponseEntity.ok().body(result);
     }
 
-    @SuppressWarnings("rawtypes")
-	@DeleteMapping("/{id}")
-    public ResponseEntity deleteProductOfCart(@PathVariable("id") Integer id) {
-        cartService.deleteProductFromCart(id);
+	@DeleteMapping("/{cartId}")
+    public ResponseEntity<Void> deleteCart(@PathVariable("cartId") Integer cartId) {
+        cartService.deleteCart(cartId);
         return ResponseEntity.ok().build();
     }
 }
