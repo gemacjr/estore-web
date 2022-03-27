@@ -65,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void createOrder(String fullname, String email, String address, String phoneNumber) {
+    public Order createOrder(String fullname, String email, String address, String phoneNumber) {
         User user = userRepo.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
 
         // Create order
@@ -113,5 +113,7 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return savedOrder;
     }
 }

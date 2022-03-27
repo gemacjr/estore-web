@@ -120,24 +120,22 @@ $("#checkout-frm").submit(function (event) {
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(data),
-        success: function (res) {
-            if (res.status === 'success') {
-                Swal.fire({
-                    icon: 'success',
-                    title: lang === 'vi' ? 'Thành công' : 'Success',
-                    text: res.message,
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#fe696a'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        location.href = baseUrl + "/order-history";
-                    }
-                });
-            }
+        success: function () {
+            Swal.fire({
+                icon: 'success',
+                title: lang === 'vi' ? 'Thành công' : 'Success',
+                text: lang === 'vi' ? 'Đặt hàng thành công!' : 'Ordered successfully!',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#fe696a'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.href = baseUrl + "/order-history";
+                }
+            });
         },
         error: function (err) {
             iziToast.error({
-                message: err.responseJSON.message,
+                message: err.message,
                 position: 'topRight'
             });
         }

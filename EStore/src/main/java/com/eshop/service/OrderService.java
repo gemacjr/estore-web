@@ -13,5 +13,5 @@ public interface OrderService {
     List<OrderReport> getOrderReports();
     List<SaleReport> getSaleReports();
     List<SaleReport> getSaleReports(Date startDate, Date endDate);
-    void createOrder(String fullname, String email, String address, String phoneNumber);
+    Order createOrder(String fullname, String email, String address, String phoneNumber);
 }

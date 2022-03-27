@@ -1,5 +1,6 @@
 package com.eshop.controller.api;
 
+import com.eshop.entity.Order;
 import com.eshop.service.OrderService;
 import com.eshop.utils.MessageUtils;
 import org.modelmapper.ModelMapper;
@@ -23,21 +24,15 @@ public class OrderRestController {
 
     @SuppressWarnings("rawtypes")
 	@PostMapping
-    public ResponseEntity addOrder(@RequestBody Map<String, Object> data) {
+    public ResponseEntity<Order> addOrder(@RequestBody Map<String, Object> data) {
         Map<String, Object> response = new HashMap<>();
+
         String fullname = (String) data.get("fullname");
         String phoneNumber = (String) data.get("phoneNumber");
         String address = (String) data.get("address");
         String email = (String) data.get("email");
-        try {
-            orderService.createOrder(fullname, email, address, phoneNumber);
-            response.put("status", "success");
-            response.put("message", messageUtils.getMessage("Order.addToOrder.success"));
-            return ResponseEntity.ok().body(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.put("message", e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
+
+        Order result = orderService.createOrder(fullname, email, address, phoneNumber);
+        return result != null ? ResponseEntity.ok(result) : ResponseEntity.badRequest().build();
     }
 }
