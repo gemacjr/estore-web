@@ -1,4 +1,4 @@
-package com.eshop.controller;
+package com.eshop.controller.api;
 
 import com.eshop.service.OrderService;
 import com.eshop.utils.MessageUtils;
@@ -12,8 +12,8 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/order")
-public class OrderController {
+@RequestMapping("/api/order")
+public class OrderRestController {
     @Autowired
     OrderService orderService;
     @Autowired
@@ -22,7 +22,7 @@ public class OrderController {
     ModelMapper mapper;
 
     @SuppressWarnings("rawtypes")
-	@PostMapping("/add")
+	@PostMapping
     public ResponseEntity addOrder(@RequestBody Map<String, Object> data) {
         Map<String, Object> response = new HashMap<>();
         String fullname = (String) data.get("fullname");

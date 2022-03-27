@@ -116,7 +116,7 @@ $("#checkout-frm").submit(function (event) {
     };
 
     $.ajax({
-        url: baseUrl + '/order/add',
+        url: baseUrl + '/api/order',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(data),
