@@ -19,13 +19,13 @@ USE `EStore`;
 -- Table EStore.Brand
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `EStore`.`Brand` (
-  `Id` INT NOT NULL AUTO_INCREMENT,
+  `Id` BIGINT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(50) CHARACTER SET 'utf8mb4' NOT NULL,
   `Slug` VARCHAR(50) CHARACTER SET 'utf8mb4' NOT NULL,
   PRIMARY KEY (`Id`),
-  UNIQUE INDEX `UQ__Brand__BC7B5FB6A00075E2` (`Slug` ASC) VISIBLE);
+  UNIQUE INDEX `UQ_Brand_Slug` (`Slug` ASC) VISIBLE);
 
-INSERT INTO `EStore`.`brand` (`Name`, `Slug`) VALUES 
+INSERT INTO `EStore`.`Brand` (`Name`, `Slug`) VALUES 
 ('Apple','apple'),
 ('Samsung','samsung'),
 ('Asus','asus'),
@@ -37,14 +37,14 @@ INSERT INTO `EStore`.`brand` (`Name`, `Slug`) VALUES
 -- Table EStore.Category
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `EStore`.`Category` (
-  `Id` INT NOT NULL AUTO_INCREMENT,
+  `Id` BIGINT NOT NULL AUTO_INCREMENT,
   `NameVI` VARCHAR(50) CHARACTER SET 'utf8mb4' NOT NULL,
   `NameEN` VARCHAR(50) CHARACTER SET 'utf8mb4' NOT NULL,
   `Slug` VARCHAR(50) CHARACTER SET 'utf8mb4' NOT NULL,
   PRIMARY KEY (`Id`),
-  UNIQUE INDEX `UQ__Category__BC7B5FB66750E6D2` (`Slug` ASC) VISIBLE);
+  UNIQUE INDEX `UQ_Category_Slug` (`Slug` ASC) VISIBLE);
   
-INSERT INTO `EStore`.`category` (`NameVI`, `NameEN`, `Slug`) VALUES 
+INSERT INTO `EStore`.`Category` (`NameVI`, `NameEN`, `Slug`) VALUES 
 ('Điện thoại','Phone','phone'),
 ('Máy tính bảng','Tablet','tablet'),
 ('Máy tính xách tay','Laptop','laptop'),
@@ -56,7 +56,7 @@ INSERT INTO `EStore`.`category` (`NameVI`, `NameEN`, `Slug`) VALUES
 -- Table EStore.Discount
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `EStore`.`Discount` (
-  `Id` INT NOT NULL AUTO_INCREMENT,
+  `Id` BIGINT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(50) CHARACTER SET 'utf8mb4' NOT NULL,
   `SaleOff` DOUBLE NOT NULL,
   `StartDate` DATETIME(6) NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `EStore`.`Discount` (
   `CreatedDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id`));
   
-INSERT INTO `EStore`.`discount` (`Name`, SaleOff, StartDate, EndDate, IsActive, CreatedDate) VALUES 
+INSERT INTO `EStore`.`Discount` (`Name`, SaleOff, StartDate, EndDate, IsActive, CreatedDate) VALUES 
 ('Khuyến mãi đầu năm',10,'2022-01-10 10:04:58.360000','2022-02-22 12:50:34.217000',0,'2022-02-19 03:04:58'),
 ('Khuyến mãi tháng 2',15,'2022-02-10 00:00:00.000000','2022-02-28 00:00:00.000000',1,'2022-02-21 20:59:38'),
 ('Khuyến mãi tháng 2',10,'2022-02-10 00:00:00.000000','2022-02-22 12:50:34.250000',0,'2022-02-21 21:41:16'),
@@ -73,10 +73,21 @@ INSERT INTO `EStore`.`discount` (`Name`, SaleOff, StartDate, EndDate, IsActive, 
 ('Khuyến mãi tháng 2',3,'2022-02-14 00:00:00.000000','2022-02-28 00:00:00.000000',1,'2022-02-21 21:42:54');
 
 -- ----------------------------------------------------------------------------
+-- Table EStore.Role
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `EStore`.`Role` (
+	`Id` BIGINT NOT NULL AUTO_INCREMENT,
+    `Name` VARCHAR(50) NOT NULL,
+    PRIMARY KEY (`Id`)
+);
+
+INSERT INTO `EStore`.`Role` (`Name`) VALUES ('ROLE_CUSTOMER'), ('ROLE_STAFF'), ('ROLE_ADMIN');
+
+-- ----------------------------------------------------------------------------
 -- Table EStore.User
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `EStore`.`User` (
-  `Id` INT NOT NULL AUTO_INCREMENT,
+  `Id` BIGINT NOT NULL AUTO_INCREMENT,
   `Username` VARCHAR(50) NOT NULL,
   `Password` VARCHAR(128) NOT NULL,
   `Fullname` VARCHAR(128) CHARACTER SET 'utf8mb4' NOT NULL,
@@ -88,19 +99,39 @@ CREATE TABLE IF NOT EXISTS `EStore`.`User` (
   `Enabled` TINYINT(1) NOT NULL DEFAULT 1,
   `IsAdmin` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`Id`),
-  UNIQUE INDEX `UQ__User__536C85E4D1F12CE9` (`Username` ASC) VISIBLE,
-  UNIQUE INDEX `UQ__User__A9D105347CCB2D7A` (`Email` ASC) VISIBLE);
+  UNIQUE INDEX `UQ_User_Username` (`Username` ASC) VISIBLE,
+  UNIQUE INDEX `UQ_User_Email` (`Email` ASC) VISIBLE);
 
-INSERT INTO`EStore`.`user` (Username, `Password`, Fullname, Email, Address, PhoneNumber, Photo, CreatedDate, Enabled, IsAdmin) VALUES 
+INSERT INTO`EStore`.`User` (Username, `Password`, Fullname, Email, Address, PhoneNumber, Photo, CreatedDate, Enabled, IsAdmin) VALUES 
 ('MaiNT','$2a$10$LuRi1lmkBg/3c/bg./EcbeC1DeT2.BZfXsTVCrA8nDYr4hPYNnqbq','Nguyễn Thị Mai','maint@gmail.com','Đạ Ròn - Đơn Dương - Lâm Đồng','0389894357','MaiNT.jpg','2022-02-21 09:42:23',1,0),
 ('AnhPTQ','$2a$10$z/mpc04bezbLWwxodoQb9OXA0cVO0Pr1p2reAT/6zFSpwJnIFuuIy','Phan Thị Quỳnh Anh','anhptq@gmail.com','Trung Mỹ Tây, Quận 12, TP.HCM','0389894357','AnhPTQ.jpg','2022-02-21 09:37:04',1,0),
 ('Admin','$2a$10$kL0UEwTe2Q2fSf8TfXYahOPLtC.Q1k7ZX1ynbgiwgw7A0.1pmaaSG','Admin','admin@gmail.com','Phường Trung Mỹ Tây, Quận 12, TP.HCM','0345679898','Admin.jpeg','2022-02-21 09:53:32',1,1);
 
 -- ----------------------------------------------------------------------------
+-- Table EStore.Authority
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `EStore`.`Authority` (
+	`Id` BIGINT NOT NULL AUTO_INCREMENT,
+    `UserId` BIGINT NOT NULL,
+    `RoleId` BIGINT NOT NULL,
+    PRIMARY KEY (`Id`),
+    CONSTRAINT FK_Authority_User FOREIGN KEY (`UserId`) REFERENCES `EStore`.`User` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FK_Authority_Role FOREIGN KEY (`RoleId`) REFERENCES `EStore`.`Role` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INSERT INTO `EStore`.`Authority` (`UserId` ,`RoleId`) VALUES
+(1, 1),
+(1, 2),
+(2, 1),
+(3, 1),
+(3, 2),
+(3, 3),
+
+-- ----------------------------------------------------------------------------
 -- Table EStore.Product
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `EStore`.`Product` (
-  `Id` INT NOT NULL AUTO_INCREMENT,
+  `Id` BIGINT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(255) CHARACTER SET 'utf8mb4' NOT NULL,
   `Slug` VARCHAR(255) CHARACTER SET 'utf8mb4' NOT NULL,
   `Image` VARCHAR(150) NOT NULL,
@@ -114,28 +145,28 @@ CREATE TABLE IF NOT EXISTS `EStore`.`Product` (
   `Price` DOUBLE NULL,
   `CreatedDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Available` INT NOT NULL DEFAULT 0,
-  `CategoryId` INT NOT NULL,
-  `BrandId` INT NOT NULL,
-  `DiscountId` INT NULL,
+  `CategoryId` BIGINT NOT NULL,
+  `BrandId` BIGINT NOT NULL,
+  `DiscountId` BIGINT NULL,
   PRIMARY KEY (`Id`),
-  UNIQUE INDEX `UQ__Product__BC7B5FB6E45A5073` (`Slug` ASC) VISIBLE,
-  CONSTRAINT `FK__Product__BrandId__3E52440B`
+  UNIQUE INDEX `UQ_Product_Slug` (`Slug` ASC) VISIBLE,
+  CONSTRAINT `FK_Product_Brand`
     FOREIGN KEY (`BrandId`)
     REFERENCES `EStore`.`Brand` (`Id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `FK__Product__Categor__3D5E1FD2`
+  CONSTRAINT `FK_Product_Category`
     FOREIGN KEY (`CategoryId`)
     REFERENCES `EStore`.`Category` (`Id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `FK__Product__Discoun__3F466844`
+  CONSTRAINT `FK_Product_Discount`
     FOREIGN KEY (`DiscountId`)
     REFERENCES `EStore`.`Discount` (`Id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE);
 
-INSERT INTO `EStore`.`product` (`Name`, Slug, Image, ImagePreview1, ImagePreview2, ImagePreview3, ImagePreview4, VideoPreview, `Description`, Quantity, Price, CreatedDate, Available, CategoryId, BrandId, DiscountId) VALUES 
+INSERT INTO `EStore`.`Product` (`Name`, Slug, Image, ImagePreview1, ImagePreview2, ImagePreview3, ImagePreview4, VideoPreview, `Description`, Quantity, Price, CreatedDate, Available, CategoryId, BrandId, DiscountId) VALUES 
 ('iPhone 13 128GB', 'iphone-13-128gb', 'https://cdn.cellphones.com.vn/media/catalog/product/cache/7/small_image/9df78eab33525d08d6e5fb8d27136e95/i/p/ip13-pro_2.jpg', 'https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-black-1.jpg', 'https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-black-2.jpg', 'https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-black-3.jpg', 'https://cdn.tgdd.vn/Products/Images/42/223602/iphone-13-white-2.jpg', 'RF6F5vwbyok', 'Mỗi lần ra mắt phiên bản mới là mỗi lần iPhone chiếm sóng trên khắp các mặt trận và lần này cái tên khiến vô số người "sục sôi" là iPhone 13 Pro, chiếc điện thoại thông minh vẫn giữ nguyên thiết kế cao cấp, cụm 3 camera được nâng cấp, cấu hình mạnh mẽ cùng thời lượng pin lớn ấn tượng.', 100, 32490000, CURDATE(), 0, 1, 1, NULL),
 ('iPhone XR 128GB', 'iphone-xr-128gb', 'https://cdn.cellphones.com.vn/media/catalog/product/cache/7/small_image/9df78eab33525d08d6e5fb8d27136e95/i/p/iphone_xr_red_1.png', 'https://cdn.tgdd.vn/Products/Images/42/191483/iphone-xr-128gb-trang-1-1-org.jpg', 'https://cdn.tgdd.vn/Products/Images/42/191483/iphone-xr-128gb-trang-2-org.jpg', 'https://cdn.tgdd.vn/Products/Images/42/191483/iphone-xr-128gb-trang-3-org.jpg', 'https://cdn.tgdd.vn/Products/Images/42/191483/iphone-xr-128gb-trang-4-org.jpg', '9LpyLziSSK0', 'Được xem là phiên bản iPhone giá rẻ đầy hoàn hảo, iPhone Xr 128GB khiến người dùng có nhiều sự lựa chọn hơn về màu sắc đa dạng nhưng vẫn sở hữu cấu hình mạnh mẽ và thiết kế sang trọng.', 100, 17490000, CURDATE(), 0, 1, 1, 4),
 ('Apple MacBook Air M1 2020 16GB/256GB/7-core GPU', 'apple-macbook-air-m1-2020-16gb-256gb-7-core-gpu', 'https://cdn.tgdd.vn/Products/Images/44/239552/apple-macbook-air-m1-2020-z124000de-1-org.jpg', 'https://cdn.tgdd.vn/Products/Images/44/239552/apple-macbook-air-m1-2020-z124000de-1-org.jpg', 'https://cdn.tgdd.vn/Products/Images/44/239552/macbook-air-m1-2020-silver-02-org.jpg', 'https://cdn.tgdd.vn/Products/Images/44/239552/macbook-air-m1-2020-silver-03-org.jpg', 'https://cdn.tgdd.vn/Products/Images/44/239552/macbook-air-m1-2020-silver-04-org.jpg', 'YqLueJ0hDV8', 'Laptop Apple MacBook Air M1 2020 có thiết kế đẹp, sang trọng với CPU M1 độc quyền từ Apple cho hiệu năng đồ họa cao, màn hình Retina hiển thị siêu nét cùng với hệ thống bảo mật tối ưu.', 500, 30990000, CURDATE(), 1, 3, 1, NULL),
@@ -157,7 +188,7 @@ INSERT INTO `EStore`.`product` (`Name`, Slug, Image, ImagePreview1, ImagePreview
 CREATE TABLE IF NOT EXISTS `EStore`.`Order` (
   `Id` BIGINT NOT NULL AUTO_INCREMENT,
   `OrderCode` VARCHAR(11) NOT NULL,
-  `UserId` INT NOT NULL,
+  `UserId` BIGINT NOT NULL,
   `CreatedDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Status` INT NOT NULL DEFAULT 0,
   `Fullname` VARCHAR(128) CHARACTER SET 'utf8mb4' NOT NULL,
@@ -165,14 +196,14 @@ CREATE TABLE IF NOT EXISTS `EStore`.`Order` (
   `Email` VARCHAR(128) NOT NULL,
   `PhoneNumber` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`Id`),
-  UNIQUE INDEX `UQ__Order__999B5229BC8CC249` (`OrderCode` ASC) VISIBLE,
-  CONSTRAINT `FK__Order__UserId__46E78A0C`
+  UNIQUE INDEX `UQ_Order_OrderCode` (`OrderCode` ASC) VISIBLE,
+  CONSTRAINT `FK_Order_User`
     FOREIGN KEY (`UserId`)
     REFERENCES `EStore`.`User` (`Id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE);
     
-INSERT INTO `EStore`.`order` (OrderCode, UserId, CreatedDate, `Status`, Fullname, Address, Email, PhoneNumber) VALUES 
+INSERT INTO `EStore`.`Order` (OrderCode, UserId, CreatedDate, `Status`, Fullname, Address, Email, PhoneNumber) VALUES 
 ('cjbyB61lo9P',3,'2022-01-15 03:58:38',1,'Admin','Phường Trung Mỹ Tây, Quận 12, TP.HCM','admin@gmail.com','0345679898'),
 ('bYG94HomdOi',3,'2022-02-22 04:12:31',0,'Admin','Phường Trung Mỹ Tây, Quận 12, TP.HCM','admin@gmail.com','0345679898'),
 ('d3htmb6yask',1,'2021-12-11 04:13:00',1,'Nguyễn Thị Mai','Đạ Ròn - Đơn Dương - Lâm Đồng','maint@gmail.com','0389894357'),
@@ -186,16 +217,16 @@ INSERT INTO `EStore`.`order` (OrderCode, UserId, CreatedDate, `Status`, Fullname
 CREATE TABLE IF NOT EXISTS `EStore`.`Order_Detail` (
   `Id` BIGINT NOT NULL AUTO_INCREMENT,
   `OrderId` BIGINT NOT NULL,
-  `ProductId` INT NOT NULL,
+  `ProductId` BIGINT NOT NULL,
   `Quantity` INT NOT NULL,
   `Price` DOUBLE NOT NULL,
   PRIMARY KEY (`Id`),
-  CONSTRAINT `FK__OrderDeta__Order__47DBAE45`
+  CONSTRAINT `FK_OrderDetail_Order`
     FOREIGN KEY (`OrderId`)
     REFERENCES `EStore`.`Order` (`Id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `FK__OrderDeta__Produ__4E88ABD4`
+  CONSTRAINT `FK_OrderDetail_Product`
     FOREIGN KEY (`ProductId`)
     REFERENCES `EStore`.`Product` (`Id`)
     ON DELETE CASCADE
@@ -223,18 +254,18 @@ CREATE TABLE IF NOT EXISTS `EStore`.`Persistent_Logins` (
 -- Table EStore.Shopping_Cart
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `EStore`.`Shopping_Cart` (
-  `Id` INT NOT NULL AUTO_INCREMENT,
-  `UserId` INT NOT NULL,
-  `ProductId` INT NOT NULL,
+  `Id` BIGINT NOT NULL AUTO_INCREMENT,
+  `UserId` BIGINT NOT NULL,
+  `ProductId` BIGINT NOT NULL,
   `Quantity` INT NULL DEFAULT 1,
   `CreatedDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id`),
-  CONSTRAINT `FK__ShoppingC__Produ__44FF419A`
+  CONSTRAINT `FK_ShoppingCart_Product`
     FOREIGN KEY (`ProductId`)
     REFERENCES `EStore`.`Product` (`Id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `FK__ShoppingC__UserI__4D94879B`
+  CONSTRAINT `FK_ShoppingCart_User`
     FOREIGN KEY (`UserId`)
     REFERENCES `EStore`.`User` (`Id`)
     ON DELETE CASCADE
@@ -244,12 +275,12 @@ CREATE TABLE IF NOT EXISTS `EStore`.`Shopping_Cart` (
 -- Table EStore.Verification_Token
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `EStore`.`Verification_Token` (
-  `Id` INT NOT NULL AUTO_INCREMENT,
+  `Id` BIGINT NOT NULL AUTO_INCREMENT,
   `Token` VARCHAR(30) NOT NULL,
-  `UserId` INT NOT NULL,
+  `UserId` BIGINT NOT NULL,
   `ExpiryDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id`),
-  CONSTRAINT `FK__Verificat__UserI__4E88ABD4`
+  CONSTRAINT `FK_Verification_User`
     FOREIGN KEY (`UserId`)
     REFERENCES `EStore`.`User` (`Id`)
     ON DELETE CASCADE
