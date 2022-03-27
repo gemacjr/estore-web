@@ -45,7 +45,7 @@ function changePageNumber(pageNumber, categorySlug) {
     }
 }
 /* Cart ------------------------------------------------------------------------------------------------------------- */
-// Add to cart
+/* Add to cart */
 function addToCart(productId) {
     let quantity = $('#select-quantity').val();
     $.ajax({
@@ -56,7 +56,7 @@ function addToCart(productId) {
             productId: productId,
             quantity: !quantity ? 1 : quantity
         }),
-        success: function(res) {
+        success: function() {
             location.reload();
         }
     });
