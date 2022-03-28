@@ -247,7 +247,7 @@
                                         <a class="dropdown-item" th:href="@{/user-profile}"
                                            th:text="#{global.profile_info}"></a>
                                     </li>
-                                    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                                    <th:block sec:authorize="hasAnyRole('ROLE_DIRECTOR', 'ROLE_STAFF')">
                                         <div class="dropdown-divider"></div>
                                         <li>
                                             <a class="dropdown-item" th:href="@{/dashboard}"

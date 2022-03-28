@@ -17,6 +17,10 @@ import java.util.Set;
 @Entity
 @Table(name = "role")
 public class Role {
+    public static final String DIRECTOR = "ROLE_DIRECTOR";
+    public static final String STAFF = "ROLE_STAFF";
+    public static final String CUSTOMER = "ROLE_CUSTOMER";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id", nullable = false)

@@ -46,8 +46,8 @@
                 <td class="align-middle" th:text="*{username}"></td>
                 <td class="align-middle" th:text="*{email}"></td>
                 <td class="align-middle text-center">
-                    <span class="badge bg-accent" th:if="*{admin}">Admin</span>
-                    <span class="badge bg-accent" th:unless="*{admin}">User</span>
+                    <!--<span class="badge bg-accent" th:if="*{admin}">Admin</span>
+                    <span class="badge bg-accent" th:unless="*{admin}">User</span>-->
                 </td>
                 <td class="align-middle text-center">
                     <span th:if="*{enabled}" class="text-success"><i class="fa-solid fa-check"></i></span>
@@ -177,12 +177,12 @@
                                        th:text="#{admin.userPage.activeAccount}"></label>
                             </div>
                             <!-- Switch -->
-                            <div class="form-check form-switch">
+                            <!--<div class="form-check form-switch">
                                 <input type="checkbox" class="form-check-input" th:id="'unp-user-is-admin-'+*{id}"
                                        name="isAdmin" th:checked="*{admin}">
                                 <label class="form-check-label" th:for="'unp-user-is-admin-'+*{id}"
                                        th:text="#{admin.userPage.adminRights}"></label>
-                            </div>
+                            </div>-->
                         </div>
                         <!-- Drag and drop file upload -->
                         <label class="form-label" th:text="#{global.avatar}"></label>

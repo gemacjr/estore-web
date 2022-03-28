@@ -5,9 +5,9 @@ import com.eshop.customer.exception.UserNotFoundException;
 import com.eshop.dto.UserDTO;
 import com.eshop.dto.account.Profile;
 import com.eshop.dto.account.Register;
-import com.eshop.entity.MailInfo;
-import com.eshop.entity.User;
-import com.eshop.entity.VerificationToken;
+import com.eshop.entity.*;
+import com.eshop.repository.AuthorityRepository;
+import com.eshop.repository.RoleRepository;
 import com.eshop.repository.UserRepository;
 import com.eshop.repository.VerificationTokenRepository;
 import com.eshop.service.UserService;
@@ -18,7 +18,6 @@ import net.bytebuddy.utility.RandomString;
 import org.apache.commons.lang3.time.DateUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,7 +27,6 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
-import javax.servlet.ServletContext;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
@@ -45,13 +43,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
     @Autowired
+    RoleRepository roleRepository;
+    @Autowired
+    AuthorityRepository authorityRepository;
+    @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
     VerificationTokenRepository verifyRepo;
     @Autowired
     ResourceLoader resourceLoader;
-    @Autowired
-    MessageSource messageSource;
     @Autowired
     MessageUtils messageUtils;
     @Autowired
@@ -60,8 +60,6 @@ public class UserServiceImpl implements UserService {
     MailUtils mailUtils;
     @Autowired
     ModelMapper mapper;
-    @Autowired
-    ServletContext app;
 
     private boolean isTokenFound(VerificationToken verificationToken) {
         return verificationToken == null;
@@ -144,10 +142,13 @@ public class UserServiceImpl implements UserService {
         user.setEmail(register.getEmail());
         user.setFullname(register.getFullname());
         user.setEnabled(false);
-        user.setAdmin(false);
         user.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-
         User userCreated = userRepository.save(user);
+
+        Authority authority = new Authority();
+        authority.setUser(userCreated);
+        authority.setRole(roleRepository.findByName(Role.CUSTOMER));
+        authorityRepository.save(authority);
 
         // Create verification token
         String token = "register:" + RandomString.make(21);
@@ -176,12 +177,12 @@ public class UserServiceImpl implements UserService {
     public String verifyRegistrationWithToken(String verificationToken, Locale locale) {
         User user = userRepository.findByVerificationTokenToken(verificationToken);
         if (!verificationToken.contains("register") || user == null) {
-            return messageSource.getMessage("Auth.verificationToken.failed", null, locale);
+            return messageUtils.getMessage("Auth.verificationToken.failed");
         }
         user.setEnabled(true);
         userRepository.save(user);
         verifyRepo.delete(verifyRepo.findByToken(verificationToken));
-        return messageSource.getMessage("Auth.verifyRegistration.success", null, locale);
+        return messageUtils.getMessage("Auth.verificationToken.success");
     }
 
     @Override
@@ -269,7 +270,8 @@ public class UserServiceImpl implements UserService {
         user.setAddress(userDTO.getAddress());
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setEnabled(userDTO.getEnabled() != null);
-        user.setAdmin(userDTO.getIsAdmin() != null);
+        //user.setAdmin(userDTO.getIsAdmin() != null);
+
         return userRepository.save(user);
     }
 

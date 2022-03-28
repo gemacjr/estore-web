@@ -51,9 +51,6 @@ public class User {
     @Column(name = "Enabled", nullable = false)
     private boolean enabled = true;
 
-    @Column(name = "IsAdmin", nullable = false)
-    private boolean isAdmin = false;
-
     @OneToOne(mappedBy = "user")
     private VerificationToken verificationToken;
 
