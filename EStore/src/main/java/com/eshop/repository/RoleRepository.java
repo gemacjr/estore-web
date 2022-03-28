@@ -1,0 +1,7 @@
+package com.eshop.repository;
+
+import com.eshop.entity.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RoleRepository extends JpaRepository<Role, Long> {
+}

@@ -1,5 +1,6 @@
 package com.eshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class Role {
     @Column(name = "Name", nullable = false, length = 50)
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "role")
     private Set<Authority> authorities = new LinkedHashSet<>();
 

@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `EStore`.`Role` (
     PRIMARY KEY (`Id`)
 );
 
-INSERT INTO `EStore`.`Role` (`Name`) VALUES ('ROLE_CUSTOMER'), ('ROLE_STAFF'), ('ROLE_ADMIN');
+INSERT INTO `EStore`.`Role` (`Name`) VALUES ('ROLE_CUSTOMER'), ('ROLE_STAFF'), ('ROLE_DIRECTOR');
 
 -- ----------------------------------------------------------------------------
 -- Table EStore.User

@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -64,5 +64,9 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Authority> authorities = new LinkedHashSet<>();
 
 }
