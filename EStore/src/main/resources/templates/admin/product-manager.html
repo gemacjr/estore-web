@@ -1,435 +1,423 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{/layout/admin::main-fragment(title=~{::title}, content=~{::#content})}">
-<head>
-    <meta charset="UTF-8">
-    <title>Report</title>
-</head>
-<body>
-<div id="content">
-    <!-- Modal -->
-    <div class="modal fade" id="productDetailModal" data-bs-focus="false" data-bs-backdrop="static"
-         data-bs-keyboard="false" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" th:text="#{admin.productPage.editModal.title}"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body tab-content py-4">
-                    <form id="create-product-frm" class="needs-validation" method="post" enctype="multipart/form-data"
-                          novalidate>
-                        <div class="d-sm-flex flex-wrap justify-content-end align-items-center pb-2">
-                            <div class="d-flex flex-nowrap align-items-center py-2">
-                                <label class="form-label fw-normal text-nowrap mb-0 me-2"
-                                       for="unp-category" th:text="#{global.category}"></label>
-                                <select class="form-select form-select-sm me-2" id="unp-category"
-                                        name="categoryId">
-                                    <option th:each="category:${categories}"
-                                            th:text="${#locale.language=='vi'}?${category.nameVI}:${category.nameEN}"
-                                            th:value="${category.id}"></option>
-                                </select>
-                            </div>
-                            <div class="d-flex flex-nowrap align-items-center me-3">
-                                <label class="form-label fw-normal text-nowrap mb-0 me-2"
-                                       for="unp-brand" th:text="#{global.brand}"></label>
-                                <select class="form-select form-select-sm" id="unp-brand"
-                                        name="brandId">
-                                    <option th:each="brand:${brands}" th:value="${brand.id}"
-                                            th:text="${brand.name}"></option>
-                                </select>
+<!-- Modal -->
+<div class="modal fade" id="productDetailModal" data-bs-focus="false" data-bs-backdrop="static"
+     data-bs-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" th:text="#{admin.productPage.editModal.title}"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body tab-content py-4">
+                <form id="create-product-frm" class="needs-validation" method="post" enctype="multipart/form-data"
+                      novalidate>
+                    <div class="d-sm-flex flex-wrap justify-content-end align-items-center pb-2">
+                        <div class="d-flex flex-nowrap align-items-center py-2">
+                            <label class="form-label fw-normal text-nowrap mb-0 me-2"
+                                   for="unp-category" th:text="#{global.category}"></label>
+                            <select class="form-select form-select-sm me-2" id="unp-category"
+                                    name="categoryId">
+                                <option th:each="category:${categories}"
+                                        th:text="${#locale.language=='vi'}?${category.nameVI}:${category.nameEN}"
+                                        th:value="${category.id}"></option>
+                            </select>
+                        </div>
+                        <div class="d-flex flex-nowrap align-items-center me-3">
+                            <label class="form-label fw-normal text-nowrap mb-0 me-2"
+                                   for="unp-brand" th:text="#{global.brand}"></label>
+                            <select class="form-select form-select-sm" id="unp-brand"
+                                    name="brandId">
+                                <option th:each="brand:${brands}" th:value="${brand.id}"
+                                        th:text="${brand.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" name="id"/>
+                    <div class="mb-3 pb-2">
+                        <label class="form-label" for="unp-product-name"
+                               th:text="#{admin.productPage.productName}"></label>
+                        <input class="form-control" type="text" id="unp-product-name"
+                               name="name" onkeyup="autoSlug('unp-product-name', 'unp-product-slug')"
+                               required>
+                    </div>
+                    <div class="mb-3 pb-2">
+                        <label class="form-label" for="unp-product-slug"
+                               th:text="#{admin.productPage.productSlug}"></label>
+                        <input class="form-control" type="text" id="unp-product-slug" name="slug" required>
+                        <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
+                    </div>
+                    <div class="file-drop-area mb-3" onclick="changeProductImage(this)">
+                        <div class="file-drop-preview img-thumbnail rounded">
+                            <img class="unp-product-img" th:src="@{/assets/user/img/plus_icon.png}"
+                                 alt="Product image">
+                        </div>
+                        <button class="file-drop-btn btn btn-primary btn-sm mb-2" type="button"
+                                onclick="changeProductImage(this)"
+                                th:text="#{admin.productPage.uploadProductPhoto.button}"></button>
+                        <input type="hidden" name="image" class="product-img">
+                        <div class="form-text" th:text="#{admin.productPage.uploadProductPhoto.note}"></div>
+                    </div>
+                    <div class="row mb-3 justify-content-center">
+                        <div class="col-md-2" data-bs-toggle="tooltip"
+                             th:title="#{admin.productPage.productPicture}">
+                            <input type="hidden" name="imagePreview1" class="product-preview">
+                            <img class="img-thumbnail product-thumbnail"
+                                 th:src="@{/assets/user/img/plus_icon.png}" alt="Product preview image 1">
+                        </div>
+                        <div class="col-md-2" data-bs-toggle="tooltip"
+                             th:title="#{admin.productPage.productPicture}">
+                            <input type="hidden" name="imagePreview2" class="product-preview">
+                            <img class="img-thumbnail product-thumbnail"
+                                 th:src="@{/assets/user/img/plus_icon.png}" alt="Product preview image 2">
+                        </div>
+                        <div class="col-md-2" data-bs-toggle="tooltip"
+                             th:title="#{admin.productPage.productPicture}">
+                            <input type="hidden" name="imagePreview3" class="product-preview">
+                            <img class="img-thumbnail product-thumbnail"
+                                 th:src="@{/assets/user/img/plus_icon.png}" alt="Product preview image 3">
+                        </div>
+                        <div class="col-md-2" data-bs-toggle="tooltip"
+                             th:title="#{admin.productPage.productPicture}">
+                            <input type="hidden" name="imagePreview4" class="product-preview">
+                            <img class="img-thumbnail product-thumbnail"
+                                 th:src="@{/assets/user/img/plus_icon.png}" alt="Product preview image 4">
+                        </div>
+                        <div class="col-md-4" data-bs-toggle="tooltip" id="unp-product-video-thumbnail"
+                             th:title="#{admin.productPage.productReviewVideo}">
+                            <input type="hidden" name="videoPreview" class="product-preview">
+                            <img class="img-thumbnail product-video-thumbnail"
+                                 th:src="@{/assets/user/img/video-play-button.png}" alt="Video preview">
+                        </div>
+                    </div>
+                    <div class="mb-3 pb-2">
+                        <label class="form-label" for="unp-product-description"
+                               th:text="#{admin.productPage.productDescription}"></label>
+                        <textarea class="form-control" rows="4" id="unp-product-description"
+                                  name="description" required></textarea>
+                    </div>
+                    <div class="mb-3 pb-2">
+                        <label class="form-label" for="unp-discount" th:text="#{global.promotion}"></label>
+                        <select class="form-select" id="unp-discount" name="discountId">
+                            <option value="" th:text="#{global.no_promotion}"></option>
+                            <option th:each="discount:${discounts}" th:value="${discount.id}"
+                                    th:text="${#numbers.formatInteger(discount.saleOff,0,'NONE')+'%'}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-3 pb-2">
+                        <label class="form-label me-4" th:text="#{admin.productPage.productStatus}"></label>
+                        <!-- Inline radio buttons -->
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="in-stock"
+                                   value="0" name="available" checked required>
+                            <label class="form-check-label" for="in-stock"
+                                   th:text="#{admin.productPage.inStock}"></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="out-of-stock"
+                                   value="1" name="available" required>
+                            <label class="form-check-label" for="out-of-stock"
+                                   th:text="#{admin.productPage.outOfStock}"></label>
+                        </div>
+                        <div class="form-check form-check-inline"
+                             th:onclick="visibilityProductAvailable(false, [[*{id}]])">
+                            <input class="form-check-input" type="radio" id="sold-out"
+                                   value="2" name="available" required>
+                            <label class="form-check-label" for="sold-out"
+                                   th:text="#{admin.productPage.soldOut}"></label>
+                        </div>
+                    </div>
+                    <div class="row"
+                         id="product-available">
+                        <div class="col-sm-6 mb-3">
+                            <label class="form-label" for="unp-product-quantity"
+                                   th:text="#{admin.productPage.productQuantity}"></label>
+                            <div class="input-group"><span class="input-group-text"><i
+                                    class="fa-solid fa-input-numeric"></i></span>
+                                <input class="form-control" min="0" type="number"
+                                       id="unp-product-quantity"
+                                       name="quantity">
                             </div>
                         </div>
-                        <input type="hidden" name="id"/>
-                        <div class="mb-3 pb-2">
-                            <label class="form-label" for="unp-product-name"
-                                   th:text="#{admin.productPage.productName}"></label>
-                            <input class="form-control" type="text" id="unp-product-name"
-                                   name="name" onkeyup="autoSlug('unp-product-name', 'unp-product-slug')"
-                                   required>
-                        </div>
-                        <div class="mb-3 pb-2">
-                            <label class="form-label" for="unp-product-slug"
-                                   th:text="#{admin.productPage.productSlug}"></label>
-                            <input class="form-control" type="text" id="unp-product-slug" name="slug" required>
-                            <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
-                        </div>
-                        <div class="file-drop-area mb-3" onclick="changeProductImage(this)">
-                            <div class="file-drop-preview img-thumbnail rounded">
-                                <img class="unp-product-img" th:src="@{/assets/user/img/plus_icon.png}"
-                                     alt="Product image">
-                            </div>
-                            <button class="file-drop-btn btn btn-primary btn-sm mb-2" type="button"
-                                    onclick="changeProductImage(this)"
-                                    th:text="#{admin.productPage.uploadProductPhoto.button}"></button>
-                            <input type="hidden" name="image" class="product-img">
-                            <div class="form-text" th:text="#{admin.productPage.uploadProductPhoto.note}"></div>
-                        </div>
-                        <div class="row mb-3 justify-content-center">
-                            <div class="col-md-2" data-bs-toggle="tooltip"
-                                 th:title="#{admin.productPage.productPicture}">
-                                <input type="hidden" name="imagePreview1" class="product-preview">
-                                <img class="img-thumbnail product-thumbnail"
-                                     th:src="@{/assets/user/img/plus_icon.png}" alt="Product preview image 1">
-                            </div>
-                            <div class="col-md-2" data-bs-toggle="tooltip"
-                                 th:title="#{admin.productPage.productPicture}">
-                                <input type="hidden" name="imagePreview2" class="product-preview">
-                                <img class="img-thumbnail product-thumbnail"
-                                     th:src="@{/assets/user/img/plus_icon.png}" alt="Product preview image 2">
-                            </div>
-                            <div class="col-md-2" data-bs-toggle="tooltip"
-                                 th:title="#{admin.productPage.productPicture}">
-                                <input type="hidden" name="imagePreview3" class="product-preview">
-                                <img class="img-thumbnail product-thumbnail"
-                                     th:src="@{/assets/user/img/plus_icon.png}" alt="Product preview image 3">
-                            </div>
-                            <div class="col-md-2" data-bs-toggle="tooltip"
-                                 th:title="#{admin.productPage.productPicture}">
-                                <input type="hidden" name="imagePreview4" class="product-preview">
-                                <img class="img-thumbnail product-thumbnail"
-                                     th:src="@{/assets/user/img/plus_icon.png}" alt="Product preview image 4">
-                            </div>
-                            <div class="col-md-4" data-bs-toggle="tooltip" id="unp-product-video-thumbnail"
-                                 th:title="#{admin.productPage.productReviewVideo}">
-                                <input type="hidden" name="videoPreview" class="product-preview">
-                                <img class="img-thumbnail product-video-thumbnail"
-                                     th:src="@{/assets/user/img/video-play-button.png}" alt="Video preview">
+                        <div class="col-sm-6 mb-3">
+                            <label class="form-label" for="unp-product-price"
+                                   th:text="#{admin.productPage.productPrice}"></label>
+                            <div class="input-group"><span class="input-group-text"><i
+                                    class="fa-solid fa-money-bill-simple"></i></span>
+                                <input class="form-control number-input" type="number"
+                                       id="unp-product-price"
+                                       name="price">
                             </div>
                         </div>
-                        <div class="mb-3 pb-2">
-                            <label class="form-label" for="unp-product-description"
-                                   th:text="#{admin.productPage.productDescription}"></label>
-                            <textarea class="form-control" rows="4" id="unp-product-description"
-                                      name="description" required></textarea>
-                        </div>
-                        <div class="mb-3 pb-2">
-                            <label class="form-label" for="unp-discount" th:text="#{global.promotion}"></label>
-                            <select class="form-select" id="unp-discount" name="discountId">
-                                <option value="" th:text="#{global.no_promotion}"></option>
-                                <option th:each="discount:${discounts}" th:value="${discount.id}"
-                                        th:text="${#numbers.formatInteger(discount.saleOff,0,'NONE')+'%'}">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-group">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
+                        th:text="#{global.close}"></button>
+                <button type="submit" class="btn btn-primary btn-sm" form="create-product-frm"
+                        th:text="#{global.save}"></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" th:each="product:${products}" th:object="${product}"
+     th:id="'productDetailModal'+${product.id}" data-bs-backdrop="static" data-bs-focus="false"
+     data-bs-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" th:text="#{admin.productPage.editModal.title}"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body tab-content py-4">
+                <form th:id="'edit-product-frm-'+*{id}" class="product-frm needs-validation" novalidate>
+                    <div class="d-sm-flex flex-wrap justify-content-end align-items-center pb-2">
+                        <div class="d-flex flex-nowrap align-items-center py-2">
+                            <label class="form-label fw-normal text-nowrap mb-0 me-2"
+                                   th:for="'unp-category-'+*{id}" th:text="#{global.category}"></label>
+                            <select class="form-select form-select-sm me-2" th:id="'unp-category-'+*{id}"
+                                    name="categoryId">
+                                <option th:each="category:${categories}" th:value="${category.id}"
+                                        th:selected="${category.slug == product.category.slug}"
+                                        th:text="${#locale.language=='vi'}?${category.nameVI}:${category.nameEN}">
                                 </option>
                             </select>
                         </div>
-                        <div class="mb-3 pb-2">
-                            <label class="form-label me-4" th:text="#{admin.productPage.productStatus}"></label>
-                            <!-- Inline radio buttons -->
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" id="in-stock"
-                                       value="0" name="available" checked required>
-                                <label class="form-check-label" for="in-stock"
-                                       th:text="#{admin.productPage.inStock}"></label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" id="out-of-stock"
-                                       value="1" name="available" required>
-                                <label class="form-check-label" for="out-of-stock"
-                                       th:text="#{admin.productPage.outOfStock}"></label>
-                            </div>
-                            <div class="form-check form-check-inline"
-                                 th:onclick="visibilityProductAvailable(false, [[*{id}]])">
-                                <input class="form-check-input" type="radio" id="sold-out"
-                                       value="2" name="available" required>
-                                <label class="form-check-label" for="sold-out"
-                                       th:text="#{admin.productPage.soldOut}"></label>
-                            </div>
-                        </div>
-                        <div class="row"
-                             id="product-available">
-                            <div class="col-sm-6 mb-3">
-                                <label class="form-label" for="unp-product-quantity"
-                                       th:text="#{admin.productPage.productQuantity}"></label>
-                                <div class="input-group"><span class="input-group-text"><i
-                                        class="fa-solid fa-input-numeric"></i></span>
-                                    <input class="form-control" min="0" type="number"
-                                           id="unp-product-quantity"
-                                           name="quantity">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <label class="form-label" for="unp-product-price"
-                                       th:text="#{admin.productPage.productPrice}"></label>
-                                <div class="input-group"><span class="input-group-text"><i
-                                        class="fa-solid fa-money-bill-simple"></i></span>
-                                    <input class="form-control number-input" type="number"
-                                           id="unp-product-price"
-                                           name="price">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer btn-group">
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
-                            th:text="#{global.close}"></button>
-                    <button type="submit" class="btn btn-primary btn-sm" form="create-product-frm"
-                            th:text="#{global.save}"></button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" th:each="product:${products}" th:object="${product}"
-         th:id="'productDetailModal'+${product.id}" data-bs-backdrop="static" data-bs-focus="false"
-         data-bs-keyboard="false" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" th:text="#{admin.productPage.editModal.title}"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body tab-content py-4">
-                    <form th:id="'edit-product-frm-'+*{id}" class="product-frm needs-validation" novalidate>
-                        <div class="d-sm-flex flex-wrap justify-content-end align-items-center pb-2">
-                            <div class="d-flex flex-nowrap align-items-center py-2">
-                                <label class="form-label fw-normal text-nowrap mb-0 me-2"
-                                       th:for="'unp-category-'+*{id}" th:text="#{global.category}"></label>
-                                <select class="form-select form-select-sm me-2" th:id="'unp-category-'+*{id}"
-                                        name="categoryId">
-                                    <option th:each="category:${categories}" th:value="${category.id}"
-                                            th:selected="${category.slug == product.category.slug}"
-                                            th:text="${#locale.language=='vi'}?${category.nameVI}:${category.nameEN}">
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="d-flex flex-nowrap align-items-center me-3">
-                                <label class="form-label fw-normal text-nowrap mb-0 me-2"
-                                       th:for="'unp-brand-'+*{id}" th:text="#{global.brand}"></label>
-                                <select class="form-select form-select-sm" th:id="'unp-brand-'+*{id}"
-                                        name="brandId">
-                                    <option th:value="${brand.id}" th:selected="${brand.slug == product.brand.slug}"
-                                            th:each="brand:${brands}" th:text="${brand.name}">
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <input type="hidden" name="id" th:value="*{id}"/>
-                        <div class="mb-3 pb-2">
-                            <label class="form-label" th:for="'unp-product-name-'+*{id}"
-                                   th:text="#{admin.productPage.productName}"></label>
-                            <input class="form-control" type="text" th:id="'unp-product-name-'+*{id}"
-                                   th:value="*{name}" name="name" required
-                                   th:onkeyup="autoSlug([['unp-product-name-'+*{id}]],[['unp-product-slug-'+*{id}]])">
-                        </div>
-                        <div class="mb-3 pb-2">
-                            <label class="form-label" th:for="'unp-product-slug-'+*{id}"
-                                   th:text="#{admin.productPage.productSlug}"></label>
-                            <input class="form-control" type="text" th:id="'unp-product-slug-'+*{id}"
-                                   th:value="*{slug}" th:attr="data-slug=*{slug}" name="slug" required>
-                            <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
-                        </div>
-                        <div class="file-drop-area mb-3" onclick="changeProductImage(this)">
-                            <div class="file-drop-preview img-thumbnail rounded">
-                                <img class="unp-product-img" th:src="*{image}" th:alt="*{name}">
-                            </div>
-                            <button class="file-drop-btn btn btn-primary btn-sm mb-2" type="button"
-                                    onclick="changeProductImage(this)"
-                                    th:text="#{admin.productPage.uploadProductPhoto.button}">
-                            </button>
-                            <input type="hidden" name="image" class="product-img" th:value="*{image}">
-                            <div class="form-text" th:text="#{admin.productPage.uploadProductPhoto.note}"></div>
-                        </div>
-                        <div class="row mb-3 justify-content-center">
-                            <div class="col-md-2" data-bs-toggle="tooltip"
-                                 th:title="#{admin.productPage.productPicture}">
-                                <input type="hidden" name="imagePreview1" class="product-preview"
-                                       th:value="*{imagePreview1}">
-                                <img class="img-thumbnail product-thumbnail"
-                                     th:src="@{|*{#strings.isEmpty(imagePreview1)?'/assets/user/img/plus_icon.png':imagePreview1}|}"
-                                     th:alt="*{name}">
-                            </div>
-                            <div class="col-md-2" data-bs-toggle="tooltip"
-                                 th:title="#{admin.productPage.productPicture}">
-                                <input type="hidden" name="imagePreview2" class="product-preview"
-                                       th:value="*{imagePreview2}">
-                                <img class="img-thumbnail product-thumbnail"
-                                     th:src="@{|*{#strings.isEmpty(imagePreview2)?'/assets/user/img/plus_icon.png':imagePreview2}|}"
-                                     th:alt="*{name}">
-                            </div>
-                            <div class="col-md-2" data-bs-toggle="tooltip"
-                                 th:title="#{admin.productPage.productPicture}">
-                                <input type="hidden" name="imagePreview3" class="product-preview"
-                                       th:value="*{imagePreview3}">
-                                <img class="img-thumbnail product-thumbnail"
-                                     th:src="@{|*{#strings.isEmpty(imagePreview3)?'/assets/user/img/plus_icon.png':imagePreview3}|}"
-                                     th:alt="*{name}">
-                            </div>
-                            <div class="col-md-2" data-bs-toggle="tooltip"
-                                 th:id="'unp-product-thumbnail-'+*{id}" th:title="#{admin.productPage.productPicture}">
-                                <input type="hidden" name="imagePreview4" class="product-preview"
-                                       th:value="*{imagePreview4}">
-                                <img class="img-thumbnail product-thumbnail"
-                                     th:src="@{|*{#strings.isEmpty(imagePreview4)?'/assets/user/img/plus_icon.png':imagePreview4}|}"
-                                     th:alt="*{name}">
-                            </div>
-                            <div class="col-md-4" data-bs-toggle="tooltip"
-                                 th:title="#{admin.productPage.productReviewVideo}"
-                                 th:id="'unp-product-video-thumbnail-'+*{id}">
-                                <input type="hidden" name="videoPreview" class="product-preview"
-                                       th:value="*{videoPreview}">
-                                <img class="img-thumbnail product-video-thumbnail"
-                                     th:src="@{https://img.youtube.com/vi/${product.videoPreview}/maxresdefault.jpg}"
-                                     th:alt="*{name}" th:attr="data-id=*{videoPreview}">
-                            </div>
-                        </div>
-                        <div class="mb-3 pb-2">
-                            <label class="form-label" th:for="'unp-product-description-'+*{id}"
-                                   th:text="#{admin.productPage.productDescription}"></label>
-                            <textarea class="form-control" rows="4" th:id="'unp-product-description-'+*{id}"
-                                      th:text="*{description}" name="description" required></textarea>
-                        </div>
-                        <div class="mb-3 pb-2">
-                            <label class="form-label" th:for="'unp-discount-'+*{id}"
-                                   th:text="#{global.promotion}"></label>
-                            <select class="form-select" th:id="'unp-discount-'+*{id}" name="discountId">
-                                <option value="" th:text="#{global.no_promotion}"></option>
-                                <option th:each="discount:${discounts}" th:value="${discount.id}"
-                                        th:selected="${discount.id == (product.discount == null ? '' : product.discount.id)}"
-                                        th:text="${#numbers.formatInteger(discount.saleOff,0,'NONE')+'%'}"></option>
+                        <div class="d-flex flex-nowrap align-items-center me-3">
+                            <label class="form-label fw-normal text-nowrap mb-0 me-2"
+                                   th:for="'unp-brand-'+*{id}" th:text="#{global.brand}"></label>
+                            <select class="form-select form-select-sm" th:id="'unp-brand-'+*{id}"
+                                    name="brandId">
+                                <option th:value="${brand.id}" th:selected="${brand.slug == product.brand.slug}"
+                                        th:each="brand:${brands}" th:text="${brand.name}">
+                                </option>
                             </select>
                         </div>
-                        <div class="mb-3 pb-2">
-                            <label class="form-label me-4" th:text="#{admin.productPage.productStatus}"></label>
-                            <!-- Inline radio buttons -->
-                            <div class="form-check form-check-inline"
-                                 th:onclick="visibilityProductAvailable(true,[[*{id}]])">
-                                <input class="form-check-input" type="radio" th:id="'in-stock-'+*{id}"
-                                       value="0" name="available" th:checked="*{available == 0}" required>
-                                <label class="form-check-label" th:for="'in-stock-'+*{id}"
-                                       th:text="#{admin.productPage.inStock}"></label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" th:id="'out-of-stock-'+*{id}"
-                                       value="1" name="available" th:checked="*{available == 1}" required>
-                                <label class="form-check-label" th:for="'out-of-stock-'+*{id}"
-                                       th:text="#{admin.productPage.outOfStock}"></label>
-                            </div>
-                            <div class="form-check form-check-inline"
-                                 th:onclick="visibilityProductAvailable(false,[[${product.id}]])">
-                                <input class="form-check-input" type="radio" th:id="'sold-out-'+*{id}" value="2"
-                                       name="available" th:checked="*{available == 2}" required>
-                                <label class="form-check-label" th:for="'sold-out-'+*{id}"
-                                       th:text="#{admin.productPage.soldOut}"></label>
-                            </div>
-                        </div>
-                        <div class="row" th:classappend="*{available!=0}?'d-none':''"
-                             th:id="'product-available-'+*{id}">
-                            <div class="col-sm-6 mb-3">
-                                <label class="form-label" th:for="'unp-product-quantity-'+*{id}"
-                                       th:text="#{admin.productPage.productQuantity}"></label>
-                                <div class="input-group"><span class="input-group-text"><i
-                                        class="fa-solid fa-input-numeric"></i></span>
-                                    <input class="form-control" min="0" type="number" name="quantity"
-                                           th:value="*{quantity}" th:required="*{available==0}"
-                                           th:id="'unp-product-quantity-'+*{id}">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 mb-3">
-                                <label class="form-label" th:for="'unp-product-price-'+*{id}"
-                                       th:text="#{admin.productPage.productPrice}"></label>
-                                <div class="input-group"><span class="input-group-text"><i
-                                        class="fa-solid fa-money-bill-simple"></i></span>
-                                    <input class="form-control number-input" type="text" name="price"
-                                           th:id="'unp-product-price-'+*{id}"
-                                           th:value="*{#numbers.formatDecimal(price,0,'NONE',0,'NONE')}"
-                                           th:required="*{available==0}">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer btn-group">
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
-                            th:text="#{global.close}"></button>
-                    <button type="submit" class="btn btn-primary btn-sm" th:form="'edit-product-frm-'+*{id}"
-                            th:text="#{global.save}"></button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Title-->
-    <div class="d-sm-flex flex-wrap justify-content-between align-items-center border-bottom pb-4 mb-4">
-        <h2 class="h3 m-0 text-center text-sm-start" th:text="#{admin.productPage.title}"></h2>
-        <div class="d-flex align-items-center">
-            <div class="d-flex flex-nowrap align-items-center me-3">
-                <label class="form-label fw-normal text-nowrap mb-0 me-2" for="category-selector"
-                       th:text="#{global.category}"></label>
-                <select class="form-select form-select-sm" id="category-selector" th:onchange="getProducts()">
-                    <option th:each="category:${categories}" th:selected="${category.slug}==${categorySlug}"
-                            th:text="${#locale.language=='vi'}?${category.nameVI}:${category.nameEN}"
-                            th:if="${category.products.size() > 0}" th:value="${category.slug}"></option>
-                </select>
-            </div>
-            <div class="d-flex flex-nowrap align-items-center me-3">
-                <label class="form-label fw-normal text-nowrap mb-0 me-2" for="brand-selector"
-                       th:text="#{global.brand}"></label>
-                <select class="form-select form-select-sm" id="brand-selector" onchange="getProducts()">
-                    <option th:value="${brand.slug}" th:each="brand:${brandsByCategory}"
-                            th:selected="${brand.slug== brandSlug}" th:text="${brand.name}">
-
-                    </option>
-                </select>
-            </div>
-            <div data-bs-toggle="tooltip" data-bs-placement="top" th:title="#{admin.productPage.addProduct}">
-                <a class="link-success" href="javascript:void(0)" onclick="newCategory()"
-                   data-bs-toggle="modal" data-bs-target="#productDetailModal"><i
-                        class="fs-2 fa-regular fa-circle-plus"></i></a>
-            </div>
-        </div>
-    </div>
-    <!-- Color borders on tables -->
-    <div class="table-responsive">
-        <table class="table" id="product-table">
-            <thead>
-            <tr>
-                <th th:text="#{global.photo}"></th>
-                <th th:text="#{global.name}"></th>
-                <th th:text="#{global.brand}"></th>
-                <th class="text-center" th:text="#{global.quantity}"></th>
-                <th class="text-center" th:text="#{global.price}"></th>
-                <th class="text-center" th:text="#{global.status}"></th>
-                <th class="text-center" th:text="#{global.promotion}"></th>
-                <th class="text-center"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="product:${products}" th:object="${product}">
-                <td class="align-middle">
-                    <img class="img-fluid" th:src="@{|*{image}|}" th:alt="*{name}" style="width: 100px; height: 100px"/>
-                </td>
-                <td class="align-middle">
-                    <a class="link-primary" th:href="@{|/product-detail/*{slug}|}" th:text="*{name}"></a>
-                </td>
-                <td class="align-middle text-center" th:text="*{brand.name}"></td>
-                <td class="align-middle text-center" th:text="*{quantity}"></td>
-                <td class="align-middle text-center"
-                    th:text="*{#numbers.formatDecimal(price,0,'POINT',0,'NONE')+'₫'}"></td>
-                <td class="align-middle text-center fs-lg">
-                    <span th:if="*{available==0}" th:text="#{global.in_stock}" class="badge bg-success"></span>
-                    <span th:if="*{available==1}" th:text="#{global.out_of_stock}" class="badge bg-warning"></span>
-                    <span th:if="*{available==2}" th:text="#{global.sold_out}" class="badge bg-danger"></span>
-                </td>
-                <td class="align-middle text-center fs-lg">
-                    <span class="badge bg-danger rounded-pill" th:if="*{discount != null}"
-                        th:text="*{#numbers.formatInteger(discount.saleOff,0,'NONE')+'%'}">
-                    </span>
-                </td>
-                <td class="align-middle text-center fs-5">
-                    <div class="d-flex justify-content-center">
-                        <a class="btn bg-faded-accent btn-icon me-2" href="javascript:void(0)" data-bs-toggle="modal"
-                            th:attr="data-bs-target='#productDetailModal'+*{id}">
-                            <i class="fa-regular fa-pen-to-square"></i>
-                        </a>
-                        <a class="btn bg-faded-danger btn-icon" href="javascript:void(0)"
-                           th:onclick="removeProduct([[${product.slug}]])">
-                            <i class="fa-regular fa-circle-minus"></i>
-                        </a>
                     </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                    <input type="hidden" name="id" th:value="*{id}"/>
+                    <div class="mb-3 pb-2">
+                        <label class="form-label" th:for="'unp-product-name-'+*{id}"
+                               th:text="#{admin.productPage.productName}"></label>
+                        <input class="form-control" type="text" th:id="'unp-product-name-'+*{id}"
+                               th:value="*{name}" name="name" required
+                               th:onkeyup="autoSlug([['unp-product-name-'+*{id}]],[['unp-product-slug-'+*{id}]])">
+                    </div>
+                    <div class="mb-3 pb-2">
+                        <label class="form-label" th:for="'unp-product-slug-'+*{id}"
+                               th:text="#{admin.productPage.productSlug}"></label>
+                        <input class="form-control" type="text" th:id="'unp-product-slug-'+*{id}"
+                               th:value="*{slug}" th:attr="data-slug=*{slug}" name="slug" required>
+                        <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
+                    </div>
+                    <div class="file-drop-area mb-3" onclick="changeProductImage(this)">
+                        <div class="file-drop-preview img-thumbnail rounded">
+                            <img class="unp-product-img" th:src="*{image}" th:alt="*{name}">
+                        </div>
+                        <button class="file-drop-btn btn btn-primary btn-sm mb-2" type="button"
+                                onclick="changeProductImage(this)"
+                                th:text="#{admin.productPage.uploadProductPhoto.button}">
+                        </button>
+                        <input type="hidden" name="image" class="product-img" th:value="*{image}">
+                        <div class="form-text" th:text="#{admin.productPage.uploadProductPhoto.note}"></div>
+                    </div>
+                    <div class="row mb-3 justify-content-center">
+                        <div class="col-md-2" data-bs-toggle="tooltip"
+                             th:title="#{admin.productPage.productPicture}">
+                            <input type="hidden" name="imagePreview1" class="product-preview"
+                                   th:value="*{imagePreview1}">
+                            <img class="img-thumbnail product-thumbnail"
+                                 th:src="@{|*{#strings.isEmpty(imagePreview1)?'/assets/user/img/plus_icon.png':imagePreview1}|}"
+                                 th:alt="*{name}">
+                        </div>
+                        <div class="col-md-2" data-bs-toggle="tooltip"
+                             th:title="#{admin.productPage.productPicture}">
+                            <input type="hidden" name="imagePreview2" class="product-preview"
+                                   th:value="*{imagePreview2}">
+                            <img class="img-thumbnail product-thumbnail"
+                                 th:src="@{|*{#strings.isEmpty(imagePreview2)?'/assets/user/img/plus_icon.png':imagePreview2}|}"
+                                 th:alt="*{name}">
+                        </div>
+                        <div class="col-md-2" data-bs-toggle="tooltip"
+                             th:title="#{admin.productPage.productPicture}">
+                            <input type="hidden" name="imagePreview3" class="product-preview"
+                                   th:value="*{imagePreview3}">
+                            <img class="img-thumbnail product-thumbnail"
+                                 th:src="@{|*{#strings.isEmpty(imagePreview3)?'/assets/user/img/plus_icon.png':imagePreview3}|}"
+                                 th:alt="*{name}">
+                        </div>
+                        <div class="col-md-2" data-bs-toggle="tooltip"
+                             th:id="'unp-product-thumbnail-'+*{id}" th:title="#{admin.productPage.productPicture}">
+                            <input type="hidden" name="imagePreview4" class="product-preview"
+                                   th:value="*{imagePreview4}">
+                            <img class="img-thumbnail product-thumbnail"
+                                 th:src="@{|*{#strings.isEmpty(imagePreview4)?'/assets/user/img/plus_icon.png':imagePreview4}|}"
+                                 th:alt="*{name}">
+                        </div>
+                        <div class="col-md-4" data-bs-toggle="tooltip"
+                             th:title="#{admin.productPage.productReviewVideo}"
+                             th:id="'unp-product-video-thumbnail-'+*{id}">
+                            <input type="hidden" name="videoPreview" class="product-preview"
+                                   th:value="*{videoPreview}">
+                            <img class="img-thumbnail product-video-thumbnail"
+                                 th:src="@{https://img.youtube.com/vi/${product.videoPreview}/maxresdefault.jpg}"
+                                 th:alt="*{name}" th:attr="data-id=*{videoPreview}">
+                        </div>
+                    </div>
+                    <div class="mb-3 pb-2">
+                        <label class="form-label" th:for="'unp-product-description-'+*{id}"
+                               th:text="#{admin.productPage.productDescription}"></label>
+                        <textarea class="form-control" rows="4" th:id="'unp-product-description-'+*{id}"
+                                  th:text="*{description}" name="description" required></textarea>
+                    </div>
+                    <div class="mb-3 pb-2">
+                        <label class="form-label" th:for="'unp-discount-'+*{id}"
+                               th:text="#{global.promotion}"></label>
+                        <select class="form-select" th:id="'unp-discount-'+*{id}" name="discountId">
+                            <option value="" th:text="#{global.no_promotion}"></option>
+                            <option th:each="discount:${discounts}" th:value="${discount.id}"
+                                    th:selected="${discount.id == (product.discount == null ? '' : product.discount.id)}"
+                                    th:text="${#numbers.formatInteger(discount.saleOff,0,'NONE')+'%'}"></option>
+                        </select>
+                    </div>
+                    <div class="mb-3 pb-2">
+                        <label class="form-label me-4" th:text="#{admin.productPage.productStatus}"></label>
+                        <!-- Inline radio buttons -->
+                        <div class="form-check form-check-inline"
+                             th:onclick="visibilityProductAvailable(true,[[*{id}]])">
+                            <input class="form-check-input" type="radio" th:id="'in-stock-'+*{id}"
+                                   value="0" name="available" th:checked="*{available == 0}" required>
+                            <label class="form-check-label" th:for="'in-stock-'+*{id}"
+                                   th:text="#{admin.productPage.inStock}"></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:id="'out-of-stock-'+*{id}"
+                                   value="1" name="available" th:checked="*{available == 1}" required>
+                            <label class="form-check-label" th:for="'out-of-stock-'+*{id}"
+                                   th:text="#{admin.productPage.outOfStock}"></label>
+                        </div>
+                        <div class="form-check form-check-inline"
+                             th:onclick="visibilityProductAvailable(false,[[${product.id}]])">
+                            <input class="form-check-input" type="radio" th:id="'sold-out-'+*{id}" value="2"
+                                   name="available" th:checked="*{available == 2}" required>
+                            <label class="form-check-label" th:for="'sold-out-'+*{id}"
+                                   th:text="#{admin.productPage.soldOut}"></label>
+                        </div>
+                    </div>
+                    <div class="row" th:classappend="*{available!=0}?'d-none':''"
+                         th:id="'product-available-'+*{id}">
+                        <div class="col-sm-6 mb-3">
+                            <label class="form-label" th:for="'unp-product-quantity-'+*{id}"
+                                   th:text="#{admin.productPage.productQuantity}"></label>
+                            <div class="input-group"><span class="input-group-text"><i
+                                    class="fa-solid fa-input-numeric"></i></span>
+                                <input class="form-control" min="0" type="number" name="quantity"
+                                       th:value="*{quantity}" th:required="*{available==0}"
+                                       th:id="'unp-product-quantity-'+*{id}">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <label class="form-label" th:for="'unp-product-price-'+*{id}"
+                                   th:text="#{admin.productPage.productPrice}"></label>
+                            <div class="input-group"><span class="input-group-text"><i
+                                    class="fa-solid fa-money-bill-simple"></i></span>
+                                <input class="form-control number-input" type="text" name="price"
+                                       th:id="'unp-product-price-'+*{id}"
+                                       th:value="*{#numbers.formatDecimal(price,0,'NONE',0,'NONE')}"
+                                       th:required="*{available==0}">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-group">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
+                        th:text="#{global.close}"></button>
+                <button type="submit" class="btn btn-primary btn-sm" th:form="'edit-product-frm-'+*{id}"
+                        th:text="#{global.save}"></button>
+            </div>
+        </div>
     </div>
 </div>
-</body>
-</html>
+<!-- Title-->
+<div class="d-sm-flex flex-wrap justify-content-between align-items-center border-bottom pb-4 mb-4">
+    <h2 class="h3 m-0 text-center text-sm-start" th:text="#{admin.productPage.title}"></h2>
+    <div class="d-flex align-items-center">
+        <div class="d-flex flex-nowrap align-items-center me-3">
+            <label class="form-label fw-normal text-nowrap mb-0 me-2" for="category-selector"
+                   th:text="#{global.category}"></label>
+            <select class="form-select form-select-sm" id="category-selector" th:onchange="getProducts()">
+                <option th:each="category:${categories}" th:selected="${category.slug}==${categorySlug}"
+                        th:text="${#locale.language=='vi'}?${category.nameVI}:${category.nameEN}"
+                        th:if="${category.products.size() > 0}" th:value="${category.slug}"></option>
+            </select>
+        </div>
+        <div class="d-flex flex-nowrap align-items-center me-3">
+            <label class="form-label fw-normal text-nowrap mb-0 me-2" for="brand-selector"
+                   th:text="#{global.brand}"></label>
+            <select class="form-select form-select-sm" id="brand-selector" onchange="getProducts()">
+                <option th:value="${brand.slug}" th:each="brand:${brandsByCategory}"
+                        th:selected="${brand.slug== brandSlug}" th:text="${brand.name}">
+
+                </option>
+            </select>
+        </div>
+        <div data-bs-toggle="tooltip" data-bs-placement="top" th:title="#{admin.productPage.addProduct}">
+            <a class="link-success" href="javascript:void(0)" onclick="newCategory()"
+               data-bs-toggle="modal" data-bs-target="#productDetailModal"><i
+                    class="fs-2 fa-regular fa-circle-plus"></i></a>
+        </div>
+    </div>
+</div>
+<!-- Color borders on tables -->
+<div class="table-responsive">
+    <table class="table" id="product-table">
+        <thead>
+        <tr>
+            <th th:text="#{global.photo}"></th>
+            <th th:text="#{global.name}"></th>
+            <th th:text="#{global.brand}"></th>
+            <th class="text-center" th:text="#{global.quantity}"></th>
+            <th class="text-center" th:text="#{global.price}"></th>
+            <th class="text-center" th:text="#{global.status}"></th>
+            <th class="text-center" th:text="#{global.promotion}"></th>
+            <th class="text-center"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product:${products}" th:object="${product}">
+            <td class="align-middle">
+                <img class="img-fluid" th:src="@{|*{image}|}" th:alt="*{name}" style="width: 100px; height: 100px"/>
+            </td>
+            <td class="align-middle">
+                <a class="link-primary" th:href="@{|/product-detail/*{slug}|}" th:text="*{name}"></a>
+            </td>
+            <td class="align-middle text-center" th:text="*{brand.name}"></td>
+            <td class="align-middle text-center" th:text="*{quantity}"></td>
+            <td class="align-middle text-center"
+                th:text="*{#numbers.formatDecimal(price,0,'POINT',0,'NONE')+'₫'}"></td>
+            <td class="align-middle text-center fs-lg">
+                <span th:if="*{available==0}" th:text="#{global.in_stock}" class="badge bg-success"></span>
+                <span th:if="*{available==1}" th:text="#{global.out_of_stock}" class="badge bg-warning"></span>
+                <span th:if="*{available==2}" th:text="#{global.sold_out}" class="badge bg-danger"></span>
+            </td>
+            <td class="align-middle text-center fs-lg">
+                    <span class="badge bg-danger rounded-pill" th:if="*{discount != null}"
+                          th:text="*{#numbers.formatInteger(discount.saleOff,0,'NONE')+'%'}">
+                    </span>
+            </td>
+            <td class="align-middle text-center fs-5">
+                <div class="d-flex justify-content-center">
+                    <a class="btn bg-faded-accent btn-icon me-2" href="javascript:void(0)" data-bs-toggle="modal"
+                       th:attr="data-bs-target='#productDetailModal'+*{id}">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                    <a class="btn bg-faded-danger btn-icon" href="javascript:void(0)"
+                       th:onclick="removeProduct([[${product.slug}]])">
+                        <i class="fa-regular fa-circle-minus"></i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

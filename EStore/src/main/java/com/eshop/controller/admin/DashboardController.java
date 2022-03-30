@@ -34,9 +34,9 @@ public class DashboardController {
     @Autowired
     private DiscountService discountService;
 
-    @RequestMapping("")
+    @RequestMapping
     public String showDashboardPage() {
-        return "redirect:dashboard/report";
+        return "admin/index";
     }
 
     @RequestMapping("/category-management")

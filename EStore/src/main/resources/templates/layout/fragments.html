@@ -298,27 +298,12 @@
         <a class="btn btn-outline-accent d-block" href="#manage-menu" data-bs-toggle="collapse"><i
                 class="ci-settings me-2"></i><span th:text="#{global.manage}"></span>
         </a>
-        <a class="btn btn-outline-accent d-block" href="#statistic-menu" data-bs-toggle="collapse"><i
-                class="ci-view-list me-2"></i><span th:text="#{global.statistic}"></span>
-        </a>
         <a class="btn btn-outline-accent d-block" href="#account-menu" data-bs-toggle="collapse"><i
                 class="ci-user-circle me-2"></i><span th:text="#{global.account}"></span>
         </a>
     </div>
     <!-- Actual menu-->
     <div class="h-100 border-end mb-2">
-        <div class="d-lg-block collapse" id="statistic-menu">
-            <div class="bg-secondary p-4">
-                <h3 class="fs-sm mb-0 text-muted" th:text="#{global.statistic}"></h3>
-            </div>
-            <ul class="list-unstyled mb-0">
-                <li class="border-bottom mb-0">
-                    <a class="nav-link-style d-flex align-items-center px-4 py-3" th:href="@{/dashboard/report}">
-                        <i class="ci-view-grid opacity-60 me-2"></i><span th:text="#{admin.report.synthesis}"></span>
-                    </a>
-                </li>
-            </ul>
-        </div>
         <div class="d-lg-block collapse" id="manage-menu">
             <div class="bg-secondary p-4">
                 <h3 class="fs-sm mb-0 text-muted" th:text="#{global.manage}"></h3>
@@ -326,34 +311,34 @@
             <ul class="list-unstyled mb-0">
                 <li class="border-bottom mb-0">
                     <a class="nav-link-style d-flex align-items-center px-4 py-3"
-                       th:href="@{/dashboard/category-management}">
+                       th:href="@{'#!category-management'}">
                         <i class="ci-filter-alt opacity-60 me-2"></i><span th:text="#{global.categories}"></span>
                     </a>
                 </li>
                 <li class="border-bottom mb-0">
                     <a class="nav-link-style d-flex align-items-center px-4 py-3"
-                       th:href="@{/dashboard/brand-management}">
+                       th:href="@{'#!brand-management'}">
                         <i class="ci-globe opacity-60 me-2"></i><span
                             class="m_title" th:text="#{global.brand}"></span>
                     </a>
                 </li>
                 <li class="border-bottom mb-0">
                     <a class="nav-link-style d-flex align-items-center px-4 py-3"
-                       th:href="@{/dashboard/product-management}">
+                       th:href="@{'#!product-management'}">
                         <i class="ci-package opacity-60 me-2"></i><span
                             class="m_title" th:text="#{global.products}"></span>
                     </a>
                 </li>
                 <li class="border-bottom mb-0">
                     <a class="nav-link-style d-flex align-items-center px-4 py-3"
-                       th:href="@{/dashboard/user-management}">
+                       th:href="@{'#!user-management'}">
                         <i class="ci-user-circle opacity-60 me-2"></i><span
                             class="m_title" th:text="#{global.user}"></span>
                     </a>
                 </li>
                 <li class="border-bottom mb-0">
                     <a class="nav-link-style d-flex align-items-center px-4 py-3"
-                       th:href="@{/dashboard/discount-management}">
+                       th:href="@{'#!discount-management'}">
                         <i class="ci-user-circle opacity-60 me-2"></i><span
                             class="m_title" th:text="#{global.promotion}"></span>
                     </a>
@@ -494,9 +479,6 @@
 
     <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.js}"></script>
     <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.3/plugins/rangePlugin.js}"></script>
-
-    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js}"></script>
-    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.8.2/angular-route.min.js}"></script>
     <!-- Main theme script-->
     <script th:src="@{/assets/user/js/theme.min.js}"></script>
     <script th:src="@{/assets/user/js/main.js}"></script>

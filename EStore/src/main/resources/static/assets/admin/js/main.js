@@ -1,5 +1,4 @@
 // Example starter JavaScript for disabling form submissions if there are invalid fields
-
 (function () {
     'use strict'
 
@@ -20,6 +19,7 @@
         })
 })()
 
+// Tooltip Bootstrap
 let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
@@ -115,14 +115,7 @@ $(document).ready(function() {
 });
 
 /* Category Management */
-$('#catalog-table').DataTable({
-    "scrollY": false,
-    "language": {
-        "url": lang === "vi" ? "//cdn.datatables.net/plug-ins/1.10.19/i18n/Vietnamese.json" : "//cdn.datatables.net/plug-ins/1.10.19/i18n/English.json"
-    },
-    "order": [[0, "asc"]],
-    "responsive": true
-});
+
 
 function newCategory() {
     $('#name-vi').val("");
@@ -253,20 +246,6 @@ function updateCategory(categorySlug) {
         }
     );
 }
-
-$("#category-info-frm").submit(function(e) {
-    e.preventDefault();
-
-    if ($('#category-info-frm').get(0).checkValidity()) {
-        let submitBtn = $("#btn-submit");
-        let slug = submitBtn.attr("data-action");
-        if (submitBtn.attr("datatype") === "edit") {
-            updateCategory(slug);
-        } else {
-            createCategory();
-        }
-    }
-});
 
 /* Brand Management */
 $('#brand-table').DataTable({

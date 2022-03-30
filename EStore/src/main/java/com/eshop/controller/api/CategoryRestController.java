@@ -41,7 +41,7 @@ public class CategoryRestController {
     @PutMapping("/{slug}")
     public CategoryDTO updateCategory (@PathVariable("slug") String categorySlug, @RequestBody CategoryDTO categoryDTO) {
         Category category = MapperUtils.map(categoryDTO, Category.class);
-        if (categoryService.getBySlug(categorySlug) != null && !categorySlug.equals(categoryDTO.getSlug())) {
+        if (categoryService.getBySlug(categorySlug) != null && categorySlug.equals(categoryDTO.getSlug())) {
             throw new RuntimeException(messageUtils.getMessage("NotExistsSlug"));
         }
         return MapperUtils.map(categoryService.updateCategory(categorySlug, category), CategoryDTO.class);
