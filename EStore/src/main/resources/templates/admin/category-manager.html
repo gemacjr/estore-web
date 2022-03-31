@@ -8,6 +8,13 @@
             </div>
             <div class="modal-body tab-content py-4">
                 <form id="category-info-frm" name="categoryForm" novalidate>
+                    <!-- Primary alert -->
+                    <div class="alert alert-primary d-flex" role="alert" ng-hide="!alertMessage">
+                        <div class="alert-icon">
+                            <i class="ci-bell"></i>
+                        </div>
+                        <div>{{alertMessage}}</div>
+                    </div>
                     <div class="mb-3">
                         <label for="name-vi" class="form-label" th:text="#{global.name}+' - VI'"></label>
                         <input class="form-control" type="text" id="name-vi" name="nameVI" ng-model="category.nameVI"

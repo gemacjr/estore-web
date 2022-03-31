@@ -54,6 +54,7 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.categories = [];
     $scope.category = {};
     $scope.isEdit = false;
+    $scope.alertMessage = '';
 
     $scope.autoSlug = function (input) {
         $scope.category.slug = angular.copy($rootScope.slugify(input));
@@ -69,13 +70,15 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
         $scope.category = {};
         $scope.categoryForm.$setUntouched();
         $('#categoryModal').modal('show');
-
     };
     $scope.addCategory = function (category) {
         $http.post('/api/categories', category).then(function (response) {
             $scope.getCategories();
             $scope.isEdit = false;
             $('#categoryModal').modal('hide');
+        }).catch(function (error) {
+            console.log(error);
+            $scope.alertMessage = error.data.message;
         });
     };
     $scope.updateCategory = function (category) {

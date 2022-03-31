@@ -28,7 +28,11 @@ public class CategoryRestController {
 
     @PostMapping
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
-        categoryService.create(category);
+        if (categoryService.get(category.getSlug()) != null) {
+            throw new IllegalArgumentException(messageUtils.getMessage("NotExistsSlug"));
+        } else if (categoryService.create(category) == null) {
+            throw new IllegalArgumentException(messageUtils.getMessage("SomethingWentWrong"));
+        }
         return ResponseEntity.ok().body(category);
     }
 
