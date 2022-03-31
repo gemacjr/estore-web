@@ -67,7 +67,11 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
     };
     $scope.newCategory = function () {
         $scope.category = {};
+        $scope.categoryFrm.$setPristine();
+        $scope.categoryFrm.$setValidity();
+        $scope.categoryFrm.$setUntouched();
         $('#categoryModal').modal('show');
+
     };
     $scope.addCategory = function (category) {
         $http.post('/api/categories', category).then(function (response) {
