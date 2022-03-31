@@ -74,7 +74,6 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.getCategories = function () {
         $http.get('/api/categories').then(function (response) {
             $scope.categories = response.data;
-            console.log($scope.categories);
         });
     };
     $scope.newCategory = function () {
@@ -100,7 +99,6 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
         });
     };
     $scope.updateCategory = function (category) {
-        console.log(category);
         $http.put('/api/categories/' + category.id, category).then(function (response) {
             $scope.getCategories();
             $('#categoryModal').modal('hide');
@@ -154,7 +152,98 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
 
     $scope.getCategories();
 });
-app.controller('brandManagerCtrl', function ($scope, $http) {
+app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
+    $('[data-bs-toggle="tooltip"]').tooltip();
+
+    $scope.brands = [];
+    $scope.brand = {};
+    $scope.isEdit = false;
+
+    $scope.autoSlug = function (input) {
+        $scope.brand.slug = angular.copy($rootScope.slugify(input));
+    };
+
+    $scope.getBrands = function () {
+        $http.get('/api/brands').then(function (response) {
+            $scope.brands = response.data;
+            console.log($scope.brands);
+        });
+    };
+    $scope.newBrand = function () {
+        $scope.brand = {};
+        $scope.brandForm.$setUntouched();
+        $('#brandModal').modal('show');
+    };
+    $scope.addBrand = function (brand) {
+        $http.post('/api/brands', brand).then(function (response) {
+            $scope.getBrands();
+            $scope.isEdit = false;
+            $('#brandModal').modal('hide');
+
+            $rootScope.toast.fire({
+                icon: 'success',
+                title: $scope.lang === 'vi' ? 'Thêm thương hiệu thành công' : 'Add brand successfully'
+            })
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
+        });
+    };
+    $scope.updateBrand = function (brand) {
+        $http.put('/api/brands/' + brand.id, brand).then(function (response) {
+            $scope.getBrands();
+            $('#brandModal').modal('hide');
+
+            $rootScope.toast.fire({
+                icon: 'success',
+                title: $scope.lang === 'vi' ? 'Cập nhật thương hiệu thành công' : 'Update brand successfully'
+            })
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
+        });
+    };
+    $scope.deleteBrand = function (brand) {
+        Swal.fire({
+            title: lang === "en" ? "Delete brand?" : "Xóa thương hiệu này?",
+            text: lang === "en" ? "You won't be able to revert this!" : "Bạn sẽ không thể khôi phục lại!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: lang === "en" ? "Delete" : "Xóa",
+            cancelButtonText: lang === "en" ? "Cancel" : "Hủy"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $http.delete('/api/brands/' + brand.id).then(function (response) {
+                    $scope.getBrands();
+
+                    $rootScope.toast.fire({
+                        icon: 'success',
+                        title: $scope.lang === 'vi' ? 'Xóa danh mục thành công' : 'Delete brand successfully'
+                    })
+                }).catch(function (error) {
+                    $rootScope.toast.fire({
+                        icon: 'error',
+                        title: error.data.message
+                    })
+                });
+            }
+        })
+    };
+    $scope.editBrand = function (brand) {
+        $http.get('/api/brands/' + brand.id).then(function (response) {
+            $scope.brand = response.data;
+            $scope.isEdit = true;
+            $('#brandModal').modal('show');
+        });
+    };
+
+    $scope.getBrands();
 });
 app.controller('productManagerCtrl', function ($scope, $http) {
 });

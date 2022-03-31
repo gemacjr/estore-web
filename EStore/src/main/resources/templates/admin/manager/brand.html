@@ -1,0 +1,80 @@
+<!-- Modal -->
+<div class="modal fade" id="brandModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" th:text="#{global.brand}"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body tab-content py-4">
+                <form id="brand-info-frm" name="brandForm" novalidate>
+                    <div class="mb-3">
+                        <label for="name" class="form-label" th:text="#{global.name}"></label>
+                        <input class="form-control" type="text" id="name" name="name" ng-keyup="autoSlug(brand.name)"
+                               ng-model="brand.name" required>
+                        <div ng-show="brandForm.$submitted || brandForm.name.$touched">
+                            <div class="invalid-tooltip" ng-show="brandForm.name.$error.required"
+                                 th:text="#{NotBlank.field}"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="slug" class="form-label">Slug</label>
+                        <input class="form-control" type="text" id="slug" name="slug" ng-model="brand.slug" required>
+                        <div ng-show="brandForm.$submitted || brandForm.slug.$touched">
+                            <div class="invalid-tooltip" ng-show="brandForm.slug.$error.required"
+                                 th:text="#{NotBlank.field}"></div>
+                        </div>
+                    </div>
+                    <div class="btn-group w-100">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
+                                th:text="#{global.close}"></button>
+                        <button type="button" class="btn btn-primary btn-sm" ng-disabled="brandForm.$invalid"
+                                th:text="#{global.add}" ng-click="addBrand(brand)" ng-show="!isEdit"></button>
+                        <button type="button" class="btn btn-primary btn-sm" ng-disabled="brandForm.$invalid"
+                                th:text="#{global.save}" ng-click="updateBrand(brand)" ng-show="isEdit"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Title-->
+<div class="d-sm-flex flex-wrap justify-content-between align-items-center border-bottom pb-4 mb-4">
+    <h2 class="h3 m-0 text-center text-sm-start">
+        <span th:text="#{admin.brandPage.title}"></span><span
+            class="badge bg-faded-accent fs-sm text-body align-middle ms-2">{{brands.length}}</span>
+    </h2>
+    <div data-bs-toggle="tooltip" data-bs-placement="left" th:title="#{admin.brandPage.add}">
+        <a class="link-success" href="javascript:void(0)" ng-click="newBrand()">
+            <i class="fs-2 fa-regular fa-circle-plus"></i>
+        </a>
+    </div>
+</div>
+<!-- Color borders on tables -->
+<div class="table-responsive">
+    <table class="table table-borderless table-striped">
+        <thead>
+        <tr>
+            <th class="text-light">#</th>
+            <th class="text-light" th:text="#{global.name}"></th>
+            <th class="text-light"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="brand in brands track by $index">
+            <th class="align-middle" scope="row">{{$index + 1}}</th>
+            <td class="align-middle">{{brand.name}}</td>
+            <td class="align-middle fs-5">
+                <div class="d-flex justify-content-center">
+                    <a class="link-info me-2" href="javascript:void(0)" ng-click="editBrand(brand)">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                    <a class="link-danger" href="javascript:void(0)" ng-click="deleteBrand(brand)">
+                        <i class="fa-regular fa-circle-minus"></i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

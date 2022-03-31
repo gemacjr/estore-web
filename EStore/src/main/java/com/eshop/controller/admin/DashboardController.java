@@ -41,20 +41,18 @@ public class DashboardController {
 
     @RequestMapping("/category-management")
     public String showCategoryManagerPage() {
-        return "admin/category-manager";
+        return "admin/manager/category";
     }
 
     @RequestMapping("/brand-management")
-    public String showBrandManager(Model model) {
-        List<Brand> brands = brandService.getAll();
-        model.addAttribute("brands", brands);
-        return "admin/brand-manager";
+    public String showBrandManagerPage(Model model) {
+        return "admin/manager/brand";
     }
 
     @RequestMapping("/product-management")
     public String showProductManager(Model model, @RequestParam Optional<String> category, @RequestParam Optional<String> brand) {
         String categorySlug = category.orElseGet(() -> categoryService.getAll().get(0).getSlug());
-        List<Brand> brandsByCategory = brandService.getByCategory(categorySlug);
+        List<Brand> brandsByCategory = brandService.getAll(categorySlug);
 
         String brandSlug = brand.orElseGet(() -> brandsByCategory.get(0).getSlug());
         model.addAttribute("brandsByCategory", brandsByCategory);
