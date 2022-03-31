@@ -109,17 +109,40 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
                 icon: 'success',
                 title: $scope.lang === 'vi' ? 'Cập nhật danh mục thành công' : 'Update category successfully'
             })
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
         });
     };
     $scope.deleteCategory = function (category) {
-        $http.delete('/api/categories/' + category.id).then(function (response) {
-            $scope.getCategories();
+        Swal.fire({
+            title: lang === "en" ? "Delete category?" : "Xóa danh mục?",
+            text: lang === "en" ? "You won't be able to revert this!" : "Bạn sẽ không thể khôi phục lại!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: lang === "en" ? "Delete" : "Xóa",
+            cancelButtonText: lang === "en" ? "Cancel" : "Hủy"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $http.delete('/api/categories/' + category.id).then(function (response) {
+                    $scope.getCategories();
 
-            $rootScope.toast.fire({
-                icon: 'success',
-                title: $scope.lang === 'vi' ? 'Xóa danh mục thành công' : 'Delete category successfully'
-            })
-        });
+                    $rootScope.toast.fire({
+                        icon: 'success',
+                        title: $scope.lang === 'vi' ? 'Xóa danh mục thành công' : 'Delete category successfully'
+                    })
+                }).catch(function (error) {
+                    $rootScope.toast.fire({
+                        icon: 'error',
+                        title: error.data.message
+                    })
+                });
+            }
+        })
     };
     $scope.editCategory = function (category) {
         $http.get('/api/categories/' + category.id).then(function (response) {

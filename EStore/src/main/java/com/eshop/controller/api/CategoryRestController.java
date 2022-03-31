@@ -30,7 +30,8 @@ public class CategoryRestController {
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
         if (categoryService.get(category.getSlug()) != null) {
             throw new IllegalArgumentException(messageUtils.getMessage("NotExistsSlug"));
-        } else if (categoryService.create(category) == null) {
+        }
+        if (categoryService.create(category) == null) {
             throw new IllegalArgumentException(messageUtils.getMessage("SomethingWentWrong"));
         }
         return ResponseEntity.ok().body(category);
@@ -38,7 +39,13 @@ public class CategoryRestController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Category> updateCategory(@PathVariable("id") Integer categoryId, @RequestBody Category category) {
-        return categoryService.update(categoryId, category) != null ? ResponseEntity.ok().body(category) : ResponseEntity.notFound().build();
+        if (categoryService.get(category.getSlug()) != null && !categoryService.get(category.getSlug()).getId().equals(categoryId)) {
+            throw new IllegalArgumentException(messageUtils.getMessage("NotExistsSlug"));
+        }
+        if (categoryService.update(categoryId, category) == null) {
+            throw new IllegalArgumentException(messageUtils.getMessage("SomethingWentWrong"));
+        }
+        return ResponseEntity.ok().body(category);
     }
 
     @DeleteMapping("/{id}")
