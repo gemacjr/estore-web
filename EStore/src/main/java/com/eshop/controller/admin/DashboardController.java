@@ -40,8 +40,7 @@ public class DashboardController {
     }
 
     @RequestMapping("/category-management")
-    public String showCategoryManager(Model model) {
-        model.addAttribute("stt", 0);
+    public String showCategoryManagerPage() {
         return "admin/category-manager";
     }
 
@@ -86,7 +85,7 @@ public class DashboardController {
         List<CategoryDTO> categoryList = null;
         if (brand.isPresent()) {
             String brandSlug = brand.get();
-            categoryList = MapperUtils.mapAll(categoryService.getByBrand(brandSlug), CategoryDTO.class);
+            categoryList = MapperUtils.mapAll(categoryService.getAll(brandSlug), CategoryDTO.class);
             model.addAttribute("brandSlugSelected", brandSlug);
         } else {
             categoryList = MapperUtils.mapAll(categoryService.getAll(), CategoryDTO.class);

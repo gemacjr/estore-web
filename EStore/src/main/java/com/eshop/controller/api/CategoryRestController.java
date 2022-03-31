@@ -1,9 +1,7 @@
 package com.eshop.controller.api;
 
-import com.eshop.dto.CategoryDTO;
 import com.eshop.entity.Category;
 import com.eshop.service.CategoryService;
-import com.eshop.utils.MapperUtils;
 import com.eshop.utils.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,39 +9,37 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/category-manager")
+@RequestMapping("/api/categories")
 public class CategoryRestController {
     @Autowired
     private CategoryService categoryService;
     @Autowired
     private MessageUtils messageUtils;
 
-    @SuppressWarnings("rawtypes")
-    @PostMapping("/")
-    public ResponseEntity createCategory (@RequestBody CategoryDTO categoryDTO) {
-        if (categoryService.getBySlug(categoryDTO.getSlug()) != null) {
-            throw new RuntimeException(messageUtils.getMessage("NotExistsSlug"));
-        }
-        Category category = MapperUtils.map(categoryDTO, Category.class);
-        categoryService.createCategory(category);
+    @GetMapping
+    public Iterable<Category> getAllCategories() {
+        return categoryService.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public Category getCategory(@PathVariable("id") Integer categoryId) {
+        return categoryService.get(categoryId);
+    }
+
+    @PostMapping
+    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
+        categoryService.create(category);
+        return ResponseEntity.ok().body(category);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Category> updateCategory(@PathVariable("id") Integer categoryId, @RequestBody Category category) {
+        return categoryService.update(categoryId, category) != null ? ResponseEntity.ok().body(category) : ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Category> removeCategory(@PathVariable("id") Integer categoryId) {
+        categoryService.remove(categoryId);
         return ResponseEntity.ok().build();
-    }
-    @GetMapping("/{slug}")
-    public CategoryDTO getCategory (@PathVariable("slug") String categorySlug) {
-        return MapperUtils.map(categoryService.getBySlug(categorySlug), CategoryDTO.class);
-    }
-    @SuppressWarnings("rawtypes")
-    @DeleteMapping("/{slug}")
-    public ResponseEntity removeCategory (@PathVariable("slug") String categorySlug) {
-        categoryService.removeCategory(categorySlug);
-        return ResponseEntity.ok().build();
-    }
-    @PutMapping("/{slug}")
-    public CategoryDTO updateCategory (@PathVariable("slug") String categorySlug, @RequestBody CategoryDTO categoryDTO) {
-        Category category = MapperUtils.map(categoryDTO, Category.class);
-        if (categoryService.getBySlug(categorySlug) != null && categorySlug.equals(categoryDTO.getSlug())) {
-            throw new RuntimeException(messageUtils.getMessage("NotExistsSlug"));
-        }
-        return MapperUtils.map(categoryService.updateCategory(categorySlug, category), CategoryDTO.class);
     }
 }

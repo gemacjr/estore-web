@@ -56,7 +56,7 @@ public class ProductController {
 
         model.addAttribute("direction", direction);
         model.addAttribute("productPage", productPage);
-        model.addAttribute("category", MapperUtils.map(categoryService.getBySlug(categorySlug), CategoryDTO.class));
+        model.addAttribute("category", MapperUtils.map(categoryService.get(categorySlug), CategoryDTO.class));
         model.addAttribute("brands", MapperUtils.mapAll(brandService.getByCategory(categorySlug), BrandDTO.class));
         return "product/list";
     }
