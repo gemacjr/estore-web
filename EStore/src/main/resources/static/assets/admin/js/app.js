@@ -46,6 +46,17 @@ app.run(function ($rootScope) {
                 .replace(/-+$/, '');
         }
     };
+    $rootScope.toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
 });
 
 app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
@@ -76,9 +87,16 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
             $scope.getCategories();
             $scope.isEdit = false;
             $('#categoryModal').modal('hide');
+
+            $rootScope.toast.fire({
+                icon: 'success',
+                title: $scope.lang === 'vi' ? 'Thêm danh mục thành công' : 'Add category successfully'
+            })
         }).catch(function (error) {
-            console.log(error);
-            $scope.alertMessage = error.data.message;
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
         });
     };
     $scope.updateCategory = function (category) {
@@ -86,11 +104,21 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
         $http.put('/api/categories/' + category.id, category).then(function (response) {
             $scope.getCategories();
             $('#categoryModal').modal('hide');
+
+            $rootScope.toast.fire({
+                icon: 'success',
+                title: $scope.lang === 'vi' ? 'Cập nhật danh mục thành công' : 'Update category successfully'
+            })
         });
     };
     $scope.deleteCategory = function (category) {
         $http.delete('/api/categories/' + category.id).then(function (response) {
             $scope.getCategories();
+
+            $rootScope.toast.fire({
+                icon: 'success',
+                title: $scope.lang === 'vi' ? 'Xóa danh mục thành công' : 'Delete category successfully'
+            })
         });
     };
     $scope.editCategory = function (category) {
