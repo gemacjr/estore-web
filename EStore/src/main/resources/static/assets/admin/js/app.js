@@ -67,9 +67,7 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
     };
     $scope.newCategory = function () {
         $scope.category = {};
-        $scope.categoryFrm.$setPristine();
-        $scope.categoryFrm.$setValidity();
-        $scope.categoryFrm.$setUntouched();
+        $scope.categoryForm.$setUntouched();
         $('#categoryModal').modal('show');
 
     };

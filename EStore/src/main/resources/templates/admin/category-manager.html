@@ -7,42 +7,43 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body tab-content py-4">
-                <form id="category-info-frm" name="categoryFrm">
+                <form id="category-info-frm" name="categoryForm" novalidate>
                     <div class="mb-3">
                         <label for="name-vi" class="form-label" th:text="#{global.name}+' - VI'"></label>
                         <input class="form-control" type="text" id="name-vi" name="nameVI" ng-model="category.nameVI"
                                required>
-                        <div ng-show="categoryFrm.$submitted || categoryFrm.nameVI.$touched">
-                            <div class="invalid-tooltip" ng-show="categoryFrm.nameVI.$error.required"
+                        <div ng-show="categoryForm.$submitted || categoryForm.nameVI.$touched">
+                            <div class="invalid-tooltip" ng-show="categoryForm.nameVI.$error.required"
                                  th:text="#{NotBlank.field}"></div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="name-en" class="form-label" th:text="#{global.name}+' - EN'"></label>
-                        <input class="form-control" type="text" id="name-en" name="nameEN" ng-keyup="autoSlug(category.nameEN)"
+                        <input class="form-control" type="text" id="name-en" name="nameEN"
+                               ng-keyup="autoSlug(category.nameEN)"
                                ng-model="category.nameEN" required>
-                        <div ng-show="categoryFrm.$submitted || categoryFrm.nameEN.$touched">
-                            <div class="invalid-tooltip" ng-show="categoryFrm.nameEN.$error.required"
+                        <div ng-show="categoryForm.$submitted || categoryForm.nameEN.$touched">
+                            <div class="invalid-tooltip" ng-show="categoryForm.nameEN.$error.required"
                                  th:text="#{NotBlank.field}"></div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="slug" class="form-label">Slug</label>
                         <input class="form-control" type="text" id="slug" name="slug" ng-model="category.slug" required>
-                        <div ng-show="categoryFrm.$submitted || categoryFrm.slug.$touched">
-                            <div class="invalid-tooltip" ng-show="categoryFrm.slug.$error.required"
+                        <div ng-show="categoryForm.$submitted || categoryForm.slug.$touched">
+                            <div class="invalid-tooltip" ng-show="categoryForm.slug.$error.required"
                                  th:text="#{NotBlank.field}"></div>
                         </div>
                     </div>
+                    <div class="btn-group w-100">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
+                                th:text="#{global.close}"></button>
+                        <button type="button" class="btn btn-primary btn-sm" ng-disabled="categoryForm.$invalid"
+                                th:text="#{global.add}" ng-click="addCategory(category)" ng-show="!isEdit"></button>
+                        <button type="button" class="btn btn-primary btn-sm" ng-disabled="categoryForm.$invalid"
+                                th:text="#{global.save}" ng-click="updateCategory(category)" ng-show="isEdit"></button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer btn-group">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
-                        th:text="#{global.close}"></button>
-                <button type="submit" class="btn btn-primary btn-sm"
-                        th:text="#{global.add}" ng-click="addCategory(category)" ng-hide="isEdit"></button>
-                <button type="submit" class="btn btn-primary btn-sm"
-                        th:text="#{global.save}" ng-click="updateCategory(category)" ng-show="isEdit"></button>
             </div>
         </div>
     </div>
