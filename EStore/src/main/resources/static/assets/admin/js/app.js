@@ -312,12 +312,18 @@ app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
 
     $scope.getBrands();
 });
-app.controller('productManagerCtrl', function ($scope, $http) {
+app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.brands = [];
     $scope.categories = [];
     $scope.products = [];
     $scope.brandSlug = "";
     $scope.categorySlug = "";
+    $scope.dtOptions = {
+        scrollY: false,
+        order: [[0, 'asc']],
+        language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
+        responsive: true
+    };
 
     $scope.getBrands = function () {
         $http.get('/api/brands').then(function (response) {

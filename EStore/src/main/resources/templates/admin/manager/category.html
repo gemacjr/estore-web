@@ -68,30 +68,28 @@
     </div>
 </div>
 <!-- Color borders on tables -->
-<div class="table-responsive">
-    <table datatable="ng" dt-options="dtOptions" class="table table-borderless table-striped" id="catalog-table">
-        <thead>
-        <tr>
-            <th class="text-light">#</th>
-            <th class="text-light" th:text="#{global.name}"></th>
-            <th class="text-light"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="category in categories track by $index">
-            <th class="align-middle" scope="row">{{$index + 1}}</th>
-            <td class="align-middle">{{lang == 'vi' ? category.nameVI : category.nameEN}}</td>
-            <td class="align-middle fs-5">
-                <div class="d-flex justify-content-center">
-                    <a class="link-info me-2" href="javascript:void(0)" ng-click="editCategory(category)">
-                        <i class="fa-regular fa-pen-to-square"></i>
-                    </a>
-                    <a class="link-danger" href="javascript:void(0)" ng-click="deleteCategory(category)">
-                        <i class="fa-regular fa-circle-minus"></i>
-                    </a>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+<table datatable="ng" dt-options="dtOptions" class="table table-borderless table-striped" id="catalog-table">
+    <thead>
+    <tr>
+        <th class="text-light">#</th>
+        <th class="text-light" th:text="#{global.name}"></th>
+        <th class="text-light"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="category in categories track by $index">
+        <th class="align-middle" scope="row">{{$index + 1}}</th>
+        <td class="align-middle">{{lang == 'vi' ? category.nameVI : category.nameEN}}</td>
+        <td class="align-middle fs-5">
+            <div class="d-flex justify-content-center">
+                <a class="link-info me-2" href="javascript:void(0)" ng-click="editCategory(category)">
+                    <i class="fa-regular fa-pen-to-square"></i>
+                </a>
+                <a class="link-danger" href="javascript:void(0)" ng-click="deleteCategory(category)">
+                    <i class="fa-regular fa-circle-minus"></i>
+                </a>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
