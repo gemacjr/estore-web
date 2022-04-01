@@ -56,12 +56,12 @@
     </div>
 </div>
 <!-- Title-->
-<div class="d-sm-flex flex-wrap justify-content-between align-items-center border-bottom pb-4 mb-4">
-    <h2 class="h3 m-0 text-center text-sm-start">
+<div class="d-sm-flex flex-wrap justify-content-between align-items-center border-bottom mb-4">
+    <h2 class="h3 m-0 text-center text-sm-start pb-4">
         <span th:text="#{admin.categoryPage.title}"></span><span
             class="badge bg-faded-accent fs-sm text-body align-middle ms-2">{{categories.length}}</span>
     </h2>
-    <div data-bs-toggle="tooltip" data-bs-placement="left" th:title="#{global.add_category}">
+    <div class="text-center pb-4" data-bs-toggle="tooltip" data-bs-placement="left" th:title="#{global.add_category}">
         <a class="link-success" href="javascript:void(0)" ng-click="newCategory()">
             <i class="fs-2 fa-regular fa-circle-plus"></i>
         </a>
