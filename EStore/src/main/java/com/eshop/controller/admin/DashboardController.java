@@ -1,9 +1,7 @@
 package com.eshop.controller.admin;
 
 import com.eshop.dto.*;
-import com.eshop.entity.Brand;
 import com.eshop.entity.Discount;
-import com.eshop.entity.Product;
 import com.eshop.entity.User;
 import com.eshop.service.*;
 import com.eshop.utils.MapperUtils;
@@ -50,23 +48,8 @@ public class DashboardController {
     }
 
     @RequestMapping("/product-management")
-    public String showProductManager(Model model, @RequestParam Optional<String> category, @RequestParam Optional<String> brand) {
-        String categorySlug = category.orElseGet(() -> categoryService.getAll().get(0).getSlug());
-        List<Brand> brandsByCategory = brandService.getAll(categorySlug);
-
-        String brandSlug = brand.orElseGet(() -> brandsByCategory.get(0).getSlug());
-        model.addAttribute("brandsByCategory", brandsByCategory);
-        model.addAttribute("brands", brandService.getAll());
-
-        List<Discount> discounts = discountService.getActivedOrderBySaleOffAsc(true);
-        model.addAttribute("discounts", discounts);
-
-        List<Product> products = productService.getByCategoryAndBrand(categorySlug, brandSlug);
-        model.addAttribute("products", products);
-
-        model.addAttribute("categorySlug", categorySlug);
-        model.addAttribute("brandSlug", brandSlug);
-        return "admin/product-manager";
+    public String showProductManagerPage(Model model) {
+        return "admin/manager/product";
     }
 
     @RequestMapping("/report")
@@ -83,7 +66,7 @@ public class DashboardController {
         List<CategoryDTO> categoryList = null;
         if (brand.isPresent()) {
             String brandSlug = brand.get();
-            categoryList = MapperUtils.mapAll(categoryService.getAll(brandSlug), CategoryDTO.class);
+            categoryList = MapperUtils.mapAll(categoryService.getAllByBrand(brandSlug), CategoryDTO.class);
             model.addAttribute("brandSlugSelected", brandSlug);
         } else {
             categoryList = MapperUtils.mapAll(categoryService.getAll(), CategoryDTO.class);

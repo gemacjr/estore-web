@@ -40,6 +40,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getAll(Integer categoryId, Integer brandId) {
+        return productRepo.findByCategoryIdAndBrandId(categoryId, brandId);
+    }
+
+    @Override
+    public List<Product> getAll(String categorySlug, String brandSlug) {
+        return productRepo.findByCategorySlugAndBrandSlug(categorySlug, brandSlug);
+    }
+
+    @Override
+    public Page<Product> getAll(String categorySlug, String brandSlug, int page, int size, String direction) {
+        Sort sort = Sort.by(direction.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, "name");
+        if (brandSlug.isBlank()) {
+            return productRepo.findByCategorySlug(categorySlug, PageRequest.of(page, size, sort));
+        } else {
+            return productRepo.findByCategorySlugAndBrandSlug(categorySlug, brandSlug, PageRequest.of(page, size, sort));
+        }
+    }
+
+    @Override
     public Product getProduct(String slug) {
         return productRepo.findBySlug(slug);
     }
@@ -64,28 +84,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getByCategory(String categorySlug) {
-        return productRepo.findByCategorySlug(categorySlug);
-    }
-
-    @Override
-    public List<Product> getByProduct(String name) {
-        return productRepo.findByNameContainingAllIgnoreCase(name);
-    }
-
-    @Override
-    public List<Product> getByCategoryAndBrand(String categorySlug, String brandSlug) {
-        return productRepo.findByCategorySlugAndBrandSlug(categorySlug, brandSlug);
-    }
-
-    @Override
-    public Page<Product> getByCategoryAndBrand(String categorySlug, String brandSlug, int page, int size, String direction) {
-        Sort sort = Sort.by(direction.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, "name");
-        if (brandSlug.isBlank()) {
-            return productRepo.findByCategorySlug(categorySlug, PageRequest.of(page, size, sort));
-        } else {
-            return productRepo.findByCategorySlugAndBrandSlug(categorySlug, brandSlug, PageRequest.of(page, size, sort));
-        }
+    public List<Product> getByProduct(String productName) {
+        return productRepo.findByNameContainingAllIgnoreCase(productName);
     }
 
     @Override

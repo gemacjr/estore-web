@@ -2,14 +2,7 @@ package com.eshop.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.eshop.dto.ProductToSave;
 import com.eshop.service.ProductService;
@@ -23,6 +16,17 @@ public class ProductRestController {
     private ProductService productService;
     @Autowired
     private MessageUtils messageUtils;
+
+    @GetMapping
+    public ResponseEntity<?> getAllProducts () {
+        return ResponseEntity.ok(productService.getAll());
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllProducts (@RequestParam(value = "categoryId", defaultValue = "0") Integer categoryId,
+                                             @RequestParam(value = "brandId", defaultValue = "0") Integer brandId) {
+        return ResponseEntity.ok(productService.getAll(categoryId, brandId));
+    }
 
     @DeleteMapping("/{slug}")
     @SuppressWarnings("rawtypes")

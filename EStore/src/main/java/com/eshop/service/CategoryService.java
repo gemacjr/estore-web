@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface CategoryService {
     List<Category> getAll();
-    List<Category> getAll(String brandSlug);
-    Category get(String slug);
-    Category get(Integer id);
+    List<Category> getAllByBrand(String brandSlug);
+    Category get(String categorySlug);
+    Category get(Integer categoryId);
     Category update(Integer id, Category category);
     void remove(Integer id);
     Category create(Category category);

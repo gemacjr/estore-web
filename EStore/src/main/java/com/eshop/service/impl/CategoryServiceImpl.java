@@ -24,18 +24,18 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> getAll(String brandSlug) {
+    public List<Category> getAllByBrand(String brandSlug) {
         return categoryRepo.findDistinctByProductsBrandSlug(brandSlug);
     }
 
     @Override
-    public Category get(String slug) {
-        return categoryRepo.findBySlug(slug);
+    public Category get(String categorySlug) {
+        return categoryRepo.findBySlug(categorySlug);
     }
 
     @Override
-    public Category get(Integer id) {
-        return categoryRepo.getById(id);
+    public Category get(Integer categoryId) {
+        return categoryRepo.getById(categoryId);
     }
 
     @Override

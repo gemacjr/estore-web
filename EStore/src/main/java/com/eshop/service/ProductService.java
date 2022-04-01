@@ -8,14 +8,14 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface ProductService {
-    List<Product> getAll();
-    Product getProduct(String slug);
     List<Product> getPromotionalProducts();
+    List<Product> getByProduct(String productName);
+    List<Product> getAll();
+    List<Product> getAll(Integer categoryId, Integer brandId);
+    List<Product> getAll(String categorySlug, String brandSlug);
+    Page<Product> getAll(String categorySlug, String brandSlug, int page, int size, String direction);
     Page<ProductDTO> getPromotionalProducts(int page, int size);
-    List<Product> getByCategory(String categorySlug);
-    List<Product> getByProduct(String name);
-    List<Product> getByCategoryAndBrand(String categorySlug, String brandSlug);
-    Page<Product> getByCategoryAndBrand(String categorySlug, String brandSlug, int page, int size, String direction);
-    void remove(String slug);
+    Product getProduct(String slug);
     ProductToSave save(ProductToSave product);
+    void remove(String slug);
 }

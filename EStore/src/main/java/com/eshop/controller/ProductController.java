@@ -51,13 +51,13 @@ public class ProductController {
         String direction = orderByOptional.orElse("ASC");
         String brandSlug = brandSlugOptional.orElse("");
 
-        Page<ProductDTO> productPage = productService.getByCategoryAndBrand(categorySlug, brandSlug, page, size, direction)
+        Page<ProductDTO> productPage = productService.getAll(categorySlug, brandSlug, page, size, direction)
                 .map(product -> mapper.map(product, ProductDTO.class));
 
         model.addAttribute("direction", direction);
         model.addAttribute("productPage", productPage);
         model.addAttribute("category", MapperUtils.map(categoryService.get(categorySlug), CategoryDTO.class));
-        model.addAttribute("brands", MapperUtils.mapAll(brandService.getAll(categorySlug), BrandDTO.class));
+        model.addAttribute("brands", MapperUtils.mapAll(brandService.getAllByCategory(categorySlug), BrandDTO.class));
         return "product/list";
     }
 

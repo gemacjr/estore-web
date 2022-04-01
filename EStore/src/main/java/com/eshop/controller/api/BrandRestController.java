@@ -23,13 +23,13 @@ public class BrandRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Brand> getBrand(@PathVariable(name = "id") Integer brandId) {
-        Brand brand = brandService.getBrand(brandId);
+        Brand brand = brandService.get(brandId);
         return brand == null ? ResponseEntity.notFound().build() : ResponseEntity.ok().body(brand);
     }
 
 	@PostMapping
     public ResponseEntity<Brand> createBrand (@RequestBody Brand brand) {
-        if (brandService.getBrand(brand.getSlug()) != null) {
+        if (brandService.get(brand.getSlug()) != null) {
             throw new RuntimeException(messageUtils.getMessage("NotExistsSlug"));
         }
         Brand newBrand = brandService.createBrand(brand);
@@ -47,7 +47,7 @@ public class BrandRestController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Brand> updateBrand (@PathVariable("id") Integer brandId, @RequestBody Brand brand) {
-        if (brandService.getBrand(brandId) != null && !brandService.getBrand(brandId).getSlug().equals(brand.getSlug())) {
+        if (brandService.get(brandId) != null && !brandService.get(brandId).getSlug().equals(brand.getSlug())) {
             throw new RuntimeException(messageUtils.getMessage("NotExistsSlug"));
         }
         if (brandService.updateBrand(brandId, brand) == null) {

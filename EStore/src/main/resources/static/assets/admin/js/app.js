@@ -114,7 +114,7 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.alertMessage = '';
     $scope.dtOptions = {
         scrollY: false,
-        order : [[0, 'desc']],
+        order : [[0, 'asc']],
         language : $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
         responsive: true
     };
@@ -210,6 +210,12 @@ app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.brands = [];
     $scope.brand = {};
     $scope.isEdit = false;
+    $scope.dtOptions = {
+        scrollY: false,
+        order : [[0, 'asc']],
+        language : $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
+        responsive: true
+    };
 
     $scope.autoSlug = function (input) {
         $scope.brand.slug = angular.copy($rootScope.slugify(input));
@@ -298,6 +304,26 @@ app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.getBrands();
 });
 app.controller('productManagerCtrl', function ($scope, $http) {
+    $scope.brands = [];
+    $scope.categories = [];
+    $scope.products = [];
+
+    $scope.getBrands = function () {
+        $http.get('/api/brands').then(function (response) {
+            $scope.brands = response.data;
+        }).catch(function (error) {
+            console.error(error);
+        });
+    };
+
+    $scope.getCategories = function () {
+        $http.get('/api/categories').then(function (response) {
+            $scope.categories = response.data;
+        }).catch(function (error) {
+            console.error(error);
+        });
+    };
+
 });
 app.controller('userManagerCtrl', function ($scope, $http) {
 });

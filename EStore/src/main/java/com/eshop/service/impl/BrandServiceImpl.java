@@ -19,7 +19,7 @@ public class BrandServiceImpl implements BrandService {
     ModelMapper mapper;
 
     @Override
-    public List<Brand> getAll(String categorySlug) {
+    public List<Brand> getAllByCategory(String categorySlug) {
         return brandRepo.findDistinctByProductsCategorySlug(categorySlug);
     }
 
@@ -29,12 +29,12 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Brand getBrand(Integer brandId) {
+    public Brand get(Integer brandId) {
         return brandRepo.getById(brandId);
     }
 
     @Override
-    public Brand getBrand(String brandSlug) {
+    public Brand get(String brandSlug) {
         return brandRepo.findBySlug(brandSlug);
     }
 
