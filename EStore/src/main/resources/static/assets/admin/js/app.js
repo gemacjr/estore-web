@@ -1,4 +1,4 @@
-let app = angular.module('adminApp', ['ngRoute']);
+let app = angular.module('adminApp', ['ngRoute', 'datatables']);
 
 app.config(function ($routeProvider) {
     $routeProvider
@@ -30,6 +30,52 @@ app.config(function ($routeProvider) {
 app.run(function ($rootScope) {
     $rootScope.baseUrl = window.location.origin;
     $rootScope.lang = $('#lang').val();
+    $rootScope.datatableEN = {
+        "sEmptyTable":     "No data available in table",
+        "sInfo":           "Showing _START_ to _END_ of _TOTAL_ entries",
+        "sInfoEmpty":      "Showing 0 to 0 of 0 entries",
+        "sInfoFiltered":   "(filtered from _MAX_ total entries)",
+        "sInfoPostFix":    "",
+        "sInfoThousands":  ",",
+        "sLengthMenu":     "Show _MENU_ entries",
+        "sLoadingRecords": "Loading...",
+        "sProcessing":     "Processing...",
+        "sSearch":         "Search:",
+        "sZeroRecords":    "No matching records found",
+        "oPaginate": {
+            "sFirst":    "First",
+            "sLast":     "Last",
+            "sNext":     "Next",
+            "sPrevious": "Previous"
+        },
+        "oAria": {
+            "sSortAscending":  ": activate to sort column ascending",
+            "sSortDescending": ": activate to sort column descending"
+        }
+    };
+    $rootScope.datatableVI = {
+        "sEmptyTable":     "Không có dữ liệu trong bảng",
+        "sInfo":           "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+        "sInfoEmpty":      "Hiển thị từ 0 đến 0 trong tổng số 0 mục",
+        "sInfoFiltered":   "(lọc từ _MAX_ mục)",
+        "sInfoPostFix":    "",
+        "sInfoThousands":  ".",
+        "sLengthMenu":     "Hiển thị _MENU_ mục",
+        "sLoadingRecords": "Đang tải...",
+        "sProcessing":     "Đang xử lý...",
+        "sSearch":         "Tìm kiếm:",
+        "sZeroRecords":    "Không tìm thấy dữ liệu",
+        "oPaginate": {
+            "sFirst":    "Đầu",
+            "sLast":     "Cuối",
+            "sNext":     "Tiếp",
+            "sPrevious": "Trước"
+        },
+        "oAria": {
+            "sSortAscending":  ": kích hoạt để sắp xếp cột tăng dần",
+            "sSortDescending": ": kích hoạt để sắp xếp cột giảm dần"
+        }
+    };
     $rootScope.slugify = function (input) {
         if (input) {
             return input.toString().toLowerCase().trim()
@@ -66,6 +112,12 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.category = {};
     $scope.isEdit = false;
     $scope.alertMessage = '';
+    $scope.dtOptions = {
+        scrollY: false,
+        order : [[0, 'desc']],
+        language : $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
+        responsive: true
+    };
 
     $scope.autoSlug = function (input) {
         $scope.category.slug = angular.copy($rootScope.slugify(input));
