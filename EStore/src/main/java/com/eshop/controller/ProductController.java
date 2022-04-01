@@ -51,7 +51,7 @@ public class ProductController {
         String direction = orderByOptional.orElse("ASC");
         String brandSlug = brandSlugOptional.orElse("");
 
-        Page<ProductDTO> productPage = productService.getAll(categorySlug, brandSlug, page, size, direction)
+        Page<ProductDTO> productPage = productService.getAllByCategoryAndBrand(categorySlug, brandSlug, page, size, direction)
                 .map(product -> mapper.map(product, ProductDTO.class));
 
         model.addAttribute("direction", direction);

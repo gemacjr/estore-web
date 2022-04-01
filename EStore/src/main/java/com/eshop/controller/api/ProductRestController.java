@@ -1,12 +1,11 @@
 package com.eshop.controller.api;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import com.eshop.dto.ProductToSave;
 import com.eshop.service.ProductService;
 import com.eshop.utils.MessageUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
@@ -18,14 +17,9 @@ public class ProductRestController {
     private MessageUtils messageUtils;
 
     @GetMapping
-    public ResponseEntity<?> getAllProducts () {
-        return ResponseEntity.ok(productService.getAll());
-    }
-
-    @GetMapping
-    public ResponseEntity<?> getAllProducts (@RequestParam(value = "categoryId", defaultValue = "0") Integer categoryId,
-                                             @RequestParam(value = "brandId", defaultValue = "0") Integer brandId) {
-        return ResponseEntity.ok(productService.getAll(categoryId, brandId));
+    public ResponseEntity<?> getAllProducts (@RequestParam(value = "categorySlug", defaultValue = "") String categorySlug,
+                                             @RequestParam(value = "brandSlug", defaultValue = "") String brandSlug) {
+        return ResponseEntity.ok(productService.getAllByCategoryAndBrandIsLike(categorySlug, brandSlug));
     }
 
     @DeleteMapping("/{slug}")

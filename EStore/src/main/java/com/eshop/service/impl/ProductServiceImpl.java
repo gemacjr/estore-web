@@ -35,22 +35,22 @@ public class ProductServiceImpl implements ProductService {
     ModelMapper mapper;
 
     @Override
-    public List<Product> getAll() {
+    public List<Product> getAllByCategoryAndBrand() {
         return productRepo.findAll();
     }
 
     @Override
-    public List<Product> getAll(Integer categoryId, Integer brandId) {
-        return productRepo.findByCategoryIdAndBrandId(categoryId, brandId);
+    public List<Product> getAllByCategoryAndBrandIsLike(String categorySlug, String brandSlug) {
+        return productRepo.findByCategorySlugContainingAndBrandSlugContaining(categorySlug, brandSlug);
     }
 
     @Override
-    public List<Product> getAll(String categorySlug, String brandSlug) {
+    public List<Product> getAllByCategoryAndBrand(String categorySlug, String brandSlug) {
         return productRepo.findByCategorySlugAndBrandSlug(categorySlug, brandSlug);
     }
 
     @Override
-    public Page<Product> getAll(String categorySlug, String brandSlug, int page, int size, String direction) {
+    public Page<Product> getAllByCategoryAndBrand(String categorySlug, String brandSlug, int page, int size, String direction) {
         Sort sort = Sort.by(direction.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, "name");
         if (brandSlug.isBlank()) {
             return productRepo.findByCategorySlug(categorySlug, PageRequest.of(page, size, sort));

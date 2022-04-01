@@ -12,8 +12,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     Page<Product> findByDiscountNotNull(Pageable pageable);
     List<Product> findTop8ByOrderByCreatedDateDesc();
     List<Product> findByNameContainingAllIgnoreCase(String name);
-    List<Product> findByCategoryIdAndBrandId(Integer categoryId, Integer brandId);
     List<Product> findByCategorySlugAndBrandSlug(String categorySlug, String brandSlug);
+    List<Product> findByCategorySlugContainingAndBrandSlugContaining(String categorySlug, String brandSlug);
     Page<Product> findByCategorySlugAndBrandSlug(String categorySlug, String brandSlug, Pageable pageable);
     Page<Product> findByCategorySlug(String slug, Pageable pageable);
     Product findBySlug(String slug);
