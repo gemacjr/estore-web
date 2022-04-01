@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/product-manager")
+@RequestMapping("/api/products")
 public class ProductRestController {
     @Autowired
     private ProductService productService;
@@ -17,20 +17,19 @@ public class ProductRestController {
     private MessageUtils messageUtils;
 
     @GetMapping
-    public ResponseEntity<?> getAllProducts (@RequestParam(value = "categorySlug", defaultValue = "") String categorySlug,
-                                             @RequestParam(value = "brandSlug", defaultValue = "") String brandSlug) {
+    public ResponseEntity<?> getAllProducts (@RequestParam(value = "category-slug", defaultValue = "") String categorySlug,
+                                             @RequestParam(value = "brand-slug", defaultValue = "") String brandSlug) {
         return ResponseEntity.ok(productService.getAllByCategoryAndBrandIsLike(categorySlug, brandSlug));
     }
 
     @DeleteMapping("/{slug}")
-    @SuppressWarnings("rawtypes")
-    public ResponseEntity removeProduct (@PathVariable("slug") String productSlug) {
+    public ResponseEntity<?> removeProduct (@PathVariable("slug") String productSlug) {
         try {
             productService.remove(productSlug);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new RuntimeException(messageUtils.getMessage("SomethingWentWrong"));
         }
     }
 

@@ -5,20 +5,20 @@
         <div class="d-flex flex-nowrap align-items-center me-3">
             <label class="form-label fw-normal text-nowrap mb-0 me-2" for="category-selector"
                    th:text="#{global.category}"></label>
-            <select class="form-select form-select-sm" id="category-selector" th:onchange="getProducts()">
-                <option th:each="category:${categories}" th:selected="${category.slug}==${categorySlug}"
-                        th:text="${#locale.language=='vi'}?${category.nameVI}:${category.nameEN}"
-                        th:if="${category.products.size() > 0}" th:value="${category.slug}"></option>
+            <select class="form-select form-select-sm" id="category-selector" ng-model="categorySlug"
+                    ng-change="getProducts()">
+                <option value="">{{lang == 'vi' ? 'Tất cả' : 'All'}}</option>
+                <option ng-repeat="category in categories" value="{{category.slug}}">
+                    {{lang == 'vi' ? category.nameVI : category.nameEN}}
+                </option>
             </select>
         </div>
         <div class="d-flex flex-nowrap align-items-center me-3">
-            <label class="form-label fw-normal text-nowrap mb-0 me-2" for="brand-selector"
-                   th:text="#{global.brand}"></label>
+            <label class="form-label fw-normal text-nowrap mb-0 me-2" for="brand-selector" ng-model="brandSlug"
+                   ng-change="getProducts()" th:text="#{global.brand}"></label>
             <select class="form-select form-select-sm" id="brand-selector" onchange="getProducts()">
-                <option th:value="${brand.slug}" th:each="brand:${brandsByCategory}"
-                        th:selected="${brand.slug== brandSlug}" th:text="${brand.name}">
-
-                </option>
+                <option value="">{{lang == 'vi' ? 'Tất cả' : 'All'}}</option>
+                <option ng-repeat="brand in brands" value="{{brand.slug}}">{{brand.name}}</option>
             </select>
         </div>
         <div data-bs-toggle="tooltip" data-bs-placement="top" th:title="#{admin.productPage.addProduct}">

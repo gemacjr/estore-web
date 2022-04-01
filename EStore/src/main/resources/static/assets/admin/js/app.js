@@ -31,49 +31,69 @@ app.run(function ($rootScope) {
     $rootScope.baseUrl = window.location.origin;
     $rootScope.lang = $('#lang').val();
     $rootScope.datatableEN = {
-        "sEmptyTable":     "No data available in table",
-        "sInfo":           "Showing _START_ to _END_ of _TOTAL_ entries",
-        "sInfoEmpty":      "Showing 0 to 0 of 0 entries",
-        "sInfoFiltered":   "(filtered from _MAX_ total entries)",
-        "sInfoPostFix":    "",
-        "sInfoThousands":  ",",
-        "sLengthMenu":     "Show _MENU_ entries",
+        "sEmptyTable": "No data available in table",
+        "sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+        "sInfoEmpty": "Showing 0 to 0 of 0 entries",
+        "sInfoFiltered": "(filtered from _MAX_ total entries)",
+        "sInfoPostFix": "",
+        "sInfoThousands": ",",
+        "sLengthMenu": "Show _MENU_ entries",
         "sLoadingRecords": "Loading...",
-        "sProcessing":     "Processing...",
-        "sSearch":         "Search:",
-        "sZeroRecords":    "No matching records found",
+        "sProcessing": "Processing...",
+        "sSearch": "Search:",
+        "sZeroRecords": "No matching records found",
         "oPaginate": {
-            "sFirst":    "First",
-            "sLast":     "Last",
-            "sNext":     "Next",
+            "sFirst": "First",
+            "sLast": "Last",
+            "sNext": "Next",
             "sPrevious": "Previous"
         },
         "oAria": {
-            "sSortAscending":  ": activate to sort column ascending",
+            "sSortAscending": ": activate to sort column ascending",
             "sSortDescending": ": activate to sort column descending"
         }
     };
     $rootScope.datatableVI = {
-        "sEmptyTable":     "Không có dữ liệu trong bảng",
-        "sInfo":           "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
-        "sInfoEmpty":      "Hiển thị từ 0 đến 0 trong tổng số 0 mục",
-        "sInfoFiltered":   "(lọc từ _MAX_ mục)",
-        "sInfoPostFix":    "",
-        "sInfoThousands":  ".",
-        "sLengthMenu":     "Hiển thị _MENU_ mục",
+        "sEmptyTable": "Không có dữ liệu trong bảng",
+        "sInfo": "Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục",
+        "sInfoEmpty": "Hiển thị từ 0 đến 0 trong tổng số 0 mục",
+        "sInfoFiltered": "(lọc từ _MAX_ mục)",
+        "sInfoPostFix": "",
+        "sInfoThousands": ".",
+        "sLengthMenu": "Hiển thị _MENU_ mục",
         "sLoadingRecords": "Đang tải...",
-        "sProcessing":     "Đang xử lý...",
-        "sSearch":         "Tìm kiếm:",
-        "sZeroRecords":    "Không tìm thấy dữ liệu",
+        "sProcessing": "Đang xử lý...",
+        "sSearch": "Tìm kiếm:",
+        "sZeroRecords": "Không tìm thấy dữ liệu",
         "oPaginate": {
-            "sFirst":    "Đầu",
-            "sLast":     "Cuối",
-            "sNext":     "Tiếp",
+            "sFirst": "Đầu",
+            "sLast": "Cuối",
+            "sNext": "Tiếp",
             "sPrevious": "Trước"
         },
         "oAria": {
-            "sSortAscending":  ": kích hoạt để sắp xếp cột tăng dần",
+            "sSortAscending": ": kích hoạt để sắp xếp cột tăng dần",
             "sSortDescending": ": kích hoạt để sắp xếp cột giảm dần"
+        }
+    };
+    $rootScope.toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+
+    $rootScope.addPartToUrl = function (part, url) {
+        if (url.indexOf('?') > -1) {
+            return url + '&' + part;
+        } else {
+            return url + '?' + part;
         }
     };
     $rootScope.slugify = function (input) {
@@ -92,17 +112,6 @@ app.run(function ($rootScope) {
                 .replace(/-+$/, '');
         }
     };
-    $rootScope.toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 5000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    });
 });
 
 app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
@@ -114,8 +123,8 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.alertMessage = '';
     $scope.dtOptions = {
         scrollY: false,
-        order : [[0, 'asc']],
-        language : $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
+        order: [[0, 'asc']],
+        language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
         responsive: true
     };
 
@@ -212,8 +221,8 @@ app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.isEdit = false;
     $scope.dtOptions = {
         scrollY: false,
-        order : [[0, 'asc']],
-        language : $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
+        order: [[0, 'asc']],
+        language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
         responsive: true
     };
 
@@ -307,6 +316,8 @@ app.controller('productManagerCtrl', function ($scope, $http) {
     $scope.brands = [];
     $scope.categories = [];
     $scope.products = [];
+    $scope.brandSlug = "";
+    $scope.categorySlug = "";
 
     $scope.getBrands = function () {
         $http.get('/api/brands').then(function (response) {
@@ -315,7 +326,6 @@ app.controller('productManagerCtrl', function ($scope, $http) {
             console.error(error);
         });
     };
-
     $scope.getCategories = function () {
         $http.get('/api/categories').then(function (response) {
             $scope.categories = response.data;
@@ -323,7 +333,17 @@ app.controller('productManagerCtrl', function ($scope, $http) {
             console.error(error);
         });
     };
+    $scope.getProducts = function () {
+        $http.get('/api/products?brand-slug=' + $scope.brandSlug + '&category-slug=' + $scope.categorySlug).then(function (response) {
+            $scope.products = response.data;
+        }).catch(function (error) {
+            console.error(error);
+        });
+    };
 
+    $scope.getBrands();
+    $scope.getCategories();
+    $scope.getProducts();
 });
 app.controller('userManagerCtrl', function ($scope, $http) {
 });
