@@ -88,13 +88,21 @@ app.run(function ($rootScope) {
         }
     });
 
-
     $rootScope.addPartToUrl = function (part, url) {
         if (url.indexOf('?') > -1) {
             return url + '&' + part;
         } else {
             return url + '?' + part;
         }
+    };
+    $rootScope.validateUrl = function (url) {
+        let pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$', 'i') // fragment locator
+        return pattern.test(url);
     };
     $rootScope.slugify = function (input) {
         if (input) {
@@ -316,14 +324,36 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.brands = [];
     $scope.categories = [];
     $scope.products = [];
+
+    $scope.prod = {};
+
     $scope.brandSlug = "";
     $scope.categorySlug = "";
+
     $scope.dtOptions = {
         scrollY: false,
         order: [[1, 'asc']],
         language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
         responsive: true,
-        pageLength: 4
+        pageLength: 5
+    };
+
+    $scope.autoSlug = function (input) {
+        $scope.prod.slug = angular.copy($rootScope.slugify(input));
+    };
+    $scope.changeProductImage = async function (element) {
+        let { value: url } = await Swal.fire({
+            title: $rootScope.lang === 'en' ? 'Image URL' : 'URL hình ảnh',
+            inputValue: $scope.prod.image ? $scope.prod.image : '',
+            input: 'url',
+            confirmButtonColor: '#fe696a',
+            confirmButtonText: lang === "en" ? "Save" : "Lưu",
+            showCancelButton: true,
+            cancelButtonText: lang === "en" ? "Cancel" : "Hủy",
+        });
+        if (url) {
+            $scope.prod.image = $rootScope.validateUrl(url) ? url.trim() : '';
+        }
     };
 
     $scope.getBrands = function () {
