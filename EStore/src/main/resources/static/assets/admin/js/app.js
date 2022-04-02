@@ -320,9 +320,10 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.categorySlug = "";
     $scope.dtOptions = {
         scrollY: false,
-        order: [[0, 'asc']],
+        order: [[1, 'asc']],
         language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
-        responsive: true
+        responsive: true,
+        pageLength: 4
     };
 
     $scope.getBrands = function () {
