@@ -1,4 +1,4 @@
-let app = angular.module('adminApp', ['ngRoute', 'datatables', window.ngSweetAlert2]);
+let app = angular.module('adminApp', ['ngRoute', 'datatables']);
 
 app.config(function ($routeProvider) {
     $routeProvider
@@ -313,7 +313,7 @@ app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
 
     $scope.getBrands();
 });
-app.controller('productManagerCtrl', function ($scope, $http, $rootScope, swal) {
+app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
     $('[data-bs-toggle="tooltip"]').tooltip();
 
     $scope.brands = [];
@@ -337,19 +337,18 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope, swal) 
         $scope.prod.slug = angular.copy($rootScope.slugify(input));
     };
     $scope.changeProductImage = async function () {
-        // let { value: url } = await Swal.fire({
-        //     title: $rootScope.lang === 'en' ? 'Image URL' : 'URL hình ảnh',
-        //     inputValue: $scope.prod.image ? $scope.prod.image : '',
-        //     input: 'url',
-        //     confirmButtonColor: '#fe696a',
-        //     confirmButtonText: lang === "en" ? "Save" : "Lưu",
-        //     showCancelButton: true,
-        //     cancelButtonText: lang === "en" ? "Cancel" : "Hủy",
-        // });
-        // if (url) {
-        //     $scope.prod.image = url;
-        // }
-        swal('Any fool can use a computer');
+        let { value: url } = await Swal.fire({
+            title: $rootScope.lang === 'en' ? 'Image URL' : 'URL hình ảnh',
+            inputValue: $scope.prod.image ? $scope.prod.image : '',
+            input: 'url',
+            confirmButtonColor: '#fe696a',
+            confirmButtonText: lang === "en" ? "Save" : "Lưu",
+            showCancelButton: true,
+            cancelButtonText: lang === "en" ? "Cancel" : "Hủy",
+        });
+        if (url) {
+            $scope.prod.image = url;
+        }
     };
 
     $scope.getBrands = function () {
