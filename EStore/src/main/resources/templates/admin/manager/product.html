@@ -251,9 +251,11 @@
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
                                 th:text="#{global.close}"></button>
                         <button type="button" class="btn btn-primary btn-sm" ng-disabled="productForm.$invalid"
-                                th:text="#{global.add}" ng-show="index < 0"></button>
+                                th:text="#{global.add}" ng-show="index<0">
+                        </button>
                         <button type="button" class="btn btn-primary btn-sm" ng-disabled="productForm.$invalid"
-                                th:text="#{global.save}" ng-show="index >= 0"></button>
+                                th:text="#{global.save}" ng-show="index>=0" ng-click="updateProduct(prod)">
+                        </button>
                     </div>
                 </form>
                 <ul class="mt-3 list-group">
