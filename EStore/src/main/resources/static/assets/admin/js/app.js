@@ -144,6 +144,10 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
         $('#categoryModal').modal('show');
     };
     $scope.addCategory = function (category) {
+        if ($scope.categoryForm.$invalid) {
+            $scope.categoryForm.$setSubmitted();
+            return;
+        }
         $http.post('/api/categories', category).then(function (response) {
             $scope.getCategories();
             $scope.isEdit = false;
@@ -161,6 +165,10 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
         });
     };
     $scope.updateCategory = function (category) {
+        if ($scope.categoryForm.$invalid) {
+            $scope.categoryForm.$setSubmitted();
+            return;
+        }
         $http.put('/api/categories/' + category.id, category).then(function (response) {
             $scope.getCategories();
             $('#categoryModal').modal('hide');
@@ -243,6 +251,11 @@ app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
         $('#brandModal').modal('show');
     };
     $scope.addBrand = function (brand) {
+        if ($scope.brandForm.$invalid) {
+            $scope.brandForm.$setSubmitted();
+            return;
+        }
+
         $http.post('/api/brands', brand).then(function (response) {
             $scope.getBrands();
             $scope.isEdit = false;
@@ -260,6 +273,10 @@ app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
         });
     };
     $scope.updateBrand = function (brand) {
+        if ($scope.brandForm.$invalid) {
+            $scope.brandForm.$setSubmitted();
+            return;
+        }
         $http.put('/api/brands/' + brand.id, brand).then(function (response) {
             $scope.getBrands();
             $('#brandModal').modal('hide');
