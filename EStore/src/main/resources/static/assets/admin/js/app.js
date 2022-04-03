@@ -418,10 +418,13 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.newProduct = function () {
         $scope.prod = {};
         $scope.prod.available = 0;
-        // $scope.prod.category = angular.copy($scope.categories[0]);
-        // $scope.prod.brand = angular.copy($scope.brands[0]);
-        // $scope.prod.discount = angular.copy($scope.discounts[0]);
+        $scope.prod.price = 0;
+        $scope.prod.quantity = 0;
+        $scope.prod.category = angular.copy($scope.categorySlug?$scope.categories.find(c => c.slug === $scope.categorySlug):$scope.categories[0]);
+        $scope.prod.brand = angular.copy($scope.brandSlug?$scope.brands.find(b => b.slug === $scope.brandSlug):$scope.brands[0]);
         $scope.index = -1;
+
+        $scope.productForm.$setUntouched();
         $('#productModal').modal('show');
     };
     $scope.editProduct = function (product, index) {

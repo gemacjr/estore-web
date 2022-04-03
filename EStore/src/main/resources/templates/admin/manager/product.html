@@ -90,13 +90,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body tab-content py-4">
-                <form id="product-form" name="productForm" method="post" enctype="multipart/form-data" novalidate>
+                <form id="product-form" name="productForm" method="post" novalidate>
                     <div class="d-sm-flex flex-wrap justify-content-end align-items-center pb-2">
                         <div class="d-flex flex-nowrap align-items-center py-2">
                             <label class="form-label fw-normal text-nowrap mb-0 me-2"
                                    for="unp-category" th:text="#{global.category}"></label>
                             <select class="form-select form-select-sm me-2" id="unp-category" name="categorySlug"
-                                    ng-model="prod.category.slug" required>
+                                    ng-model="prod.category.slug">
                                 <option ng-repeat="category in categories" value="{{category.slug}}">
                                     {{lang == 'vi' ? category.nameVI : category.nameEN}}
                                 </option>
@@ -105,7 +105,7 @@
                         <div class="d-flex flex-nowrap align-items-center me-3">
                             <label class="form-label fw-normal text-nowrap mb-0 me-2"
                                    for="unp-brand" th:text="#{global.brand}"></label>
-                            <select class="form-select form-select-sm" id="unp-brand" name="brandSlug" required
+                            <select class="form-select form-select-sm" id="unp-brand" name="brandSlug"
                                     ng-model="prod.brand.slug">
                                 <option ng-repeat="brand in brands" value="{{brand.slug}}">{{brand.name}}</option>
                             </select>
@@ -166,9 +166,10 @@
                             <img class="img-thumbnail product-img" alt="Product preview image 4"
                                  ng-src="{{prod.imagePreview4?prod.imagePreview4:'/assets/user/img/plus_icon.png'}}">
                         </div>
-                        <div class="col-md-4 product-video-preview" data-bs-toggle="tooltip" id="unp-product-video-thumbnail"
-                             th:title="#{admin.productPage.productReviewVideo}">
-                            <input type="hidden" name="videoPreview" class="video-id" ng-model="prod.videoPreview" ng-value="prod.videoPreview">
+                        <div class="col-md-4 product-video-preview" data-bs-toggle="tooltip"
+                             id="unp-product-video-thumbnail" th:title="#{admin.productPage.productReviewVideo}">
+                            <input type="hidden" name="videoPreview" class="video-id" ng-model="prod.videoPreview"
+                                   ng-value="prod.videoPreview">
                             <img class="img-thumbnail product-video-thumbnail" alt="Video preview"
                                  ng-src="{{prod.videoPreview?'https://img.youtube.com/vi/'+prod.videoPreview+'/maxresdefault.jpg':'/assets/user/img/video-play-button.png'}}">
                         </div>
@@ -188,7 +189,7 @@
                         <select class="form-select" id="unp-discount" name="discountId" ng-model="prod.discount.id">
                             <option ng-value="" th:text="#{global.no_promotion}"></option>
                             <option ng-repeat="discount in discounts" ng-value="discount.id">
-                                {{discount.name}} - {{discount.saleOff|number:0}}%
+                                {{discount.name}} - {{discount.saleOff | number:0}}%
                             </option>
                         </select>
                     </div>
@@ -197,31 +198,35 @@
                         <!-- Inline radio buttons -->
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" id="in-stock"
-                                   ng-value="0" name="available" ng-model="prod.available" required>
+                                   ng-value="0" name="available" ng-model="prod.available">
                             <label class="form-check-label" for="in-stock"
                                    th:text="#{admin.productPage.inStock}"></label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" id="out-of-stock"
-                                   ng-value="1" name="available" ng-model="prod.available" required>
+                                   ng-value="1" name="available" ng-model="prod.available">
                             <label class="form-check-label" for="out-of-stock"
                                    th:text="#{admin.productPage.outOfStock}"></label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" id="sold-out"
-                                   ng-value="2" name="available" ng-model="prod.available" required>
+                                   ng-value="2" name="available" ng-model="prod.available">
                             <label class="form-check-label" for="sold-out"
                                    th:text="#{admin.productPage.soldOut}"></label>
                         </div>
                     </div>
-                    <div class="row" id="product-available" ng-if="prod.available===0">
+                    <div class="row" id="product-available">
                         <div class="col-sm-6 mb-3">
                             <label class="form-label" for="unp-product-quantity"
                                    th:text="#{admin.productPage.productQuantity}"></label>
                             <div class="input-group"><span class="input-group-text"><i
                                     class="fa-solid fa-input-numeric"></i></span>
                                 <input class="form-control" min="0" type="number" id="unp-product-quantity"
-                                       ng-model="prod.quantity" name="quantity">
+                                       ng-model="prod.quantity" name="quantity" required>
+                            </div>
+                            <div ng-show="productForm.$submitted || productForm.quantity.$touched">
+                                <div class="invalid-tooltip" ng-show="productForm.quantity.$error.required"
+                                     th:text="#{NotBlank.field}"></div>
                             </div>
                         </div>
                         <div class="col-sm-6 mb-3">
@@ -229,18 +234,24 @@
                                    th:text="#{admin.productPage.productPrice}"></label>
                             <div class="input-group"><span class="input-group-text"><i
                                     class="fa-solid fa-money-bill-simple"></i></span>
-                                <input class="form-control number-input" type="number" name="price"
-                                       id="unp-product-price" ng-model="prod.price">
+                                <input class="form-control number-input" type="number" name="price" step="250000"
+                                       id="unp-product-price" ng-model="prod.price" required>
+                            </div>
+                            <div ng-show="productForm.$submitted || productForm.price.$touched">
+                                <div class="invalid-tooltip" ng-show="productForm.price.$error.required"
+                                     th:text="#{NotBlank.field}"></div>
                             </div>
                         </div>
                     </div>
+                    <div class="btn-group w-100">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
+                                th:text="#{global.close}"></button>
+                        <button type="button" class="btn btn-primary btn-sm" ng-disabled="productForm.$invalid"
+                                th:text="#{global.add}" ng-show="index < 0"></button>
+                        <button type="button" class="btn btn-primary btn-sm" ng-disabled="productForm.$invalid"
+                                th:text="#{global.save}" ng-show="index >= 0"></button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer btn-group">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
-                        th:text="#{global.close}"></button>
-                <button type="submit" class="btn btn-primary btn-sm" form="create-product-frm"
-                        th:text="#{global.save}"></button>
             </div>
         </div>
     </div>
