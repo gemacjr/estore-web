@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body tab-content py-4">
-                <form id="brand-info-frm" name="brandForm" novalidate>
+                <form id="brand-frm" name="brandForm" novalidate>
                     <div class="mb-3">
                         <label for="name" class="form-label" th:text="#{global.name}"></label>
                         <input class="form-control" type="text" id="name" name="name" ng-keyup="autoSlug(brand.name)"

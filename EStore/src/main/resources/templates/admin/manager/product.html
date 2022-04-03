@@ -227,6 +227,8 @@
                             <div ng-show="productForm.$submitted || productForm.quantity.$touched">
                                 <div class="invalid-tooltip" ng-show="productForm.quantity.$error.required"
                                      th:text="#{NotBlank.field}"></div>
+                                <div class="invalid-tooltip" ng-show="productForm.quantity.$error.min"
+                                     th:text="#{PositiveNumber.field}"></div>
                             </div>
                         </div>
                         <div class="col-sm-6 mb-3">
@@ -234,12 +236,14 @@
                                    th:text="#{admin.productPage.productPrice}"></label>
                             <div class="input-group"><span class="input-group-text"><i
                                     class="fa-solid fa-money-bill-simple"></i></span>
-                                <input class="form-control number-input" type="number" name="price" step="250000"
+                                <input class="form-control number-input" type="number" name="price" min="0"
                                        id="unp-product-price" ng-model="prod.price" required>
                             </div>
                             <div ng-show="productForm.$submitted || productForm.price.$touched">
                                 <div class="invalid-tooltip" ng-show="productForm.price.$error.required"
                                      th:text="#{NotBlank.field}"></div>
+                                <div class="invalid-tooltip" ng-show="productForm.price.$error.min"
+                                     th:text="#{PositiveNumber.field}"></div>
                             </div>
                         </div>
                     </div>
@@ -252,6 +256,14 @@
                                 th:text="#{global.save}" ng-show="index >= 0"></button>
                     </div>
                 </form>
+                <ul class="mt-3 list-group">
+                    <li class="list-group-item" ng-repeat="(key, errors) in productForm.$error track by $index">
+                        <strong>{{ key }}</strong> errors
+                        <ul>
+                            <li ng-repeat="e in errors">{{ e.$name }} has an error: <strong>{{ key }}</strong>.</li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
