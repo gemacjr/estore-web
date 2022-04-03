@@ -68,7 +68,8 @@
         </td>-->
         <td class="align-middle text-center fs-5">
             <div class="d-flex justify-content-center">
-                <a class="btn bg-faded-accent btn-icon me-2" href="javascript:void(0)" ng-click="editProduct(product, $index)">
+                <a class="btn bg-faded-accent btn-icon me-2" href="javascript:void(0)"
+                   ng-click="editProduct(product, $index)">
                     <i class="fa-regular fa-pen-to-square"></i>
                 </a>
                 <a class="btn bg-faded-danger btn-icon" href="javascript:void(0)">
@@ -165,11 +166,11 @@
                             <img class="img-thumbnail product-img" alt="Product preview image 4"
                                  ng-src="{{prod.imagePreview4?prod.imagePreview4:'/assets/user/img/plus_icon.png'}}">
                         </div>
-                        <div class="col-md-4" data-bs-toggle="tooltip" id="unp-product-video-thumbnail"
+                        <div class="col-md-4 product-video-preview" data-bs-toggle="tooltip" id="unp-product-video-thumbnail"
                              th:title="#{admin.productPage.productReviewVideo}">
-                            <input type="hidden" name="videoPreview" class="product-preview">
+                            <input type="hidden" name="videoPreview" class="video-id" ng-model="prod.videoPreview" ng-value="prod.videoPreview">
                             <img class="img-thumbnail product-video-thumbnail" alt="Video preview"
-                                 th:src="@{/assets/user/img/video-play-button.png}">
+                                 ng-src="{{prod.videoPreview?'https://img.youtube.com/vi/'+prod.videoPreview+'/maxresdefault.jpg':'/assets/user/img/video-play-button.png'}}">
                         </div>
                     </div>
                     <div class="mb-3 pb-2">

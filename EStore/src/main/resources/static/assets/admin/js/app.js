@@ -354,6 +354,34 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         }
     });
 
+    $('.product-video-preview').click(async function () {
+        let $productVideoInput = $(this).find('.video-id');
+        let $productVideo = $(this).find('.product-video-thumbnail');
+        let $productVideoUrl = $productVideo.attr('src');
+
+        let { value: id } = await Swal.fire({
+            title: $rootScope.lang === 'en' ? 'Product review video' : 'Video đánh giá sản phẩm',
+            inputLabel: 'Youtube ID',
+            inputValue: $productVideoInput.val(),
+            input: 'text',
+            inputPlaceholder: 'Video ID',
+            inputValidator: (value) => {
+                if (!value) {
+                    return lang === 'en' ? 'Please enter video ID!' : 'Vui lòng nhập ID video!';
+                }
+            },
+            confirmButtonColor: '#fe696a',
+            confirmButtonText: lang === "en" ? "Save" : "Lưu",
+            showCancelButton: true,
+            cancelButtonText: lang === "en" ? "Cancel" : "Hủy",
+        });
+
+        if (id) {
+            $productVideo.attr('src', 'https://img.youtube.com/vi/' + id + '/maxresdefault.jpg');
+            $productVideoInput.val(id);
+        }
+    });
+
     $scope.autoSlug = function (input) {
         $scope.prod.slug = angular.copy($rootScope.slugify(input));
     };
