@@ -97,7 +97,7 @@
                                    for="unp-category" th:text="#{global.category}"></label>
                             <select class="form-select form-select-sm me-2" id="unp-category" name="categorySlug"
                                     ng-model="prod.category.slug">
-                                <option ng-repeat="category in categories" value="{{category.slug}}">
+                                <option ng-repeat="category in categories" ng-value="category.slug">
                                     {{lang == 'vi' ? category.nameVI : category.nameEN}}
                                 </option>
                             </select>
@@ -107,7 +107,7 @@
                                    for="unp-brand" th:text="#{global.brand}"></label>
                             <select class="form-select form-select-sm" id="unp-brand" name="brandSlug"
                                     ng-model="prod.brand.slug">
-                                <option ng-repeat="brand in brands" value="{{brand.slug}}">{{brand.name}}</option>
+                                <option ng-repeat="brand in brands" ng-value="brand.slug">{{brand.name}}</option>
                             </select>
                         </div>
                     </div>
