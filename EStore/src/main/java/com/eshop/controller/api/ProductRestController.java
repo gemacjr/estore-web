@@ -1,6 +1,6 @@
 package com.eshop.controller.api;
 
-import com.eshop.dto.ProductToSave;
+import com.eshop.dto.ProductUpdated;
 import com.eshop.entity.Product;
 import com.eshop.service.ProductService;
 import com.eshop.utils.MessageUtils;
@@ -47,7 +47,7 @@ public class ProductRestController {
     }
 
     @PutMapping("/{slug}")
-    public ProductToSave updateProduct (@PathVariable("slug") String productSlug, @RequestBody ProductToSave product) {
+    public ProductUpdated updateProduct (@PathVariable("slug") String productSlug, @RequestBody ProductUpdated product) {
         if (productService.getProduct(product.getSlug()) != null && !productSlug.equals(product.getSlug())) {
             throw new RuntimeException(messageUtils.getMessage("NotExistsSlug"));
         } else {
@@ -56,7 +56,7 @@ public class ProductRestController {
     }
 
     @PostMapping("/{slug}")
-    public ProductToSave createProduct (@RequestBody ProductToSave product) {
+    public ProductUpdated createProduct (@RequestBody ProductUpdated product) {
         if (productService.getProduct(product.getSlug()) != null) {
             throw new RuntimeException(messageUtils.getMessage("NotExistsSlug"));
         } else {

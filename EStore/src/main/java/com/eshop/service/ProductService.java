@@ -1,7 +1,7 @@
 package com.eshop.service;
 
 import com.eshop.dto.ProductDTO;
-import com.eshop.dto.ProductToSave;
+import com.eshop.dto.ProductUpdated;
 import com.eshop.entity.Product;
 import org.springframework.data.domain.Page;
 
@@ -17,6 +17,6 @@ public interface ProductService {
     Page<Product> getAllByCategoryAndBrand(String categorySlug, String brandSlug, int page, int size, String direction);
     Page<ProductDTO> getPromotionalProducts(int page, int size);
     Product getProduct(String slug);
-    ProductToSave save(ProductToSave product);
+    ProductUpdated save(ProductUpdated product);
     void remove(String slug);
 }

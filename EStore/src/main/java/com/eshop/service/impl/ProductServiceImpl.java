@@ -1,7 +1,7 @@
 package com.eshop.service.impl;
 
 import com.eshop.dto.ProductDTO;
-import com.eshop.dto.ProductToSave;
+import com.eshop.dto.ProductUpdated;
 import com.eshop.entity.Product;
 import com.eshop.repository.BrandRepository;
 import com.eshop.repository.CategoryRepository;
@@ -18,7 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -101,16 +100,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductToSave save(ProductToSave productToSave) {
-        Product product = MapperUtils.map(productToSave, Product.class);
-        product.setCategory(categoryRepo.getById(Integer.parseInt(productToSave.getCategoryId())));
-        product.setBrand(brandRepo.getById(Integer.parseInt(productToSave.getBrandId())));
-        product.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-        if (!productToSave.getDiscountId().isBlank()) {
-            product.setDiscount(discountRepo.getById(Integer.parseInt(productToSave.getDiscountId())));
-        } else {
-            product.setDiscount(null);
-        }
-        return MapperUtils.map(productRepo.save(product), ProductToSave.class);
+    public ProductUpdated save(ProductUpdated productToSave) {
+//        Product product = MapperUtils.map(productToSave, Product.class);
+//        product.setCategory(categoryRepo.getById(Integer.parseInt(productToSave.getCategoryId())));
+//        product.setBrand(brandRepo.getById(Integer.parseInt(productToSave.getBrandId())));
+//        product.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+//        if (!productToSave.getDiscountId().isBlank()) {
+//            product.setDiscount(discountRepo.getById(Integer.parseInt(productToSave.getDiscountId())));
+//        } else {
+//            product.setDiscount(null);
+//        }
+//        return MapperUtils.map(productRepo.save(product), ProductUpdated.class);
+        return null;
     }
 }

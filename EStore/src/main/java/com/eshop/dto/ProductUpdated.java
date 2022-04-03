@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductToSave implements Serializable {
+public class ProductUpdated implements Serializable {
     @Serial
     private static final long serialVersionUID = -1631116986209408405L;
     private Integer id;
@@ -28,7 +28,7 @@ public class ProductToSave implements Serializable {
     private Integer quantity;
     private Double price;
     private Integer available;
-    private String categoryId;
-    private String brandId;
-    private String discountId;
+    private String categorySlug;
+    private String brandSlug;
+    private Integer discountId;
 }

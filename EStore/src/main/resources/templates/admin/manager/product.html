@@ -251,7 +251,7 @@
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
                                 th:text="#{global.close}"></button>
                         <button type="button" class="btn btn-primary btn-sm" ng-disabled="productForm.$invalid"
-                                th:text="#{global.add}" ng-show="index<0">
+                                th:text="#{global.add}" ng-show="index<0" ng-click="addProduct(prod)">
                         </button>
                         <button type="button" class="btn btn-primary btn-sm" ng-disabled="productForm.$invalid"
                                 th:text="#{global.save}" ng-show="index>=0" ng-click="updateProduct(prod)">

@@ -432,9 +432,24 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         $scope.index = index;
         $('#productModal').modal('show');
     };
-    $scope.updateProduct = function (product) {
+    $scope.addProduct = function (product) {
         console.log(product);
 
+        // if ($scope.productForm.$valid) {
+        //     $http.post('/api/products', product).then(function (response) {
+        //         if ($scope.index === -1) {
+        //             $scope.products.push(response.data);
+        //         } else {
+        //             $scope.products[$scope.index] = response.data;
+        //         }
+        //         $('#productModal').modal('hide');
+        //     }).catch(function (error) {
+        //         console.error(error);
+        //     });
+        // }
+    };
+    $scope.updateProduct = function (product) {
+        console.log(product);
 
         let url = '/api/products/' + product.id;
         /*$http.put(url, product).then(function (response) {
