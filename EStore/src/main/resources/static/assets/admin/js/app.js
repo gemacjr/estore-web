@@ -314,8 +314,6 @@ app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.getBrands();
 });
 app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
-    $('[data-bs-toggle="tooltip"]').tooltip();
-
     $scope.brands = [];
     $scope.categories = [];
     $scope.products = [];
@@ -324,6 +322,7 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
 
     $scope.brandSlug = "";
     $scope.categorySlug = "";
+    $scope.index = -1;
 
     $scope.dtOptions = {
         scrollY: false,
@@ -333,24 +332,31 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         pageLength: 5
     };
 
-    $scope.autoSlug = function (input) {
-        $scope.prod.slug = angular.copy($rootScope.slugify(input));
-    };
-    $scope.changeProductImage = async function () {
+    $('[data-bs-toggle="tooltip"]').tooltip();
+    $('.product-preview').click(async function () {
+        let $productImageInput = $(this).find('.img-url');
+        let $productImage = $(this).find('.product-img');
+        let $productImageUrl = $productImage.attr('src');
+
         let { value: url } = await Swal.fire({
             title: $rootScope.lang === 'en' ? 'Image URL' : 'URL hình ảnh',
-            inputValue: $scope.prod.image ? $scope.prod.image : '',
+            inputValue: $rootScope.validateUrl($productImageUrl) ? $productImageUrl : '',
             input: 'url',
             confirmButtonColor: '#fe696a',
             confirmButtonText: lang === "en" ? "Save" : "Lưu",
             showCancelButton: true,
             cancelButtonText: lang === "en" ? "Cancel" : "Hủy",
         });
-        if (url) {
-            $scope.prod.image = url;
-        }
-    };
 
+        if (url) {
+            $productImage.attr('src', url);
+            $productImageInput.val(url);
+        }
+    });
+
+    $scope.autoSlug = function (input) {
+        $scope.prod.slug = angular.copy($rootScope.slugify(input));
+    };
     $scope.getBrands = function () {
         $http.get('/api/brands').then(function (response) {
             $scope.brands = response.data;
@@ -370,9 +376,20 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
 
         $http.get(url).then(function (response) {
             $scope.products = response.data;
+            console.log($scope.products);
         }).catch(function (error) {
             console.error(error);
         });
+    };
+    $scope.newProduct = function () {
+        $scope.prod = {};
+        $scope.index = -1;
+        $('#productModal').modal('show');
+    };
+    $scope.editProduct = function (product, index) {
+        $scope.prod = angular.copy(product);
+        $scope.index = index;
+        $('#productModal').modal('show');
     };
 
     $scope.getBrands();
