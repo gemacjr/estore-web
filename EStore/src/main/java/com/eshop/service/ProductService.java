@@ -10,8 +10,9 @@ import java.util.List;
 public interface ProductService {
     List<Product> getPromotionalProducts();
     List<Product> getByProduct(String productName);
-    List<Product> getAllByCategoryAndBrand();
-    List<Product> getAllByCategoryAndBrandIsLike(String categorySlug, String brandSlug);
+    List<Product> getAll();
+    List<Product> getAllByBrand(String brandSlug);
+    List<Product> getAllByCategory(String categorySlug);
     List<Product> getAllByCategoryAndBrand(String categorySlug, String brandSlug);
     Page<Product> getAllByCategoryAndBrand(String categorySlug, String brandSlug, int page, int size, String direction);
     Page<ProductDTO> getPromotionalProducts(int page, int size);

@@ -59,7 +59,7 @@ public class DashboardController {
         double revenue = orders.stream().filter(order -> order.getStatus() == 1).mapToDouble(OrderDTO::getTotal).sum();
         model.addAttribute("orders", orders);
         model.addAttribute("revenue", revenue);
-        model.addAttribute("products", productService.getAllByCategoryAndBrand());
+        model.addAttribute("products", productService.getAll());
 
         // Tồn kho theo danh mục
         List<BrandDTO> brands = MapperUtils.mapAll(brandService.getAll(), BrandDTO.class);

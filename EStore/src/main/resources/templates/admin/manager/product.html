@@ -26,7 +26,7 @@
             </select>
         </div>
         <div data-bs-toggle="tooltip" data-bs-placement="top" th:title="#{admin.productPage.addProduct}">
-            <a class="link-success" href="javascript:void(0)" onclick="newCategory()"
+            <a class="link-success" href="javascript:void(0)"
                data-bs-toggle="modal" data-bs-target="#productDetailModal"><i
                     class="fs-2 fa-regular fa-circle-plus"></i></a>
         </div>
@@ -133,13 +133,13 @@
                     </div>
                     <div class="file-drop-area mb-3" ng-click="changeProductImage()">
                         <div class="file-drop-preview img-thumbnail rounded">
-                            <img class="unp-product-img" ng-src="{{prod.image?prod.image:'/assets/user/img/plus_icon.png'}}"
+                            <img class="unp-product-img" src="{{prod.image?prod.image:'/assets/user/img/plus_icon.png'}}"
                                  alt="Product image">
                         </div>
+                        <input type="hidden" name="image" class="product-img" ng-model="prod.image">
                         <button class="file-drop-btn btn btn-primary btn-sm mb-2" type="button"
                                 ng-click="changeProductImage()"
                                 th:text="#{admin.productPage.uploadProductPhoto.button}"></button>
-                        <input type="hidden" name="image" class="product-img" ng-model="prod.image">
                         <div class="form-text" th:text="#{admin.productPage.uploadProductPhoto.note}"></div>
                     </div>
                     <div class="row mb-3 justify-content-center">

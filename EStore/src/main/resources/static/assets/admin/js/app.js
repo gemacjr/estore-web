@@ -1,4 +1,4 @@
-let app = angular.module('adminApp', ['ngRoute', 'datatables']);
+let app = angular.module('adminApp', ['ngRoute', 'datatables', window.ngSweetAlert2]);
 
 app.config(function ($routeProvider) {
     $routeProvider
@@ -88,13 +88,6 @@ app.run(function ($rootScope) {
         }
     });
 
-    $rootScope.addPartToUrl = function (part, url) {
-        if (url.indexOf('?') > -1) {
-            return url + '&' + part;
-        } else {
-            return url + '?' + part;
-        }
-    };
     $rootScope.validateUrl = function (url) {
         let pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
             '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
@@ -196,7 +189,7 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
         }).then((result) => {
             if (result.isConfirmed) {
                 $http.delete('/api/categories/' + category.id).then(function (response) {
-                    $scope.getCategories();
+                    $scope.getCategories()
 
                     $rootScope.toast.fire({
                         icon: 'success',
@@ -320,7 +313,9 @@ app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
 
     $scope.getBrands();
 });
-app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
+app.controller('productManagerCtrl', function ($scope, $http, $rootScope, swal) {
+    $('[data-bs-toggle="tooltip"]').tooltip();
+
     $scope.brands = [];
     $scope.categories = [];
     $scope.products = [];
@@ -341,19 +336,20 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.autoSlug = function (input) {
         $scope.prod.slug = angular.copy($rootScope.slugify(input));
     };
-    $scope.changeProductImage = async function (element) {
-        let { value: url } = await Swal.fire({
-            title: $rootScope.lang === 'en' ? 'Image URL' : 'URL hình ảnh',
-            inputValue: $scope.prod.image ? $scope.prod.image : '',
-            input: 'url',
-            confirmButtonColor: '#fe696a',
-            confirmButtonText: lang === "en" ? "Save" : "Lưu",
-            showCancelButton: true,
-            cancelButtonText: lang === "en" ? "Cancel" : "Hủy",
-        });
-        if (url) {
-            $scope.prod.image = $rootScope.validateUrl(url) ? url.trim() : '';
-        }
+    $scope.changeProductImage = async function () {
+        // let { value: url } = await Swal.fire({
+        //     title: $rootScope.lang === 'en' ? 'Image URL' : 'URL hình ảnh',
+        //     inputValue: $scope.prod.image ? $scope.prod.image : '',
+        //     input: 'url',
+        //     confirmButtonColor: '#fe696a',
+        //     confirmButtonText: lang === "en" ? "Save" : "Lưu",
+        //     showCancelButton: true,
+        //     cancelButtonText: lang === "en" ? "Cancel" : "Hủy",
+        // });
+        // if (url) {
+        //     $scope.prod.image = url;
+        // }
+        swal('Any fool can use a computer');
     };
 
     $scope.getBrands = function () {
@@ -371,7 +367,9 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         });
     };
     $scope.getProducts = function () {
-        $http.get('/api/products?brand-slug=' + $scope.brandSlug + '&category-slug=' + $scope.categorySlug).then(function (response) {
+        let url = '/api/products?brand=' + $scope.brandSlug + '&category=' + $scope.categorySlug;
+
+        $http.get(url).then(function (response) {
             $scope.products = response.data;
         }).catch(function (error) {
             console.error(error);

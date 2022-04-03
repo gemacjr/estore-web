@@ -35,13 +35,18 @@ public class ProductServiceImpl implements ProductService {
     ModelMapper mapper;
 
     @Override
-    public List<Product> getAllByCategoryAndBrand() {
+    public List<Product> getAll() {
         return productRepo.findAll();
     }
 
     @Override
-    public List<Product> getAllByCategoryAndBrandIsLike(String categorySlug, String brandSlug) {
-        return productRepo.findByCategorySlugContainingAndBrandSlugContaining(categorySlug, brandSlug);
+    public List<Product> getAllByBrand(String brandSlug) {
+        return productRepo.findByBrandSlug(brandSlug);
+    }
+
+    @Override
+    public List<Product> getAllByCategory(String categorySlug) {
+        return productRepo.findByCategorySlug(categorySlug);
     }
 
     @Override
