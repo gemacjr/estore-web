@@ -90,11 +90,11 @@ app.run(function ($rootScope) {
 
     $rootScope.validateUrl = function (url) {
         let pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
-            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-            '(\\#[-a-z\\d_]*)?$', 'i') // fragment locator
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$', 'i') // fragment locator
         return pattern.test(url);
     };
     $rootScope.slugify = function (input) {
@@ -317,6 +317,7 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.brands = [];
     $scope.categories = [];
     $scope.products = [];
+    $scope.discounts=[];
 
     $scope.prod = {};
 
@@ -353,7 +354,6 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
             $productImageInput.val(url);
         }
     });
-
     $('.product-video-preview').click(async function () {
         let $productVideoInput = $(this).find('.video-id');
         let $productVideo = $(this).find('.product-video-thumbnail');
@@ -399,9 +399,15 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
             console.error(error);
         });
     };
+    $scope.getDiscounts = function () {
+        $http.get('/api/discounts').then(function (response) {
+            $scope.discounts = response.data;
+        }).catch(function (error) {
+            console.error(error);
+        });
+    }
     $scope.getProducts = function () {
         let url = '/api/products?brand=' + $scope.brandSlug + '&category=' + $scope.categorySlug;
-
         $http.get(url).then(function (response) {
             $scope.products = response.data;
             console.log($scope.products);
@@ -411,6 +417,10 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
     };
     $scope.newProduct = function () {
         $scope.prod = {};
+        $scope.prod.available = 0;
+        // $scope.prod.category = angular.copy($scope.categories[0]);
+        // $scope.prod.brand = angular.copy($scope.brands[0]);
+        // $scope.prod.discount = angular.copy($scope.discounts[0]);
         $scope.index = -1;
         $('#productModal').modal('show');
     };
@@ -422,6 +432,7 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
 
     $scope.getBrands();
     $scope.getCategories();
+    $scope.getDiscounts();
     $scope.getProducts();
 });
 app.controller('userManagerCtrl', function ($scope, $http) {

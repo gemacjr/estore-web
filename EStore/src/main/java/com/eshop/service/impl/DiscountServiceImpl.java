@@ -32,11 +32,6 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<Discount> getByOrderByCreateDateDesc() {
-        return discountRepository.findAllByOrderByCreatedDateDesc();
-    }
-
-    @Override
     public List<Discount> getActivedOrderByCreateDateDesc(boolean isActive) {
         return discountRepository.findByIsActiveOrderByCreatedDateDesc(isActive);
     }

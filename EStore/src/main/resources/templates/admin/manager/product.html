@@ -185,10 +185,10 @@
                     </div>
                     <div class="mb-3 pb-2">
                         <label class="form-label" for="unp-discount" th:text="#{global.promotion}"></label>
-                        <select class="form-select" id="unp-discount" name="discountId">
-                            <option value="" th:text="#{global.no_promotion}"></option>
-                            <option th:each="discount:${discounts}" th:value="${discount.id}"
-                                    th:text="${#numbers.formatInteger(discount.saleOff,0,'NONE')+'%'}">
+                        <select class="form-select" id="unp-discount" name="discountId" ng-model="prod.discount.id">
+                            <option ng-value="" th:text="#{global.no_promotion}"></option>
+                            <option ng-repeat="discount in discounts" ng-value="discount.id">
+                                {{discount.name}} - {{discount.saleOff|number:0}}%
                             </option>
                         </select>
                     </div>
@@ -197,20 +197,20 @@
                         <!-- Inline radio buttons -->
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" id="in-stock"
-                                   value="0" name="available" checked required>
+                                   ng-value="0" name="available" ng-model="prod.available" required>
                             <label class="form-check-label" for="in-stock"
                                    th:text="#{admin.productPage.inStock}"></label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" id="out-of-stock"
-                                   value="1" name="available" required>
+                                   ng-value="1" name="available" ng-model="prod.available" required>
                             <label class="form-check-label" for="out-of-stock"
                                    th:text="#{admin.productPage.outOfStock}"></label>
                         </div>
                         <div class="form-check form-check-inline"
                              th:onclick="visibilityProductAvailable(false, [[*{id}]])">
                             <input class="form-check-input" type="radio" id="sold-out"
-                                   value="2" name="available" required>
+                                   ng-value="2" name="available" ng-model="prod.available" required>
                             <label class="form-check-label" for="sold-out"
                                    th:text="#{admin.productPage.soldOut}"></label>
                         </div>
