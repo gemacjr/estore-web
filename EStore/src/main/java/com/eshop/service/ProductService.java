@@ -16,5 +16,6 @@ public interface ProductService {
     Page<ProductDTO> getPromotionalProducts(int page, int size);
     Product getProduct(String slug);
     ProductUpdated save(ProductUpdated product);
-    void remove(String slug);
+    void remove(String productSlug);
+    void remove(Integer productId);
 }

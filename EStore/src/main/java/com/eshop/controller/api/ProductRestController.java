@@ -24,11 +24,11 @@ public class ProductRestController {
         List<ProductUpdated> products = productService.getAllByCategoryAndBrand(categorySlug, brandSlug);
         return ResponseEntity.ok(products);
     }
-
-    @DeleteMapping("/{slug}")
-    public ResponseEntity<?> removeProduct (@PathVariable("slug") String productSlug) {
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> removeProduct (@PathVariable("id") Integer productId) {
         try {
-            productService.remove(productSlug);
+            productService.remove(productId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();

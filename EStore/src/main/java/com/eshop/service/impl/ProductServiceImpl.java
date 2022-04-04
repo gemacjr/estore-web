@@ -96,8 +96,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void remove(String slug) {
-        productRepo.delete(productRepo.findBySlug(slug));
+    public void remove(String productSlug) {
+        productRepo.delete(productRepo.findBySlug(productSlug));
+    }
+
+    @Override
+    public void remove(Integer productId) {
+        productRepo.deleteById(productId);
     }
 
     @Override

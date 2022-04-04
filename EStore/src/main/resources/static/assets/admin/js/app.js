@@ -521,6 +521,20 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
             })
         });
     };
+    $scope.deleteProduct = function (product, index) {
+        $http.delete('/api/products/' + product.id).then(function (response) {
+            $scope.products.splice(index, 1);
+            $rootScope.toast.fire({
+                icon: 'success',
+                title: $scope.lang === 'vi' ? 'Xoá sản phẩm thành công' : 'Product deleted'
+            })
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
+        });
+    };
 
     $scope.getBrands();
     $scope.getCategories();
