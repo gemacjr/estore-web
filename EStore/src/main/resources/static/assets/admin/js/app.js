@@ -478,18 +478,24 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
             $scope.productForm.$setSubmitted();
             return;
         }
-``
-        let url = '/api/products/' + product.id;
-        // $http.post('/api/products', product).then(function (response) {
-        //     if ($scope.index === -1) {
-        //         $scope.products.push(response.data);
-        //     } else {
-        //         $scope.products[$scope.index] = response.data;
-        //     }
-        //     $('#productModal').modal('hide');
-        // }).catch(function (error) {
-        //     console.error(error);
-        // });
+
+        $http.post('/api/products', product).then(function (response) {
+            $scope.categorySlug = angular.copy(product.categorySlug);
+            $scope.brandSlug = angular.copy(product.brandSlug);
+            $scope.getProducts();
+
+            $rootScope.toast.fire({
+                icon: 'success',
+                title: $scope.lang === 'vi' ? 'Thêm sản phẩm thành công' : 'Add product successfully'
+            })
+
+            $('#productModal').modal('hide');
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
+        });
     };
     $scope.updateProduct = function (product) {
         if ($scope.productForm.$invalid) {

@@ -45,7 +45,7 @@ public class ProductRestController {
         }
     }
 
-    @PostMapping("/{slug}")
+    @PostMapping
     public ProductUpdated createProduct (@RequestBody ProductUpdated product) {
         if (productService.getProduct(product.getSlug()) != null) {
             throw new RuntimeException(messageUtils.getMessage("NotExistsSlug"));
