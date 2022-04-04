@@ -1,7 +1,6 @@
 package com.eshop.controller.api;
 
 import com.eshop.dto.ProductUpdated;
-import com.eshop.entity.Product;
 import com.eshop.service.ProductService;
 import com.eshop.utils.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +19,9 @@ public class ProductRestController {
     private MessageUtils messageUtils;
 
     @GetMapping
-    public ResponseEntity<?> getAllProducts (@RequestParam(value = "category", required = false) String categorySlug,
-                                             @RequestParam(value = "brand", required = false) String brandSlug) {
-        List<Product> products = null;
-        if (!categorySlug.isBlank() && !brandSlug.isBlank()) {
-            products = productService.getAllByCategoryAndBrand(categorySlug, brandSlug);
-        } else if (!categorySlug.isBlank()) {
-            products = productService.getAllByCategory(categorySlug);
-        } else if (!brandSlug.isBlank()) {
-            products = productService.getAllByBrand(brandSlug);
-        } else {
-            products = productService.getAll();
-        }
+    public ResponseEntity<?> getAllProducts (@RequestParam(value = "category", defaultValue = "") String categorySlug,
+                                             @RequestParam(value = "brand", defaultValue = "") String brandSlug) {
+        List<ProductUpdated> products = productService.getAllByCategoryAndBrand(categorySlug, brandSlug);
         return ResponseEntity.ok(products);
     }
 
@@ -46,9 +36,9 @@ public class ProductRestController {
         }
     }
 
-    @PutMapping("/{slug}")
-    public ProductUpdated updateProduct (@PathVariable("slug") String productSlug, @RequestBody ProductUpdated product) {
-        if (productService.getProduct(product.getSlug()) != null && !productSlug.equals(product.getSlug())) {
+    @PutMapping("/{id}")
+    public ProductUpdated updateProduct (@PathVariable("id") Integer productId, @RequestBody ProductUpdated product) {
+        if (productService.getProduct(product.getSlug()) != null && !productService.getProduct(product.getSlug()).getId().equals(productId)) {
             throw new RuntimeException(messageUtils.getMessage("NotExistsSlug"));
         } else {
             return productService.save(product);

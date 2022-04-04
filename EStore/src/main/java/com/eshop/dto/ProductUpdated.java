@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -18,11 +19,11 @@ public class ProductUpdated implements Serializable {
     private Integer id;
     private String name;
     private String slug;
-    private String image;
-    private String imagePreview1;
-    private String imagePreview2;
-    private String imagePreview3;
-    private String imagePreview4;
+    private String image = "https://firebasestorage.googleapis.com/v0/b/poly-java-6-43318.appspot.com/o/box-512.png?alt=media&token=8f9eb547-8a18-44be-a35d-f5b74edcaf48";
+    private String imagePreview1 = "https://firebasestorage.googleapis.com/v0/b/poly-java-6-43318.appspot.com/o/box-512.png?alt=media&token=8f9eb547-8a18-44be-a35d-f5b74edcaf48";
+    private String imagePreview2 = "https://firebasestorage.googleapis.com/v0/b/poly-java-6-43318.appspot.com/o/box-512.png?alt=media&token=8f9eb547-8a18-44be-a35d-f5b74edcaf48";
+    private String imagePreview3 = "https://firebasestorage.googleapis.com/v0/b/poly-java-6-43318.appspot.com/o/box-512.png?alt=media&token=8f9eb547-8a18-44be-a35d-f5b74edcaf48";
+    private String imagePreview4 = "https://firebasestorage.googleapis.com/v0/b/poly-java-6-43318.appspot.com/o/box-512.png?alt=media&token=8f9eb547-8a18-44be-a35d-f5b74edcaf48";
     private String videoPreview;
     private String description;
     private Integer quantity;
@@ -31,4 +32,6 @@ public class ProductUpdated implements Serializable {
     private String categorySlug;
     private String brandSlug;
     private Integer discountId;
+    private Timestamp createdDate;
+
 }

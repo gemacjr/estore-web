@@ -18,7 +18,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -39,18 +41,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllByBrand(String brandSlug) {
-        return productRepo.findByBrandSlug(brandSlug);
-    }
-
-    @Override
-    public List<Product> getAllByCategory(String categorySlug) {
-        return productRepo.findByCategorySlug(categorySlug);
-    }
-
-    @Override
-    public List<Product> getAllByCategoryAndBrand(String categorySlug, String brandSlug) {
-        return productRepo.findByCategorySlugAndBrandSlug(categorySlug, brandSlug);
+    public List<ProductUpdated> getAllByCategoryAndBrand(String categorySlug, String brandSlug) {
+        List<Product> products = null;
+        if (!categorySlug.isBlank() && !brandSlug.isBlank()) {
+            products = productRepo.findByCategorySlugAndBrandSlug(categorySlug, brandSlug);
+        } else if (!categorySlug.isBlank()) {
+            products = productRepo.findByCategorySlug(categorySlug);
+        } else if (!brandSlug.isBlank()) {
+            products = productRepo.findByBrandSlug(brandSlug);
+        } else {
+            products = productRepo.findAll();
+        }
+        return products.stream().map(Product::toProductUpdated).collect(Collectors.toList());
     }
 
     @Override
@@ -101,16 +103,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductUpdated save(ProductUpdated productToSave) {
-//        Product product = MapperUtils.map(productToSave, Product.class);
-//        product.setCategory(categoryRepo.getById(Integer.parseInt(productToSave.getCategoryId())));
-//        product.setBrand(brandRepo.getById(Integer.parseInt(productToSave.getBrandId())));
-//        product.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-//        if (!productToSave.getDiscountId().isBlank()) {
-//            product.setDiscount(discountRepo.getById(Integer.parseInt(productToSave.getDiscountId())));
-//        } else {
-//            product.setDiscount(null);
-//        }
-//        return MapperUtils.map(productRepo.save(product), ProductUpdated.class);
-        return null;
+        Product product = MapperUtils.map(productToSave, Product.class);
+
+        product.setCategory(categoryRepo.findBySlug(productToSave.getCategorySlug()));
+        product.setBrand(brandRepo.findBySlug(productToSave.getBrandSlug()));
+        product.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        product.setDiscount(productToSave.getDiscountId() != null ? discountRepo.getById(productToSave.getDiscountId()) : null);
+
+        return productRepo.save(product).toProductUpdated();
     }
 }

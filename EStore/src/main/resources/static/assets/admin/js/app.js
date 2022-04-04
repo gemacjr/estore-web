@@ -368,7 +368,25 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
 
         if (url) {
             $productImage.attr('src', url);
-            $productImageInput.val(url);
+            switch ($productImageInput.attr('name')) {
+                case 'image':
+                    $scope.prod.image = url;
+                    break;
+                case 'imagePreview1':
+                    $scope.prod.imagePreview1 = url;
+                    break;
+                case 'imagePreview2':
+                    $scope.prod.imagePreview2 = url;
+                    break;
+                case 'imagePreview3':
+                    $scope.prod.imagePreview3 = url;
+                    break;
+                case 'imagePreview4':
+                    $scope.prod.imagePreview4 = url;
+                    break;
+                default:
+                    break;
+            }
         }
     });
     $('.product-video-preview').click(async function () {
@@ -396,6 +414,7 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         if (id) {
             $productVideo.attr('src', 'https://img.youtube.com/vi/' + id + '/maxresdefault.jpg');
             $productVideoInput.val(id);
+            $scope.prod.videoPreview = id;
         }
     });
 
@@ -437,12 +456,16 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         $scope.prod.available = 0;
         $scope.prod.price = 0;
         $scope.prod.quantity = 0;
-        $scope.prod.category = angular.copy($scope.categorySlug?$scope.categories.find(c => c.slug === $scope.categorySlug):$scope.categories[0]);
-        $scope.prod.brand = angular.copy($scope.brandSlug?$scope.brands.find(b => b.slug === $scope.brandSlug):$scope.brands[0]);
+        $scope.prod.categorySlug = angular.copy($scope.categorySlug?$scope.categorySlug:$scope.categories[0].slug);
+        $scope.prod.brandSlug = angular.copy($scope.brandSlug?$scope.brandSlug:$scope.brands[0].slug);
+        $scope.prod.discountId = null;
         $scope.index = -1;
 
         $scope.productForm.$setUntouched();
         $('#productModal').modal('show');
+    };
+    $scope.getSaleOff = function (discountId) {
+        return $scope.discounts.find(discount => discount.id === discountId).saleOff + '%';
     };
     $scope.editProduct = function (product, index) {
         $scope.prod = angular.copy(product);
@@ -469,19 +492,28 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         // });
     };
     $scope.updateProduct = function (product) {
-        console.log(product);
         if ($scope.productForm.$invalid) {
             $scope.productForm.$setSubmitted();
             return;
         }
-
         let url = '/api/products/' + product.id;
-        /*$http.put(url, product).then(function (response) {
-            $scope.products[$scope.index] = response.data;
+        $http.put(url, product).then(function (response) {
+            $scope.categorySlug = angular.copy(product.categorySlug);
+            $scope.brandSlug = angular.copy(product.brandSlug);
+            $scope.getProducts();
+
             $('#productModal').modal('hide');
+
+            $rootScope.toast.fire({
+                icon: 'success',
+                title: $scope.lang === 'vi' ? 'Sản phẩm đã được cập nhật' : 'Product updated'
+            })
         }).catch(function (error) {
-            console.error(error);
-        });*/
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
+        });
     };
 
     $scope.getBrands();
