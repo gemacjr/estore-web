@@ -1,12 +1,11 @@
 package com.eshop.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Setter
 @Getter
@@ -21,7 +20,9 @@ public class UserDTO implements Serializable {
     private String email;
     private String address;
     private String phoneNumber;
-    private MultipartFile photo;
+    private MultipartFile photoFile;
+    private String photo;
     private String enabled;
     private String isAdmin;
+    private Timestamp createdDate;
 }

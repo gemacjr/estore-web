@@ -92,8 +92,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAll() {
-        return userRepository.findAll();
+    public List<UserDTO> getAll() {
+        return null;
     }
 
     @Override
@@ -265,7 +265,7 @@ public class UserServiceImpl implements UserService {
                 user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             }
         }
-        this.uploadFile(user, userDTO.getPhoto());
+        this.uploadFile(user, userDTO.getPhotoFile());
         user.setFullname(userDTO.getFullname());
         user.setAddress(userDTO.getAddress());
         user.setPhoneNumber(userDTO.getPhoneNumber());

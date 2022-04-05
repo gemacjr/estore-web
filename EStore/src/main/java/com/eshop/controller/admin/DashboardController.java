@@ -92,15 +92,11 @@ public class DashboardController {
 
     @RequestMapping("/user-management")
     public String showUserManagementPage(Model model) {
-        List<User> users = userService.getAll();
-        model.addAttribute("users", users);
-        return "admin/user-manager";
+        return "admin/manager/user";
     }
 
     @RequestMapping("/discount-management")
     public String showDiscountManagementPage(Model model) {
-        List<Discount> discounts = discountService.getActivedOrderByCreateDateDesc(true);
-        model.addAttribute("discounts", discounts);
         return "admin/manager/discount";
     }
 

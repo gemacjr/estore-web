@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Locale;
 
 public interface UserService {
-    List<User> getAll();
+    List<UserDTO> getAll();
     User getByEmail(String email);
     User getCurrentUser();
     boolean existsByEmail(String email);
