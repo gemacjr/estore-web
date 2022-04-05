@@ -98,6 +98,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDTO> getAllIsEnabled() {
+        return MapperUtils.mapAll(userRepository.findByEnabled(true), UserDTO.class);
+    }
+
+    @Override
     public User getByEmail(String email) {
         return userRepository.findByEmail(email);
     }

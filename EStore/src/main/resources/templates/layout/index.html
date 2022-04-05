@@ -31,8 +31,7 @@
 <div th:replace="~{/layout/fragments::footer-default}"></div>
 <!-- Script Resources-->
 <div th:replace="~{/layout/fragments::script-resources}"></div>
-<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js}"></script>
-<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.8.2/angular-route.min.js}"></script>
+<script th:src="@{/assets/user/js/main.js}"></script>
 <!-- Script Custom -->
 <th:block th:replace="${script}?:~{}"></th:block>
 </body>

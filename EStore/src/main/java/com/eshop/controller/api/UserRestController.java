@@ -18,7 +18,7 @@ public class UserRestController {
 
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
-        List<UserDTO> users = userService.getAll();
+        List<UserDTO> users = userService.getAllIsEnabled();
         return ResponseEntity.ok(users);
     }
 

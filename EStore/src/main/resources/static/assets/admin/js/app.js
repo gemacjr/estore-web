@@ -343,6 +343,8 @@ app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.getBrands();
 });
 app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
+    $('[data-bs-toggle="tooltip"]').tooltip();
+
     $scope.brands = [];
     $scope.categories = [];
     $scope.products = [];
@@ -561,6 +563,13 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.getProducts();
 });
 app.controller('userManagerCtrl', function ($scope, $http, $rootScope) {
+    $('[data-bs-toggle="tooltip"]').tooltip();
+
+    $('<script></script>').attr('src', '/assets/user/js/theme.min.js').appendTo('body');
+    $('.file-drop-input').change(function (){
+        $(this).parent().find('.avatar-preview').remove();
+    });
+
     $scope.emailCurrentUser= $('#email-current-user').text();
     $scope.dtOptions = {
         scrollY: false,
@@ -593,7 +602,7 @@ app.controller('userManagerCtrl', function ($scope, $http, $rootScope) {
         $scope.index = -1;
 
         $scope.userForm.$setUntouched();
-        $('#userModal').modal('show');
+        $('#user-modal').modal('show');
     };
 });
 app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datetime) {

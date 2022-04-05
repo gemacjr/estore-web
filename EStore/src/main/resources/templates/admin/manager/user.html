@@ -1,3 +1,76 @@
+<!-- Modal -->
+<div class="modal fade" id="user-modal" data-bs-focus="false" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" th:text="#{admin.userPage.userInfo}"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body tab-content py-4">
+                <form id="user-frm" name="userForm" novalidate>
+                    <!-- Drag and drop file upload -->
+                    <label class="form-label" th:text="#{global.avatar}"></label>
+                    <div class="file-drop-area mb-3">
+                        <div class="file-drop-preview img-thumbnail rounded avatar-preview">
+                            <img th:src="@{/assets/user/img/avatar/default.png}" alt="default">
+                        </div>
+                        <div class="file-drop-icon ci-cloud-upload"></div>
+                        <span class="file-drop-message" th:text="#{admin.upload.message}"></span>
+                        <input type="file" class="file-drop-input" id="unp-user-photo" name="photo">
+                        <button type="button" class="file-drop-btn btn btn-primary btn-sm" id="upload-photo-btn"
+                                th:text="#{admin.upload.dropButton}"></button>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="unp-user-username" class="form-label" th:text="#{global.username}"></label>
+                            <input class="form-control" type="text" id="unp-user-username" name="username" required>
+                            <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="unp-user-password" class="form-label" th:text="#{global.password}"></label>
+                            <input class="form-control" type="password" id="unp-user-password" name="password"
+                                   required>
+                            <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="unp-user-email" class="form-label" th:text="#{global.email}"></label>
+                            <input class="form-control" type="email" id="unp-user-email" name="email" required>
+                            <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="unp-user-fullname" class="form-label" th:text="#{global.full_name}"></label>
+                            <input class="form-control" type="text" id="unp-user-fullname" name="fullname" required>
+                            <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="unp-user-address" class="form-label" th:text="#{global.address}"></label>
+                            <input class="form-control" type="text" id="unp-user-address" name="address" required>
+                            <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="unp-user-phone-number" class="form-label"
+                                   th:text="#{global.phone_number}"></label>
+                            <input class="form-control" type="text" id="unp-user-phone-number" name="phoneNumber"
+                                   required>
+                            <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer btn-group">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
+                        th:text="#{global.close}"></button>
+                <button type="submit" class="btn btn-primary btn-sm btn-save-user-submit" id="btn-save-user"
+                        form="save-user-frm" th:text="#{global.save}"></button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Title-->
 <div class="d-sm-flex flex-wrap justify-content-between align-items-center border-bottom pb-4 mb-4">
     <h2 class="h3 m-0 text-center text-sm-start">
