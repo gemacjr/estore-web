@@ -251,7 +251,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User save(UserDTO userDTO) {
+    public UserDTO save(UserDTO userDTO) {
         User user = null;
         if (userDTO.getId() == null) {
             if (userRepository.existsByUsername(userDTO.getUsername())) {
@@ -276,15 +276,21 @@ public class UserServiceImpl implements UserService {
         user.setAddress(userDTO.getAddress());
         user.setPhoneNumber(userDTO.getPhoneNumber());
         user.setEnabled(userDTO.getEnabled() != null);
-        //user.setAdmin(userDTO.getIsAdmin() != null);
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        Authority authority = new Authority();
+        authority.setUser(savedUser);
+        authority.setRole(roleRepository.findByName(Role.CUSTOMER));
+        authorityRepository.save(authority);
+
+        return MapperUtils.map(savedUser, UserDTO.class);
     }
 
     @Override
     @Transactional
-    public void delete(Integer id) {
-        userRepository.deleteById(id);
+    public void delete(Integer userId) {
+        userRepository.deleteById(userId);
     }
 
     private void uploadFile(User user, MultipartFile photoFile) {

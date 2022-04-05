@@ -20,4 +20,20 @@ public class UserRestController {
         List<UserDTO> users = userService.getAllIsEnabled();
         return ResponseEntity.ok(users);
     }
+
+   @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(userService.save(userDTO));
+    }
+
+    @PostMapping
+    public ResponseEntity<?> save(@RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(userService.save(userDTO));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
+        userService.delete(id);
+        return ResponseEntity.ok().build();
+    }
 }

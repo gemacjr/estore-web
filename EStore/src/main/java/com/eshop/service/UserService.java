@@ -27,6 +27,6 @@ public interface UserService {
     User register(Register user) throws UserAlreadyExistException, MessagingException;
     User changePassword(User user, String newPassword);
     User updateProfile(User user, Profile profile);
-    User save(UserDTO userDTO);
-    void delete(Integer id);
+    UserDTO save(UserDTO userDTO);
+    void delete(Integer userId);
 }
