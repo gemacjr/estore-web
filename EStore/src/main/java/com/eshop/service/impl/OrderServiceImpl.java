@@ -72,12 +72,18 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
         order.setUser(user);
         order.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-        order.setOrderCode(RandomStringUtils.randomAlphanumeric(11));
         order.setStatus(0);
         order.setFullname(fullname);
         order.setEmail(email);
         order.setAddress(address);
         order.setPhoneNumber(phoneNumber);
+
+        String orderCode = RandomStringUtils.randomAlphanumeric(11);
+        if (orderRepository.existsByOrderCode(orderCode)) {
+            orderCode = RandomStringUtils.randomAlphanumeric(11);
+        }
+        order.setOrderCode(orderCode);
+
         Order savedOrder = orderRepository.save(order);
 
         // Create order details

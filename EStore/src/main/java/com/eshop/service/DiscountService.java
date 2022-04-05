@@ -6,12 +6,12 @@ import com.eshop.entity.Discount;
 import java.util.List;
 
 public interface DiscountService {
+    List<Discount> getAll();
     List<Discount> getByActivated();
-
-    List<Discount> getByOrderBySaleOffAsc();
-    List<Discount> getByOrderByCreateDateDesc();
+    List<Discount> getActived();
     List<Discount> getActivedOrderByCreateDateDesc(boolean isActive);
-    List<Discount> getActivedOrderBySaleOffAsc(boolean isActive);
-    Discount saveDiscount(DiscountDTO discountDTO);
-    void deleteDiscount(Integer id);
+    Discount save(DiscountDTO discountDTO);
+    Discount save(Discount discount);
+    void delete(Integer discountId);
+    void deleteFromDB(Integer discountId);
 }

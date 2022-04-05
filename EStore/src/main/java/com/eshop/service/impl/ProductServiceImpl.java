@@ -1,7 +1,7 @@
 package com.eshop.service.impl;
 
 import com.eshop.dto.ProductDTO;
-import com.eshop.dto.ProductToSave;
+import com.eshop.dto.ProductUpdated;
 import com.eshop.entity.Product;
 import com.eshop.repository.BrandRepository;
 import com.eshop.repository.CategoryRepository;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -37,6 +38,31 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAll() {
         return productRepo.findAll();
+    }
+
+    @Override
+    public List<ProductUpdated> getAllByCategoryAndBrand(String categorySlug, String brandSlug) {
+        List<Product> products = null;
+        if (!categorySlug.isBlank() && !brandSlug.isBlank()) {
+            products = productRepo.findByCategorySlugAndBrandSlug(categorySlug, brandSlug);
+        } else if (!categorySlug.isBlank()) {
+            products = productRepo.findByCategorySlug(categorySlug);
+        } else if (!brandSlug.isBlank()) {
+            products = productRepo.findByBrandSlug(brandSlug);
+        } else {
+            products = productRepo.findAll();
+        }
+        return products.stream().map(Product::toProductUpdated).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<Product> getAllByCategoryAndBrand(String categorySlug, String brandSlug, int page, int size, String direction) {
+        Sort sort = Sort.by(direction.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, "name");
+        if (brandSlug.isBlank()) {
+            return productRepo.findByCategorySlug(categorySlug, PageRequest.of(page, size, sort));
+        } else {
+            return productRepo.findByCategorySlugAndBrandSlug(categorySlug, brandSlug, PageRequest.of(page, size, sort));
+        }
     }
 
     @Override
@@ -64,48 +90,31 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getByCategory(String categorySlug) {
-        return productRepo.findByCategorySlug(categorySlug);
-    }
-
-    @Override
-    public List<Product> getByProduct(String name) {
-        return productRepo.findByNameContainingAllIgnoreCase(name);
-    }
-
-    @Override
-    public List<Product> getByCategoryAndBrand(String categorySlug, String brandSlug) {
-        return productRepo.findByCategorySlugAndBrandSlug(categorySlug, brandSlug);
-    }
-
-    @Override
-    public Page<Product> getByCategoryAndBrand(String categorySlug, String brandSlug, int page, int size, String direction) {
-        Sort sort = Sort.by(direction.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, "name");
-        if (brandSlug.isBlank()) {
-            return productRepo.findByCategorySlug(categorySlug, PageRequest.of(page, size, sort));
-        } else {
-            return productRepo.findByCategorySlugAndBrandSlug(categorySlug, brandSlug, PageRequest.of(page, size, sort));
-        }
+    public List<Product> getByProduct(String productName) {
+        return productRepo.findByNameContainingAllIgnoreCase(productName);
     }
 
     @Override
     @Transactional
-    public void remove(String slug) {
-        productRepo.delete(productRepo.findBySlug(slug));
+    public void remove(String productSlug) {
+        productRepo.delete(productRepo.findBySlug(productSlug));
+    }
+
+    @Override
+    public void remove(Integer productId) {
+        productRepo.deleteById(productId);
     }
 
     @Override
     @Transactional
-    public ProductToSave save(ProductToSave productToSave) {
-        Product product = MapperUtils.map(productToSave, Product.class);
-        product.setCategory(categoryRepo.getById(Integer.parseInt(productToSave.getCategoryId())));
-        product.setBrand(brandRepo.getById(Integer.parseInt(productToSave.getBrandId())));
+    public ProductUpdated save(ProductUpdated productUpdated) {
+        Product product = MapperUtils.map(productUpdated, Product.class);
+
+        product.setCategory(categoryRepo.findBySlug(productUpdated.getCategorySlug()));
+        product.setBrand(brandRepo.findBySlug(productUpdated.getBrandSlug()));
         product.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-        if (!productToSave.getDiscountId().isBlank()) {
-            product.setDiscount(discountRepo.getById(Integer.parseInt(productToSave.getDiscountId())));
-        } else {
-            product.setDiscount(null);
-        }
-        return MapperUtils.map(productRepo.save(product), ProductToSave.class);
+        product.setDiscount(productUpdated.getDiscountId() != null ? discountRepo.getById(productUpdated.getDiscountId()) : null);
+
+        return productRepo.save(product).toProductUpdated();
     }
 }

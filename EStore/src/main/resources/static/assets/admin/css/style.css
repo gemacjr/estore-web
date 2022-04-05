@@ -1,0 +1,24 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.invalid-tooltip {
+    display: block;
+}
+
+.product-img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    height: 100%;
+    border: 2px dashed #dae1e7;
+    background-color: #fff;
+    cursor: pointer;
+}

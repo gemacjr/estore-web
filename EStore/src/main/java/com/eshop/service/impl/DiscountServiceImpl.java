@@ -5,6 +5,7 @@ import com.eshop.entity.Discount;
 import com.eshop.repository.DiscountRepository;
 import com.eshop.repository.ProductRepository;
 import com.eshop.service.DiscountService;
+import com.eshop.utils.MessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -20,20 +21,17 @@ public class DiscountServiceImpl implements DiscountService {
     private DiscountRepository discountRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    MessageUtils messageUtils;
+
+    @Override
+    public List<Discount> getAll() {
+        return discountRepository.findAll();
+    }
 
     @Override
     public List<Discount> getByActivated() {
         return discountRepository.findByIsActive(true);
-    }
-
-    @Override
-    public List<Discount> getByOrderBySaleOffAsc() {
-        return discountRepository.findAllByOrderBySaleOffAsc();
-    }
-
-    @Override
-    public List<Discount> getByOrderByCreateDateDesc() {
-        return discountRepository.findAllByOrderByCreatedDateDesc();
     }
 
     @Override
@@ -42,19 +40,19 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<Discount> getActivedOrderBySaleOffAsc(boolean isActive) {
-        return discountRepository.findByIsActiveOrderBySaleOffAsc(isActive);
+    public List<Discount> getActived() {
+        return discountRepository.findByIsActive(true);
     }
 
     @Override
     @Transactional
-    public Discount saveDiscount(DiscountDTO discountDTO) {
+    public Discount save(DiscountDTO discountDTO) {
         Discount discount = null;
         if (discountDTO.getId() == null) {
             discount = new Discount();
             discount.setCreatedDate(new Timestamp(System.currentTimeMillis()));
         } else {
-            discount = discountRepository.findById(discountDTO.getId()).get();
+            discount = discountRepository.getById(discountDTO.getId());
         }
         discount.setSaleOff(discountDTO.getSaleOff());
         discount.setEndDate(discountDTO.getEndDate());
@@ -67,8 +65,27 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     @Transactional
-    public void deleteDiscount(Integer id) {
-        Discount discount = discountRepository.findById(id).get();
+    public Discount save(Discount discount) {
+        if (discount.getEndDate().before(new Date())) {
+            throw new IllegalArgumentException(messageUtils.getMessage("EndTimeAfterCurrentTime"));
+        }
+        if (discount.getId() == null) {
+            discount.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        }
+        discount.setIsActive(true);
+        return discountRepository.save(discount);
+    }
+
+    @Override
+    @Transactional
+    public void deleteFromDB(Integer discountId) {
+        discountRepository.delete(discountRepository.getById(discountId));
+    }
+
+    @Override
+    @Transactional
+    public void delete(Integer discountId) {
+        Discount discount = discountRepository.getById(discountId);
         discount.setIsActive(false);
         discount.setEndDate(new Date());
 
@@ -86,7 +103,7 @@ public class DiscountServiceImpl implements DiscountService {
         List<Discount> discounts = discountRepository.findByIsActive(true);
         discounts.forEach(discount -> {
             if (discount.getEndDate().before(new Date())) {
-                this.deleteDiscount(discount.getId());
+                this.delete(discount.getId());
             }
         });
     }

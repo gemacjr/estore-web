@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/layout/admin::main-fragment(title=~{::title}, content=~{::#content}, script=~{::script})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+<div id="content">
+    <ng-view></ng-view>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        var scrollpos = sessionStorage.getItem('scrollpos');
+        if (scrollpos) window.scrollTo(0, scrollpos);
+        sessionStorage.removeItem('scrollpos');
+    });
+
+    window.onbeforeunload = function (e) {
+        sessionStorage.setItem('scrollpos', window.scrollY);
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!-- Modal -->
+<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" th:text="#{global.category}"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body tab-content py-4">
+                <form id="category-info-frm" name="categoryForm" novalidate>
+                    <!-- Primary alert -->
+                    <div class="alert alert-primary d-flex" role="alert" ng-hide="!alertMessage">
+                        <div class="alert-icon">
+                            <i class="ci-bell"></i>
+                        </div>
+                        <div>{{alertMessage}}</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name-vi" class="form-label" th:text="#{global.name}+' - VI'"></label>
+                        <input class="form-control" type="text" id="name-vi" name="nameVI" ng-model="category.nameVI"
+                               required>
+                        <div ng-show="categoryForm.$submitted || categoryForm.nameVI.$touched">
+                            <div class="invalid-tooltip" ng-show="categoryForm.nameVI.$error.required"
+                                 th:text="#{NotBlank.field}"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name-en" class="form-label" th:text="#{global.name}+' - EN'"></label>
+                        <input class="form-control" type="text" id="name-en" name="nameEN"
+                               ng-keyup="autoSlug(category.nameEN)"
+                               ng-model="category.nameEN" required>
+                        <div ng-show="categoryForm.$submitted || categoryForm.nameEN.$touched">
+                            <div class="invalid-tooltip" ng-show="categoryForm.nameEN.$error.required"
+                                 th:text="#{NotBlank.field}"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="slug" class="form-label">Slug</label>
+                        <input class="form-control" type="text" id="slug" name="slug" ng-model="category.slug" required>
+                        <div ng-show="categoryForm.$submitted || categoryForm.slug.$touched">
+                            <div class="invalid-tooltip" ng-show="categoryForm.slug.$error.required"
+                                 th:text="#{NotBlank.field}"></div>
+                        </div>
+                    </div>
+                    <div class="btn-group w-100">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
+                                th:text="#{global.close}"></button>
+                        <button type="button" class="btn btn-primary btn-sm" ng-disabled="categoryForm.$invalid"
+                                th:text="#{global.add}" ng-click="addCategory(category)" ng-show="!isEdit"></button>
+                        <button type="button" class="btn btn-primary btn-sm" ng-disabled="categoryForm.$invalid"
+                                th:text="#{global.save}" ng-click="updateCategory(category)" ng-show="isEdit"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Title-->
+<div class="d-sm-flex flex-wrap justify-content-between align-items-center border-bottom mb-4">
+    <h2 class="h3 m-0 text-center text-sm-start pb-4">
+        <span th:text="#{admin.categoryPage.title}"></span><span
+            class="badge bg-faded-accent fs-sm text-body align-middle ms-2">{{categories.length}}</span>
+    </h2>
+    <div class="text-center mb-4" data-bs-toggle="tooltip" data-bs-placement="left" th:title="#{global.add_category}">
+        <a class="link-success" href="javascript:void(0)" ng-click="newCategory()">
+            <i class="fs-2 fa-regular fa-circle-plus"></i>
+        </a>
+    </div>
+</div>
+<!-- Color borders on tables -->
+<table datatable="ng" dt-options="dtOptions" class="table table-borderless table-striped" id="catalog-table">
+    <thead>
+    <tr>
+        <th class="text-light">#</th>
+        <th class="text-light" th:text="#{global.name}"></th>
+        <th class="text-light"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="category in categories track by $index">
+        <th class="align-middle" scope="row">{{$index + 1}}</th>
+        <td class="align-middle">{{lang == 'vi' ? category.nameVI : category.nameEN}}</td>
+        <td class="align-middle fs-5">
+            <div class="d-flex justify-content-center">
+                <a class="link-info me-2" href="javascript:void(0)" ng-click="editCategory(category)">
+                    <i class="fa-regular fa-pen-to-square"></i>
+                </a>
+                <a class="link-danger" href="javascript:void(0)" ng-click="deleteCategory(category)">
+                    <i class="fa-regular fa-circle-minus"></i>
+                </a>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

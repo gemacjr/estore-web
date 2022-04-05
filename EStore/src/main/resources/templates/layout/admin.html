@@ -13,13 +13,15 @@
     <link rel="apple-touch-icon" sizes="180x180" th:href="@{/assets/user/img/icons/apple-touch-icon.png}">
     <link rel="icon" type="image/png" sizes="32x32" th:href="@{/assets/user/img/icons/favicon-32x32.png}">
     <link rel="icon" type="image/png" sizes="16x16" th:href="@{/assets/user/img/icons/favicon-16x16.png}">
-    <link rel="manifest" th:href="@{https://cartzilla.createx.studio.webmanifest}">
+    <link rel="manifest" th:href="@{https://cartzilla.createx.studio/site.webmanifest}">
     <link rel="mask-icon" color="#fe6a6a" th:href="@{https://cartzilla.createx.studio/safari-pinned-tab.svg}">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
     <th:block th:replace="~{/layout/fragments::css-resources}"></th:block>
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/angular-ui-grid/4.11.1/ui-grid.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/admin/css/style.css}">
 </head>
-<body class="handheld-toolbar-enabled">
+<body class="handheld-toolbar-enabled" ng-app="adminApp">
 <input type="hidden" id="lang" th:value="${#locale.language}">
 <main class="page-wrapper">
     <!-- Header -->
@@ -38,7 +40,12 @@
 </main>
 <!-- Script Resources-->
 <div th:replace="~{/layout/fragments::script-resources}"></div>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.8.2/angular-route.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.4.3/angular-datatables.min.js}"></script>
+<script th:src="@{https://unpkg.com/angular-datetime-input}"></script>
 <script th:src="@{/assets/admin/js/main.js}"></script>
+<script th:src="@{/assets/admin/js/app.js}"></script>
 <!-- Script Custom -->
 <th:block th:replace="${script}?:~{}"></th:block>
 </body>

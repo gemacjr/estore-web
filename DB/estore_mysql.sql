@@ -97,15 +97,14 @@ CREATE TABLE IF NOT EXISTS `EStore`.`User` (
   `Photo` VARCHAR(128) NULL,
   `CreatedDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Enabled` TINYINT(1) NOT NULL DEFAULT 1,
-  `IsAdmin` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`Id`),
   UNIQUE INDEX `UQ_User_Username` (`Username` ASC) VISIBLE,
   UNIQUE INDEX `UQ_User_Email` (`Email` ASC) VISIBLE);
 
-INSERT INTO`EStore`.`User` (Username, `Password`, Fullname, Email, Address, PhoneNumber, Photo, CreatedDate, Enabled, IsAdmin) VALUES 
-('MaiNT','$2a$10$LuRi1lmkBg/3c/bg./EcbeC1DeT2.BZfXsTVCrA8nDYr4hPYNnqbq','Nguyễn Thị Mai','maint@gmail.com','Đạ Ròn - Đơn Dương - Lâm Đồng','0389894357','MaiNT.jpg','2022-02-21 09:42:23',1,0),
-('AnhPTQ','$2a$10$z/mpc04bezbLWwxodoQb9OXA0cVO0Pr1p2reAT/6zFSpwJnIFuuIy','Phan Thị Quỳnh Anh','anhptq@gmail.com','Trung Mỹ Tây, Quận 12, TP.HCM','0389894357','AnhPTQ.jpg','2022-02-21 09:37:04',1,0),
-('Admin','$2a$10$kL0UEwTe2Q2fSf8TfXYahOPLtC.Q1k7ZX1ynbgiwgw7A0.1pmaaSG','Admin','admin@gmail.com','Phường Trung Mỹ Tây, Quận 12, TP.HCM','0345679898','Admin.jpeg','2022-02-21 09:53:32',1,1);
+INSERT INTO`EStore`.`User` (Username, `Password`, Fullname, Email, Address, PhoneNumber, Photo, CreatedDate, Enabled) VALUES 
+('MaiNT','$2a$10$LuRi1lmkBg/3c/bg./EcbeC1DeT2.BZfXsTVCrA8nDYr4hPYNnqbq','Nguyễn Thị Mai','maint@gmail.com','Đạ Ròn - Đơn Dương - Lâm Đồng','0389894357','MaiNT.jpg','2022-02-21 09:42:23',1),
+('AnhPTQ','$2a$10$z/mpc04bezbLWwxodoQb9OXA0cVO0Pr1p2reAT/6zFSpwJnIFuuIy','Phan Thị Quỳnh Anh','anhptq@gmail.com','Trung Mỹ Tây, Quận 12, TP.HCM','0389894357','AnhPTQ.jpg','2022-02-21 09:37:04',1),
+('Admin','$2a$10$kL0UEwTe2Q2fSf8TfXYahOPLtC.Q1k7ZX1ynbgiwgw7A0.1pmaaSG','Admin','admin@gmail.com','Phường Trung Mỹ Tây, Quận 12, TP.HCM','0345679898','Admin.jpeg','2022-02-21 09:53:32',1);
 
 -- ----------------------------------------------------------------------------
 -- Table EStore.Authority

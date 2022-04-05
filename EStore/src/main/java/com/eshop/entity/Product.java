@@ -2,6 +2,7 @@
 
 package com.eshop.entity;
 
+import com.eshop.dto.ProductUpdated;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serial;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -85,5 +85,27 @@ public class Product {
     @JsonIgnore
     @OneToMany(mappedBy = "product")
     private Set<ShoppingCart> shoppingCarts = new LinkedHashSet<>();
+
+    public ProductUpdated toProductUpdated () {
+        ProductUpdated productUpdated = new ProductUpdated();
+        productUpdated.setId(this.getId());
+        productUpdated.setName(this.getName());
+        productUpdated.setSlug(this.getSlug());
+        productUpdated.setImage(this.getImage());
+        productUpdated.setImagePreview1(this.getImagePreview1());
+        productUpdated.setImagePreview2(this.getImagePreview2());
+        productUpdated.setImagePreview3(this.getImagePreview3());
+        productUpdated.setImagePreview4(this.getImagePreview4());
+        productUpdated.setVideoPreview(this.getVideoPreview());
+        productUpdated.setDescription(this.getDescription());
+        productUpdated.setQuantity(this.getQuantity());
+        productUpdated.setPrice(this.getPrice());
+        productUpdated.setCreatedDate(this.getCreatedDate());
+        productUpdated.setAvailable(this.getAvailable());
+        productUpdated.setCategorySlug(this.getCategory().getSlug());
+        productUpdated.setBrandSlug(this.getBrand().getSlug());
+        productUpdated.setDiscountId(this.getDiscount() == null ? null : this.getDiscount().getId());
+        return productUpdated;
+    }
 
 }

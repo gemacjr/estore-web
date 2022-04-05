@@ -11,10 +11,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByDiscountNotNull();
     Page<Product> findByDiscountNotNull(Pageable pageable);
     List<Product> findTop8ByOrderByCreatedDateDesc();
-    List<Product> findByNameContainingAllIgnoreCase(String name);
-    List<Product> findByCategorySlugAndBrandSlug(String slug, String brand);
-    Page<Product> findByCategorySlugAndBrandSlug(String slug, String brand, Pageable pageable);
-    List<Product> findByCategorySlug(String slug);
+    List<Product> findByNameContainingAllIgnoreCase(String productName);
+    List<Product> findByCategorySlug(String categorySlug);
+    List<Product> findByBrandSlug(String brandSlug);
+    List<Product> findByCategorySlugAndBrandSlug(String categorySlug, String brandSlug);
+    Page<Product> findByCategorySlugAndBrandSlug(String categorySlug, String brandSlug, Pageable pageable);
     Page<Product> findByCategorySlug(String slug, Pageable pageable);
     Product findBySlug(String slug);
 }

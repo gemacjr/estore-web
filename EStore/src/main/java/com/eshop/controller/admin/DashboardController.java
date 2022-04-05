@@ -1,9 +1,7 @@
 package com.eshop.controller.admin;
 
 import com.eshop.dto.*;
-import com.eshop.entity.Brand;
 import com.eshop.entity.Discount;
-import com.eshop.entity.Product;
 import com.eshop.entity.User;
 import com.eshop.service.*;
 import com.eshop.utils.MapperUtils;
@@ -34,42 +32,24 @@ public class DashboardController {
     @Autowired
     private DiscountService discountService;
 
-    @RequestMapping("")
+    @RequestMapping
     public String showDashboardPage() {
-        return "redirect:dashboard/report";
+        return "admin/index";
     }
 
     @RequestMapping("/category-management")
-    public String showCategoryManager(Model model) {
-        model.addAttribute("stt", 0);
-        return "admin/category-manager";
+    public String showCategoryManagerPage() {
+        return "admin/manager/category";
     }
 
     @RequestMapping("/brand-management")
-    public String showBrandManager(Model model) {
-        List<Brand> brands = brandService.getAll();
-        model.addAttribute("brands", brands);
-        return "admin/brand-manager";
+    public String showBrandManagerPage(Model model) {
+        return "admin/manager/brand";
     }
 
     @RequestMapping("/product-management")
-    public String showProductManager(Model model, @RequestParam Optional<String> category, @RequestParam Optional<String> brand) {
-        String categorySlug = category.orElseGet(() -> categoryService.getAll().get(0).getSlug());
-        List<Brand> brandsByCategory = brandService.getByCategory(categorySlug);
-
-        String brandSlug = brand.orElseGet(() -> brandsByCategory.get(0).getSlug());
-        model.addAttribute("brandsByCategory", brandsByCategory);
-        model.addAttribute("brands", brandService.getAll());
-
-        List<Discount> discounts = discountService.getActivedOrderBySaleOffAsc(true);
-        model.addAttribute("discounts", discounts);
-
-        List<Product> products = productService.getByCategoryAndBrand(categorySlug, brandSlug);
-        model.addAttribute("products", products);
-
-        model.addAttribute("categorySlug", categorySlug);
-        model.addAttribute("brandSlug", brandSlug);
-        return "admin/product-manager";
+    public String showProductManagerPage(Model model) {
+        return "admin/manager/product";
     }
 
     @RequestMapping("/report")
@@ -86,7 +66,7 @@ public class DashboardController {
         List<CategoryDTO> categoryList = null;
         if (brand.isPresent()) {
             String brandSlug = brand.get();
-            categoryList = MapperUtils.mapAll(categoryService.getByBrand(brandSlug), CategoryDTO.class);
+            categoryList = MapperUtils.mapAll(categoryService.getAllByBrand(brandSlug), CategoryDTO.class);
             model.addAttribute("brandSlugSelected", brandSlug);
         } else {
             categoryList = MapperUtils.mapAll(categoryService.getAll(), CategoryDTO.class);
@@ -121,7 +101,7 @@ public class DashboardController {
     public String showDiscountManagementPage(Model model) {
         List<Discount> discounts = discountService.getActivedOrderByCreateDateDesc(true);
         model.addAttribute("discounts", discounts);
-        return "admin/discount-manager";
+        return "admin/manager/discount";
     }
 
 }

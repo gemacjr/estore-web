@@ -71,7 +71,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
         List<Discount> discounts = discountService.getByActivated();
         discounts.forEach(discount -> {
             if (discount.getEndDate().before(new Date())) {
-                discountService.deleteDiscount(discount.getId());
+                discountService.delete(discount.getId());
             }
         });
     }

@@ -19,7 +19,7 @@ public class BrandServiceImpl implements BrandService {
     ModelMapper mapper;
 
     @Override
-    public List<Brand> getByCategory(String categorySlug) {
+    public List<Brand> getAllByCategory(String categorySlug) {
         return brandRepo.findDistinctByProductsCategorySlug(categorySlug);
     }
 
@@ -29,32 +29,34 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Brand getBrand(String slug) {
-        return brandRepo.findBySlug(slug);
+    public Brand get(Integer brandId) {
+        return brandRepo.getById(brandId);
+    }
+
+    @Override
+    public Brand get(String brandSlug) {
+        return brandRepo.findBySlug(brandSlug);
     }
 
     @Override
     @Transactional
-    public void createBrand(Brand brand) {
-        brandRepo.save(brand);
+    public Brand createBrand(Brand brand) {
+        return brandRepo.save(brand);
     }
 
     @Override
     @Transactional
-    public void removeBrand(String slug){
-        brandRepo.delete(brandRepo.findBySlug(slug));
+    public void removeBrand(Integer brandId) {
+        brandRepo.delete(brandRepo.getById(brandId));
     }
 
     @Override
     @Transactional
-    public Brand updateBrand(String slug, Brand brand) {
-        Brand brandToUpdate = brandRepo.findBySlug(slug);
-        if (brandToUpdate != null) {
-            brandToUpdate.setName(brand.getName());
-            brandToUpdate.setSlug(brand.getSlug());
-            return brandRepo.save(brandToUpdate);
-        }
-        return null;
+    public Brand updateBrand(Integer brandId, Brand brand) {
+        Brand brandToUpdate = brandRepo.getById(brandId);
+        brandToUpdate.setName(brand.getName());
+        brandToUpdate.setSlug(brand.getSlug());
+        return brandRepo.save(brandToUpdate);
     }
 
 }

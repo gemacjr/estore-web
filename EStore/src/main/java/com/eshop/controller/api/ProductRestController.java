@@ -1,52 +1,52 @@
 package com.eshop.controller.api;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.eshop.dto.ProductToSave;
+import com.eshop.dto.ProductUpdated;
 import com.eshop.service.ProductService;
 import com.eshop.utils.MessageUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/product-manager")
+@RequestMapping("/api/products")
 public class ProductRestController {
     @Autowired
     private ProductService productService;
     @Autowired
     private MessageUtils messageUtils;
 
-    @DeleteMapping("/{slug}")
-    @SuppressWarnings("rawtypes")
-    public ResponseEntity removeProduct (@PathVariable("slug") String productSlug) {
+    @GetMapping
+    public ResponseEntity<?> getAllProducts (@RequestParam(value = "category", defaultValue = "") String categorySlug,
+                                             @RequestParam(value = "brand", defaultValue = "") String brandSlug) {
+        List<ProductUpdated> products = productService.getAllByCategoryAndBrand(categorySlug, brandSlug);
+        return ResponseEntity.ok(products);
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> removeProduct (@PathVariable("id") Integer productId) {
         try {
-            productService.remove(productSlug);
+            productService.remove(productId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new RuntimeException(messageUtils.getMessage("SomethingWentWrong"));
         }
     }
 
-    @PutMapping("/{slug}")
-    public ProductToSave updateProduct (@PathVariable("slug") String productSlug, @RequestBody ProductToSave product) {
-        if (productService.getProduct(product.getSlug()) != null && !productSlug.equals(product.getSlug())) {
+    @PutMapping("/{id}")
+    public ProductUpdated updateProduct (@PathVariable("id") Integer productId, @RequestBody ProductUpdated product) {
+        if (productService.getProduct(product.getSlug()) != null && !productService.getProduct(product.getSlug()).getId().equals(productId)) {
             throw new RuntimeException(messageUtils.getMessage("NotExistsSlug"));
         } else {
             return productService.save(product);
         }
     }
 
-    @PostMapping("/{slug}")
-    public ProductToSave createProduct (@RequestBody ProductToSave product) {
+    @PostMapping
+    public ProductUpdated createProduct (@RequestBody ProductUpdated product) {
         if (productService.getProduct(product.getSlug()) != null) {
             throw new RuntimeException(messageUtils.getMessage("NotExistsSlug"));
         } else {

@@ -82,7 +82,7 @@
                                    href="#fourth">
                                     <img class="h-100" th:src="${product.imagePreview4}" alt="Product thumb">
                                 </a>
-                                <a th:src="${product.videoPreview == null}"
+                                <a th:unless="${product.videoPreview == null}"
                                    class="product-gallery-thumblist-item video-item"
                                    th:href="@{|https://www.youtube.com/watch?v=${product.videoPreview}|}">
                                     <div class="product-gallery-thumblist-item-text">
