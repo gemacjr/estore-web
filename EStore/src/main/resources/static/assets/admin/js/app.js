@@ -1,5 +1,21 @@
 let app = angular.module('adminApp', ['ngRoute', 'datatables', 'datetime']);
 
+app.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}]);
+
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/category-management', {
@@ -128,7 +144,7 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
         order: [[0, 'asc']],
         language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
         responsive: true,
-        columnDefs : [
+        columnDefs: [
             {
                 targets: [2],
                 orderable: false
@@ -205,7 +221,6 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
             if (result.isConfirmed) {
                 $http.delete('/api/categories/' + category.id).then(function (response) {
                     $scope.getCategories()
-
                     $rootScope.toast.fire({
                         icon: 'success',
                         title: $scope.lang === 'vi' ? 'Xóa danh mục thành công' : 'Delete category successfully'
@@ -241,7 +256,7 @@ app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
         order: [[0, 'asc']],
         language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
         responsive: true,
-        columnDefs : [
+        columnDefs: [
             {
                 targets: [2],
                 orderable: false
@@ -365,7 +380,7 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
         responsive: true,
         pageLength: 5,
-        columnDefs : [
+        columnDefs: [
             {
                 targets: [0, 6],
                 orderable: false
@@ -567,17 +582,17 @@ app.controller('userManagerCtrl', function ($scope, $http, $rootScope) {
     $('<script></script>').attr('src', '/assets/user/js/theme.min.js').appendTo('body');
     $('<script></script>').attr('src', '/assets/admin/js/main.js').appendTo('body');
 
-    $('.file-drop-input').change(function (){
+    $('.file-drop-input').change(function () {
         $(this).parent().find('.avatar-preview').remove();
     });
 
-    $scope.emailCurrentUser= $('#email-current-user').text();
+    $scope.emailCurrentUser = $('#email-current-user').text();
     $scope.dtOptions = {
         scrollY: false,
         language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
         responsive: true,
         pageLength: 5,
-        columnDefs : [
+        columnDefs: [
             {
                 targets: [0, 4, 6],
                 orderable: false
@@ -605,6 +620,14 @@ app.controller('userManagerCtrl', function ($scope, $http, $rootScope) {
         $scope.userForm.$setUntouched();
         $('#user-modal').modal('show');
     };
+    $scope.editUser = function (user, index) {
+        $scope.user = angular.copy(user);
+        $scope.index = index;
+
+        $scope.userForm.$setUntouched();
+
+        $('#user-modal').modal('show');
+    };
 });
 app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datetime) {
     $('<script></script>').attr('src', '/assets/user/js/theme.min.js').appendTo('body');
@@ -618,7 +641,7 @@ app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datet
         language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
         responsive: true,
         pageLength: 5,
-        columnDefs : [
+        columnDefs: [
             {
                 targets: [1, 2, 5],
                 orderable: false

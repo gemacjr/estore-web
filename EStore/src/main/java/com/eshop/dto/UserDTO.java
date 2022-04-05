@@ -22,7 +22,7 @@ public class UserDTO implements Serializable {
     private String email;
     private String address;
     private String phoneNumber;
-    private String photo;
+    private String photo = "default.png";
     private Timestamp createdDate;
     private String enabled;
     private MultipartFile photoFile;

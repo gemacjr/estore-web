@@ -13,60 +13,91 @@
                     <label class="form-label" th:text="#{global.avatar}"></label>
                     <div class="file-drop-area mb-3">
                         <div class="file-drop-preview img-thumbnail rounded avatar-preview">
-                            <img th:src="@{/assets/user/img/avatar/default.png}" alt="default">
+                            <img ng-src="/assets/user/img/avatar/{{user.photo?user.photo:'default.png'}}" alt="default">
                         </div>
                         <div class="file-drop-icon ci-cloud-upload"></div>
                         <span class="file-drop-message" th:text="#{admin.upload.message}"></span>
-                        <input type="file" class="file-drop-input" id="unp-user-photo" name="photo">
+                        <input type="file" class="file-drop-input" id="unp-user-photo" name="photo" accept="image/**"
+                               file-model="user.photoFile">
                         <button type="button" class="file-drop-btn btn btn-primary btn-sm" id="upload-photo-btn"
                                 th:text="#{admin.upload.dropButton}"></button>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="unp-user-username" class="form-label" th:text="#{global.username}"></label>
-                            <input class="form-control" type="text" id="unp-user-username" name="username" required>
-                            <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
+                            <input class="form-control" type="text" id="unp-user-username" name="username"
+                                   ng-model="user.username" required>
+                            <div ng-show="userForm.$submitted || userForm.username.$touched">
+                                <div class="invalid-tooltip" ng-show="userForm.username.$error.required"
+                                     th:text="#{NotBlank.field}"></div>
+                            </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="unp-user-password" class="form-label" th:text="#{global.password}"></label>
                             <input class="form-control" type="password" id="unp-user-password" name="password"
-                                   required>
-                            <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
+                                   ng-model="user.password" required>
+                            <div ng-show="userForm.$submitted || userForm.password.$touched">
+                                <div class="invalid-tooltip" ng-show="userForm.password.$error.required"
+                                     th:text="#{NotBlank.field}"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="unp-user-email" class="form-label" th:text="#{global.email}"></label>
-                            <input class="form-control" type="email" id="unp-user-email" name="email" required>
-                            <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
+                            <input class="form-control" type="email" id="unp-user-email" name="email"
+                                   ng-model="user.email" required>
+                            <div ng-show="userForm.$submitted || userForm.email.$touched">
+                                <div class="invalid-tooltip" ng-show="userForm.email.$error.required"
+                                     th:text="#{NotBlank.field}"></div>
+                            </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="unp-user-fullname" class="form-label" th:text="#{global.full_name}"></label>
-                            <input class="form-control" type="text" id="unp-user-fullname" name="fullname" required>
-                            <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
+                            <input class="form-control" type="text" id="unp-user-fullname" name="fullname"
+                                   ng-model="user.fullname" required>
+                            <div ng-show="userForm.$submitted || userForm.fullname.$touched">
+                                <div class="invalid-tooltip" ng-show="userForm.fullname.$error.required"
+                                     th:text="#{NotBlank.field}"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="unp-user-address" class="form-label" th:text="#{global.address}"></label>
-                            <input class="form-control" type="text" id="unp-user-address" name="address" required>
-                            <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
+                            <input class="form-control" type="text" id="unp-user-address" name="address"
+                                   ng-model="user.address" required>
+                            <div ng-show="userForm.$submitted || userForm.address.$touched">
+                                <div class="invalid-tooltip" ng-show="userForm.address.$error.required"
+                                     th:text="#{NotBlank.field}"></div>
+                            </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="unp-user-phone-number" class="form-label"
                                    th:text="#{global.phone_number}"></label>
                             <input class="form-control" type="text" id="unp-user-phone-number" name="phoneNumber"
-                                   required>
-                            <div class="invalid-tooltip" th:text="#{NotBlank.field}"></div>
+                                   ng-model="user.phoneNumber" required>
+                            <div ng-show="userForm.$submitted || userForm.phoneNumber.$touched">
+                                <div class="invalid-tooltip" ng-show="userForm.phoneNumber.$error.required"
+                                     th:text="#{NotBlank.field}"></div>
+                            </div>
                         </div>
                     </div>
+                    <div class="modal-footer btn-group">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
+                                th:text="#{global.close}"></button>
+                        <button type="submit" class="btn btn-primary btn-sm btn-save-user-submit" id="btn-save-user"
+                                ng-disabled="userForm.$invalid" th:text="#{global.save}"></button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer btn-group">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
-                        th:text="#{global.close}"></button>
-                <button type="submit" class="btn btn-primary btn-sm btn-save-user-submit" id="btn-save-user"
-                        form="save-user-frm" th:text="#{global.save}"></button>
+                <ul class="mt-3 list-group">
+                    <li class="list-group-item" ng-repeat="(key, errors) in userForm.$error track by $index">
+                        <strong>{{ key }}</strong> errors
+                        <ul>
+                            <li ng-repeat="e in errors">{{ e.$name }} has an error: <strong>{{ key }}</strong>.</li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -85,42 +116,45 @@
 </div>
 <!-- Table -->
 <table class="table table-sm" id="user-manager-table" datatable="ng" dt-options="dtOptions">
-        <thead>
-        <tr>
-            <th class="align-middle" th:text="#{global.avatar}"></th>
-            <th class="align-middle" th:text="#{global.full_name}"></th>
-            <th class="align-middle" th:text="#{global.username}"></th>
-            <th class="align-middle" th:text="#{global.email}"></th>
-            <th class="align-middle" th:text="#{global.createDate}"></th>
-            <th class="align-middle text-center" th:text="#{global.status}"></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="user in users track by $index">
-            <td class="align-middle">
-                <img class="img-fluid rounded-circle" alt="{{user.username}}"
-                     ng-src="/assets/user/img/avatar/{{user.photo ? user.photo : 'default.png'}}"
-                     style="width: 70px" >
-            </td>
-            <td class="align-middle">{{user.fullname}}</td>
-            <td class="align-middle">{{user.username}}</td>
-            <td class="align-middle">{{user.email}}</td>
-            <td class="align-middle">{{user.createdDate | date: 'dd/MM/yyyy'}}</td>
-            <td class="align-middle text-center">
-                <span ng-if="user.enabled" class="badge bg-success">{{lang=='vi'?'Đã kích hoạt':'Activated'}}</span>
-                <span ng-if="!user.enabled" class="badge bg-danger">{{lang=='vi'?'Chưa kích hoạt':'Not activated'}}</span>
-            </td>
-            <td class="align-middle">
-                <div class="d-flex justify-content-center">
-                    <a class="btn bg-faded-accent btn-icon me-2" href="javascript:void(0)">
-                        <i class="fa-regular fa-pen-to-square"></i>
-                    </a>
-                    <a class="btn bg-faded-danger btn-icon" href="javascript:void(0)" ng-hide="user.email===emailCurrentUser">
-                        <i class="fa-regular fa-circle-minus"></i>
-                    </a>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <thead>
+    <tr>
+        <th class="align-middle" th:text="#{global.avatar}"></th>
+        <th class="align-middle" th:text="#{global.full_name}"></th>
+        <th class="align-middle" th:text="#{global.username}"></th>
+        <th class="align-middle" th:text="#{global.email}"></th>
+        <th class="align-middle" th:text="#{global.createDate}"></th>
+        <th class="align-middle text-center" th:text="#{global.status}"></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="user in users track by $index">
+        <td class="align-middle">
+            <img class="img-fluid rounded-circle" alt="{{user.username}}"
+                 ng-src="/assets/user/img/avatar/{{user.photo ? user.photo : 'default.png'}}"
+                 style="width: 70px">
+        </td>
+        <td class="align-middle">{{user.fullname}}</td>
+        <td class="align-middle">{{user.username}}</td>
+        <td class="align-middle">{{user.email}}</td>
+        <td class="align-middle">{{user.createdDate | date: 'dd/MM/yyyy'}}</td>
+        <td class="align-middle text-center">
+            <span ng-if="user.enabled" class="badge bg-success">{{lang == 'vi' ? 'Đã kích hoạt' : 'Activated'}}</span>
+            <span ng-if="!user.enabled"
+                  class="badge bg-danger">{{lang == 'vi' ? 'Chưa kích hoạt' : 'Not activated'}}</span>
+        </td>
+        <td class="align-middle">
+            <div class="d-flex justify-content-center">
+                <a class="btn bg-faded-accent btn-icon me-2" href="javascript:void(0)"
+                   ng-click="editUser(user, $index)">
+                    <i class="fa-regular fa-pen-to-square"></i>
+                </a>
+                <a class="btn bg-faded-danger btn-icon" href="javascript:void(0)"
+                   ng-hide="user.email===emailCurrentUser">
+                    <i class="fa-regular fa-circle-minus"></i>
+                </a>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
