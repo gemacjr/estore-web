@@ -1,8 +1,6 @@
 package com.eshop.controller.admin;
 
 import com.eshop.dto.*;
-import com.eshop.entity.Discount;
-import com.eshop.entity.User;
 import com.eshop.service.*;
 import com.eshop.utils.MapperUtils;
 import org.apache.commons.lang3.time.DateUtils;

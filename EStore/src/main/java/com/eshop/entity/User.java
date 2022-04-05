@@ -66,15 +66,4 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Authority> authorities = new LinkedHashSet<>();
 
-//    public UserDTO toDTO() {
-//        UserDTO userDTO = new UserDTO();
-//        userDTO.setId(id);
-//        userDTO.setUsername(username);
-//        userDTO.setPassword(password);
-//        userDTO.setFullname(fullname);
-//        userDTO.setEmail(email);
-//        userDTO.setAddress(address);
-//        userDTO.setPhoneNumber(phoneNumber);
-//        userDTO.setCreatedDate(createdDate);
-//    }
 }

@@ -1,0 +1,53 @@
+<!-- Title-->
+<div class="d-sm-flex flex-wrap justify-content-between align-items-center border-bottom pb-4 mb-4">
+    <h2 class="h3 m-0 text-center text-sm-start">
+        <span th:text="#{admin.userPage.title}"></span><span
+            class="badge bg-faded-accent fs-sm text-body align-middle ms-2">{{users.length}}</span>
+    </h2>
+    <div data-bs-toggle="tooltip" data-bs-placement="left" th:title="#{admin.userPage.add}">
+        <a class="link-success" href="javascript:void(0)" ng-click="newUser()">
+            <i class="fs-2 fa-regular fa-circle-plus"></i>
+        </a>
+    </div>
+</div>
+<!-- Table -->
+<table class="table table-sm" id="user-manager-table" datatable="ng" dt-options="dtOptions">
+        <thead>
+        <tr>
+            <th class="align-middle" th:text="#{global.avatar}"></th>
+            <th class="align-middle" th:text="#{global.full_name}"></th>
+            <th class="align-middle" th:text="#{global.username}"></th>
+            <th class="align-middle" th:text="#{global.email}"></th>
+            <th class="align-middle" th:text="#{global.createDate}"></th>
+            <th class="align-middle text-center" th:text="#{global.status}"></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in users track by $index">
+            <td class="align-middle">
+                <img class="img-fluid rounded-circle" alt="{{user.username}}"
+                     ng-src="/assets/user/img/avatar/{{user.photo ? user.photo : 'default.png'}}"
+                     style="width: 70px" >
+            </td>
+            <td class="align-middle">{{user.fullname}}</td>
+            <td class="align-middle">{{user.username}}</td>
+            <td class="align-middle">{{user.email}}</td>
+            <td class="align-middle">{{user.createdDate | date: 'dd/MM/yyyy'}}</td>
+            <td class="align-middle text-center">
+                <span ng-if="user.enabled" class="badge bg-success">{{lang=='vi'?'Đã kích hoạt':'Activated'}}</span>
+                <span ng-if="!user.enabled" class="badge bg-danger">{{lang=='vi'?'Chưa kích hoạt':'Not activated'}}</span>
+            </td>
+            <td class="align-middle">
+                <div class="d-flex justify-content-center">
+                    <a class="btn bg-faded-accent btn-icon me-2" href="javascript:void(0)">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                    <a class="btn bg-faded-danger btn-icon" href="javascript:void(0)" ng-hide="user.email===emailCurrentUser">
+                        <i class="fa-regular fa-circle-minus"></i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>

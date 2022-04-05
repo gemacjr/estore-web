@@ -12,6 +12,7 @@ import com.eshop.repository.UserRepository;
 import com.eshop.repository.VerificationTokenRepository;
 import com.eshop.service.UserService;
 import com.eshop.utils.MailUtils;
+import com.eshop.utils.MapperUtils;
 import com.eshop.utils.MessageUtils;
 import com.eshop.utils.ParamUtils;
 import net.bytebuddy.utility.RandomString;
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getAll() {
-        return null;
+        return MapperUtils.mapAll(userRepository.findAll(), UserDTO.class);
     }
 
     @Override

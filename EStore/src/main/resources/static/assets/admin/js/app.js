@@ -126,7 +126,13 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
         scrollY: false,
         order: [[0, 'asc']],
         language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
-        responsive: true
+        responsive: true,
+        columnDefs : [
+            {
+                targets: [2],
+                orderable: false
+            }
+        ]
     };
 
     $scope.autoSlug = function (input) {
@@ -232,7 +238,13 @@ app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
         scrollY: false,
         order: [[0, 'asc']],
         language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
-        responsive: true
+        responsive: true,
+        columnDefs : [
+            {
+                targets: [2],
+                orderable: false
+            }
+        ]
     };
 
     $scope.autoSlug = function (input) {
@@ -347,7 +359,13 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         order: [[1, 'asc']],
         language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
         responsive: true,
-        pageLength: 5
+        pageLength: 5,
+        columnDefs : [
+            {
+                targets: [0, 6],
+                orderable: false
+            }
+        ]
     };
 
     $('[data-bs-toggle="tooltip"]').tooltip();
@@ -542,7 +560,41 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.getDiscounts();
     $scope.getProducts();
 });
-app.controller('userManagerCtrl', function ($scope, $http) {
+app.controller('userManagerCtrl', function ($scope, $http, $rootScope) {
+    $scope.emailCurrentUser= $('#email-current-user').text();
+    $scope.dtOptions = {
+        scrollY: false,
+        language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
+        responsive: true,
+        pageLength: 5,
+        columnDefs : [
+            {
+                targets: [0, 4, 6],
+                orderable: false
+            }
+        ]
+    };
+
+    $scope.users = [];
+    $scope.getUsers = function () {
+        $http.get('/api/users').then(function (response) {
+            $scope.users = response.data;
+            console.log($scope.users);
+        }).catch(function (error) {
+            console.error(error);
+        });
+    };
+    $scope.getUsers();
+
+    $scope.user = {};
+    $scope.index = -1;
+    $scope.newUser = function () {
+        $scope.user = {};
+        $scope.index = -1;
+
+        $scope.userForm.$setUntouched();
+        $('#userModal').modal('show');
+    };
 });
 app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datetime) {
     let parser = datetime("dd/MM/yyyy HH:mm:ss");
@@ -555,7 +607,7 @@ app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datet
         pageLength: 5,
         columnDefs : [
             {
-                targets: [1, 2],
+                targets: [1, 2, 5],
                 orderable: false
             }
         ]
