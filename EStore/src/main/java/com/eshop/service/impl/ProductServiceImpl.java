@@ -107,13 +107,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductUpdated save(ProductUpdated productToSave) {
-        Product product = MapperUtils.map(productToSave, Product.class);
+    public ProductUpdated save(ProductUpdated productUpdated) {
+        Product product = MapperUtils.map(productUpdated, Product.class);
 
-        product.setCategory(categoryRepo.findBySlug(productToSave.getCategorySlug()));
-        product.setBrand(brandRepo.findBySlug(productToSave.getBrandSlug()));
+        product.setCategory(categoryRepo.findBySlug(productUpdated.getCategorySlug()));
+        product.setBrand(brandRepo.findBySlug(productUpdated.getBrandSlug()));
         product.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-        product.setDiscount(productToSave.getDiscountId() != null ? discountRepo.getById(productToSave.getDiscountId()) : null);
+        product.setDiscount(productUpdated.getDiscountId() != null ? discountRepo.getById(productUpdated.getDiscountId()) : null);
 
         return productRepo.save(product).toProductUpdated();
     }

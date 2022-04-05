@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Integer> {
+    Boolean existsByOrderCode(String orderCode);
     List<Order> findByUser(User user);
 
     @Query(

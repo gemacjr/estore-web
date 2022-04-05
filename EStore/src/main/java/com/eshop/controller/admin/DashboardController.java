@@ -101,7 +101,7 @@ public class DashboardController {
     public String showDiscountManagementPage(Model model) {
         List<Discount> discounts = discountService.getActivedOrderByCreateDateDesc(true);
         model.addAttribute("discounts", discounts);
-        return "admin/discount-manager";
+        return "admin/manager/discount";
     }
 
 }

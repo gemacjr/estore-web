@@ -1,4 +1,4 @@
-let app = angular.module('adminApp', ['ngRoute', 'datatables']);
+let app = angular.module('adminApp', ['ngRoute', 'datatables', 'datetime']);
 
 app.config(function ($routeProvider) {
     $routeProvider
@@ -90,11 +90,11 @@ app.run(function ($rootScope) {
 
     $rootScope.validateUrl = function (url) {
         let pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-        '(\\#[-a-z\\d_]*)?$', 'i') // fragment locator
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$', 'i') // fragment locator
         return pattern.test(url);
     };
     $rootScope.slugify = function (input) {
@@ -334,7 +334,7 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.brands = [];
     $scope.categories = [];
     $scope.products = [];
-    $scope.discounts=[];
+    $scope.discounts = [];
 
     $scope.prod = {};
 
@@ -356,7 +356,7 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         let $productImage = $(this).find('.product-img');
         let $productImageUrl = $productImage.attr('src');
 
-        let { value: url } = await Swal.fire({
+        let {value: url} = await Swal.fire({
             title: $rootScope.lang === 'en' ? 'Image URL' : 'URL hình ảnh',
             inputValue: $rootScope.validateUrl($productImageUrl) ? $productImageUrl : '',
             input: 'url',
@@ -394,7 +394,7 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         let $productVideo = $(this).find('.product-video-thumbnail');
         let $productVideoUrl = $productVideo.attr('src');
 
-        let { value: id } = await Swal.fire({
+        let {value: id} = await Swal.fire({
             title: $rootScope.lang === 'en' ? 'Product review video' : 'Video đánh giá sản phẩm',
             inputLabel: 'Youtube ID',
             inputValue: $productVideoInput.val(),
@@ -436,7 +436,7 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         });
     };
     $scope.getDiscounts = function () {
-        $http.get('/api/discounts').then(function (response) {
+        $http.get('/api/discounts/active').then(function (response) {
             $scope.discounts = response.data;
         }).catch(function (error) {
             console.error(error);
@@ -456,8 +456,8 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         $scope.prod.available = 0;
         $scope.prod.price = 0;
         $scope.prod.quantity = 0;
-        $scope.prod.categorySlug = angular.copy($scope.categorySlug?$scope.categorySlug:$scope.categories[0].slug);
-        $scope.prod.brandSlug = angular.copy($scope.brandSlug?$scope.brandSlug:$scope.brands[0].slug);
+        $scope.prod.categorySlug = angular.copy($scope.categorySlug ? $scope.categorySlug : $scope.categories[0].slug);
+        $scope.prod.brandSlug = angular.copy($scope.brandSlug ? $scope.brandSlug : $scope.brands[0].slug);
         $scope.prod.discountId = null;
         $scope.index = -1;
 
@@ -543,5 +543,124 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
 });
 app.controller('userManagerCtrl', function ($scope, $http) {
 });
-app.controller('discountManagerCtrl', function ($scope, $http) {
+app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datetime) {
+    let parser = datetime("dd/MM/yyyy HH:mm:ss");
+
+    $scope.dtOptions = {
+        scrollY: false,
+        order: [[0, 'asc']],
+        language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
+        responsive: true,
+        pageLength: 5,
+        columnDefs : [
+            {
+                targets: [1, 2],
+                orderable: false
+            }
+        ]
+    };
+
+    $scope.discounts = [];
+    $scope.discount = {};
+    $scope.index = -1;
+
+    $scope.getDiscounts = function () {
+        $http.get('/api/discounts').then(function (response) {
+            $scope.discounts = response.data;
+            console.log($scope.discounts);
+        }).catch(function (error) {
+            console.error(error);
+        });
+    };
+    $scope.newDiscount = function () {
+        $scope.discount = {};
+        $scope.discount.startDate = parser.parse(moment(Date.now()).format('DD/MM/yyyy HH:mm:ss')).getDate();
+        $scope.discount.endDate = parser.parse(moment(Date.now()).format('DD/MM/yyyy HH:mm:ss')).getDate();
+
+        $scope.index = -1;
+
+        $scope.discountForm.$setUntouched();
+        $('#discountModal').modal('show');
+    }
+    $scope.editDiscount = function (discount, index) {
+        $scope.discount = angular.copy(discount);
+        $scope.index = index;
+        $scope.discount.startDate = parser.parse(moment(discount.startDate).format('DD/MM/yyyy HH:mm:ss')).getDate();
+        $scope.discount.endDate = parser.parse(moment(discount.endDate).format('DD/MM/yyyy HH:mm:ss')).getDate();
+        $('#discountModal').modal('show');
+    };
+    $scope.addDiscount = function (discount) {
+        if ($scope.discountForm.$invalid) {
+            $scope.discountForm.$setSubmitted();
+            return;
+        }
+
+        $http.post('/api/discounts', discount).then(function (response) {
+            $scope.getDiscounts();
+
+            $rootScope.toast.fire({
+                icon: 'success',
+                title: $scope.lang === 'vi' ? 'Thêm khuyến mãi thành công' : 'Add discount successfully'
+            })
+
+            $('#discountModal').modal('hide');
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
+        });
+    };
+    $scope.updateDiscount = function (discount) {
+        if ($scope.discountForm.$invalid) {
+            $scope.discountForm.$setSubmitted();
+            return;
+        }
+
+        let url = '/api/discounts/' + discount.id;
+        $http.put(url, discount).then(function (response) {
+            $scope.getDiscounts();
+
+            $rootScope.toast.fire({
+                icon: 'success',
+                title: $scope.lang === 'vi' ? 'Cập nhật khuyến mãi thành công' : 'Update discount successfully'
+            })
+
+            $('#discountModal').modal('hide');
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
+        });
+    };
+    $scope.deleteDiscount = function (discount, index) {
+        Swal.fire({
+            title: lang === "en" ? "Continue delete?" : "Tiếp tục xoá?",
+            text: lang === "en" ? "You won't be able to revert this!" : "Bạn sẽ không thể không thể hoàn tác lại!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: lang === "en" ? "Delete" : "Xóa",
+            cancelButtonText: lang === "en" ? "Cancel" : "Hủy"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $http.delete('/api/discounts/' + discount.id).then(function (response) {
+                    $scope.discounts.splice(index, 1);
+                    $rootScope.toast.fire({
+                        icon: 'success',
+                        title: $scope.lang === 'vi' ? 'Xoá khuyến mãi thành công' : 'Delete discount successfully'
+                    })
+                }).catch(function (error) {
+                    $rootScope.toast.fire({
+                        icon: 'error',
+                        title: error.data.message
+                    })
+                });
+            }
+        });
+    };
+
+    $scope.getDiscounts();
 });

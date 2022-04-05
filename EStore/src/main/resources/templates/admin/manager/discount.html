@@ -1,0 +1,122 @@
+<!-- Modal -->
+<div class="modal fade" id="discountModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" th:text="#{global.promotion}"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body tab-content py-4">
+                <form id="discount-form" name="discountForm" novalidate>
+                    <div class="row">
+                        <div class="mb-3 col-md-6">
+                            <label for="name" class="form-label"
+                                   th:text="#{admin.discountPage.programName}"></label>
+                            <input class="form-control" type="text" id="name" name="name" ng-model="discount.name"
+                                   required>
+                            <div ng-show="discountForm.$submitted || discountForm.name.$touched">
+                                <div class="invalid-tooltip" ng-show="discountForm.name.$error.required"
+                                     th:text="#{NotBlank.field}"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="saleOff" class="form-label" th:text="#{admin.discountPage.saleOff}"></label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="saleOff" name="saleOff"
+                                       ng-model="discount.saleOff" required>
+                                <span class="input-group-text"><i class="ci-percent"></i></span>
+                            </div>
+                            <div ng-show="discountForm.$submitted || discountForm.saleOff.$touched">
+                                <div class="invalid-tooltip" ng-show="discountForm.saleOff.$error.required"
+                                     th:text="#{NotBlank.field}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3 col-md-6">
+                            <!-- Date picker -->
+                            <label class="form-label" for="start-date" th:text="#{admin.discountPage.startDate}"></label>
+                            <input class="form-control" type="text" ng-model="discount.startDate" id="start-date"
+                                   name="startDate" datetime="dd/MM/yyyy HH:mm:ss" required>
+                            <div ng-show="discountForm.$submitted || discountForm.startDate.$touched">
+                                <div class="invalid-tooltip" ng-show="discountForm.startDate.$error.required || discountForm.startDate.$error.parse"
+                                     th:text="#{NotBlank.field}"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <!-- Date picker -->
+                            <label class="form-label" for="end-date" th:text="#{admin.discountPage.endDate}"></label>
+                            <input class="form-control" type="text" ng-model="discount.endDate" id="end-date"
+                                   name="endDate" datetime="dd/MM/yyyy HH:mm:ss" required>
+                            <div ng-show="discountForm.$submitted || discountForm.endDate.$touched">
+                                <div class="invalid-tooltip" ng-show="discountForm.endDate.$error.required || discountForm.endDateh.$error.parse"
+                                     th:text="#{NotBlank.field}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group w-100">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
+                                th:text="#{global.close}"></button>
+                        <button type="button" class="btn btn-primary btn-sm" th:text="#{global.save}" ng-if="index>=0"
+                                ng-click="updateDiscount(discount)" ng-disabled="discountForm.$invalid"></button>
+                        <button type="button" class="btn btn-primary btn-sm" th:text="#{global.save}" ng-if="index<0"
+                                ng-click="addDiscount(discount)" ng-disabled="discountForm.$invalid"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Title-->
+<div class="d-sm-flex flex-wrap justify-content-between align-items-center border-bottom pb-4 mb-4">
+    <h2 class="h3 m-0 text-center text-sm-start">
+        <span th:text="#{admin.discountPage.title}"></span><span
+            class="badge bg-faded-accent fs-sm text-body align-middle ms-2">{{discounts.length}}</span>
+    </h2>
+    <div data-bs-toggle="tooltip" data-bs-placement="left" th:title="#{admin.discountPage.addPromotion}">
+        <a class="link-success" href="javascript:void(0)" ng-click="newDiscount()">
+            <i class="fs-2 fa-regular fa-circle-plus"></i>
+        </a>
+    </div>
+</div>
+<!-- Color borders on tables -->
+<div class="table-responsive">
+    <table class="table border-danger" id="discount-table" datatable="ng" dt-options="dtOptions">
+        <thead>
+        <tr>
+            <th th:text="#{admin.discountPage.programName}"></th>
+            <th class="align-middle text-center" th:text="#{admin.discountPage.startDate}"></th>
+            <th class="align-middle text-center" th:text="#{admin.discountPage.endDate}"></th>
+            <th class="align-middle text-center" th:text="#{admin.discountPage.saleOff}"></th>
+            <th class="align-middle text-center" th:text="#{global.status}"></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="discount in discounts track by $index">
+            <td class="align-middle">{{discount.name}}</td>
+            <td class="align-middle text-center">{{discount.startDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td class="align-middle text-center">{{discount.endDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td class="align-middle text-center">
+                <span class="badge bg-danger rounded-pill">{{discount.saleOff | number}}%</span>
+            </td>
+            <td class="align-middle text-center">
+                <span ng-if="discount.isActive" class="text-success">{{lang=='vi'?'Đang kích hoạt' : 'Active'}}</span>
+                <span ng-if="!discount.isActive" class="text-danger">{{lang=='vi'?'Đã kết thúc' : 'Finished'}}</span>
+            </td>
+            <td class="align-middle text-center">
+                <div class="d-flex justify-content-center">
+                    <a class="btn bg-faded-accent btn-icon me-2" href="javascript:void(0)"
+                        ng-click="editDiscount(discount, $index)">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                    <a class="btn bg-faded-danger btn-icon" href="javascript:void(0)"
+                       ng-click="deleteDiscount(discount, $index)">
+                        <i class="fa-regular fa-circle-minus"></i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
