@@ -438,6 +438,7 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.getDiscounts = function () {
         $http.get('/api/discounts/active').then(function (response) {
             $scope.discounts = response.data;
+            console.log($scope.discounts);
         }).catch(function (error) {
             console.error(error);
         });
