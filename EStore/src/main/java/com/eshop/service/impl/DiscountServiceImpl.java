@@ -66,6 +66,9 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     @Transactional
     public Discount save(Discount discount) {
+        if (discount.getEndDate().before(discount.getStartDate())) {
+            throw new IllegalArgumentException(messageUtils.getMessage("EndTimeAfterStartTime"));
+        }
         if (discount.getEndDate().before(new Date())) {
             throw new IllegalArgumentException(messageUtils.getMessage("EndTimeAfterCurrentTime"));
         }
