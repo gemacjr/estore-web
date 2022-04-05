@@ -32,7 +32,7 @@
     </div>
 </div>
 <!-- Color borders on tables -->
-<table class="table" id="product-table" datatable="ng" dt-options="dtOptions">
+<table class="table table-sm table-borderless" id="product-table" datatable="ng" dt-options="dtOptions">
     <thead>
     <tr>
         <th class="align-middle" th:text="#{global.photo}"></th>
@@ -49,17 +49,17 @@
         <td class="align-middle">
             <img class="img-fluid" src="{{product.image}}" alt="{{product.name}}" style="width: 80px; height: 80px"/>
         </td>
-        <td class="align-middle fs-sm">
+        <td class="align-middle">
             <a class="link-primary" href="/product-detail/{{product.slug}}">{{product.name}}</a>
         </td>
-        <td class="align-middle fs-sm text-center">{{product.quantity}}</td>
-        <td class="align-middle fs-sm text-center">{{product.price | number}}</td>
-        <td class="align-middle fs-sm text-center">
+        <td class="align-middle text-center">{{product.quantity}}</td>
+        <td class="align-middle text-center">{{product.price | number}}</td>
+        <td class="align-middle text-center">
             <span ng-if="product.available == 0" th:text="#{global.in_stock}" class="badge bg-success"></span>
             <span ng-if="product.available == 1" th:text="#{global.out_of_stock}" class="badge bg-warning"></span>
             <span ng-if="product.available == 2" th:text="#{global.sold_out}" class="badge bg-danger"></span>
         </td>
-        <td class="align-middle fs-sm text-center fs-lg">
+        <td class="align-middle text-center fs-lg">
                 <span class="badge bg-danger rounded-pill" ng-if="product.discountId">
                     {{getSaleOff(product.discountId)}}
                 </span>

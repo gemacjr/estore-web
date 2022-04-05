@@ -81,7 +81,7 @@
 </div>
 <!-- Color borders on tables -->
 <div class="table-responsive">
-    <table class="table border-danger" id="discount-table" datatable="ng" dt-options="dtOptions">
+    <table class="table table-sm" id="discount-table" datatable="ng" dt-options="dtOptions">
         <thead>
         <tr>
             <th th:text="#{admin.discountPage.programName}"></th>
@@ -93,7 +93,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="discount in discounts track by $index"  style="height: 70px">
+        <tr ng-repeat="discount in discounts track by $index"  style="height: 60px">
             <td class="align-middle">{{discount.name}}</td>
             <td class="align-middle text-center">{{discount.startDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
             <td class="align-middle text-center">{{discount.endDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
