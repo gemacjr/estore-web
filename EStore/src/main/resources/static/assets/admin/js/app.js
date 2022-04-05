@@ -116,7 +116,8 @@ app.run(function ($rootScope) {
 });
 
 app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
-    $('[data-bs-toggle="tooltip"]').tooltip();
+    $('<script></script>').attr('src', '/assets/user/js/theme.min.js').appendTo('body');
+    $('<script></script>').attr('src', '/assets/admin/js/main.js').appendTo('body');
 
     $scope.categories = [];
     $scope.category = {};
@@ -229,7 +230,8 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.getCategories();
 });
 app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
-    $('[data-bs-toggle="tooltip"]').tooltip();
+    $('<script></script>').attr('src', '/assets/user/js/theme.min.js').appendTo('body');
+    $('<script></script>').attr('src', '/assets/admin/js/main.js').appendTo('body');
 
     $scope.brands = [];
     $scope.brand = {};
@@ -343,7 +345,8 @@ app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.getBrands();
 });
 app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
-    $('[data-bs-toggle="tooltip"]').tooltip();
+    $('<script></script>').attr('src', '/assets/user/js/theme.min.js').appendTo('body');
+    $('<script></script>').attr('src', '/assets/admin/js/main.js').appendTo('body');
 
     $scope.brands = [];
     $scope.categories = [];
@@ -370,7 +373,6 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         ]
     };
 
-    $('[data-bs-toggle="tooltip"]').tooltip();
     $('.product-preview').click(async function () {
         let $productImageInput = $(this).find('.img-url');
         let $productImage = $(this).find('.product-img');
@@ -458,7 +460,6 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.getDiscounts = function () {
         $http.get('/api/discounts/active').then(function (response) {
             $scope.discounts = response.data;
-            console.log($scope.discounts);
         }).catch(function (error) {
             console.error(error);
         });
@@ -563,9 +564,9 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.getProducts();
 });
 app.controller('userManagerCtrl', function ($scope, $http, $rootScope) {
-    $('[data-bs-toggle="tooltip"]').tooltip();
-
     $('<script></script>').attr('src', '/assets/user/js/theme.min.js').appendTo('body');
+    $('<script></script>').attr('src', '/assets/admin/js/main.js').appendTo('body');
+
     $('.file-drop-input').change(function (){
         $(this).parent().find('.avatar-preview').remove();
     });
@@ -606,6 +607,9 @@ app.controller('userManagerCtrl', function ($scope, $http, $rootScope) {
     };
 });
 app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datetime) {
+    $('<script></script>').attr('src', '/assets/user/js/theme.min.js').appendTo('body');
+    $('<script></script>').attr('src', '/assets/admin/js/main.js').appendTo('body');
+
     let parser = datetime("dd/MM/yyyy HH:mm:ss");
 
     $scope.dtOptions = {
