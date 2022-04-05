@@ -36,7 +36,7 @@ public class DiscountRestController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteDiscount(@PathVariable("id") int id) {
         try {
-            discountService.deleteFromDB(id);
+            discountService.delete(id);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();

@@ -82,7 +82,14 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     @Transactional
     public void deleteFromDB(Integer discountId) {
-        discountRepository.delete(discountRepository.getById(discountId));
+        Discount discount = discountRepository.getById(discountId);
+
+        discount.getProducts().forEach(product -> {
+            product.setDiscount(null);
+            productRepository.save(product);
+        });
+
+        discountRepository.delete(discount);
     }
 
     @Override

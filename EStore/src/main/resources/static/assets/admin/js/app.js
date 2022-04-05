@@ -548,7 +548,7 @@ app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datet
 
     $scope.dtOptions = {
         scrollY: false,
-        order: [[0, 'asc']],
+        order: [[4, 'asc']],
         language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
         responsive: true,
         pageLength: 5,
@@ -634,10 +634,10 @@ app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datet
             })
         });
     };
-    $scope.deleteDiscount = function (discount, index) {
+    $scope.deleteDiscount = function (discount) {
         Swal.fire({
-            title: lang === "en" ? "Continue delete?" : "Tiếp tục xoá?",
-            text: lang === "en" ? "You won't be able to revert this!" : "Bạn sẽ không thể không thể hoàn tác lại!",
+            title: lang === 'vi' ? 'Tiếp tục xoá?' : 'Continue delete?',
+            text: lang === "vi" ? 'Khuyến mãi sẽ kết thúc' : 'Discount will be ended',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -647,7 +647,7 @@ app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datet
         }).then((result) => {
             if (result.isConfirmed) {
                 $http.delete('/api/discounts/' + discount.id).then(function (response) {
-                    $scope.discounts.splice(index, 1);
+                    $scope.getDiscounts();
                     $rootScope.toast.fire({
                         icon: 'success',
                         title: $scope.lang === 'vi' ? 'Xoá khuyến mãi thành công' : 'Delete discount successfully'
