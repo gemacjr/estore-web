@@ -735,18 +735,6 @@ app.controller('userManagerCtrl', function ($scope, $http, $rootScope) {
             }
         });
     }
-    $scope.changeStatus = function (user, index) {
-        let isEnabled = user.enabled === 'true' ? 'false' : 'true';
-        let url = '/api/users/' + user.id + '/' + isEnabled;
-        $http.get(url).then(function (response) {
-            $scope.users[index].enabled = isEnabled;
-        }).catch(function (error) {
-            $rootScope.toast.fire({
-                icon: 'error',
-                title: error.data.message
-            })
-        });
-    }
 });
 app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datetime) {
     $('<script></script>').attr('src', '/assets/user/js/theme.min.js').appendTo('body');
@@ -965,4 +953,28 @@ app.controller('authorityManagerCtrl', function ($scope, $http, $rootScope) {
             $scope.grantAuthority(authority);
         }
     };
+
+    $scope.changeUserStatus = function (user, index) {
+        let isEnabled = user.enabled === 'true' ? 'false' : 'true';
+        let url = '/api/users/' + user.id + '/' + isEnabled;
+        $http.get(url).then(function (response) {
+            $scope.users[index].enabled = isEnabled;
+            if (isEnabled === 'true') {
+                $rootScope.toast.fire({
+                    icon: 'success',
+                    title: $scope.lang === 'vi' ? 'Tài khoản đã được kích hoạt' : 'Account has been activated'
+                })
+            } else {
+                $rootScope.toast.fire({
+                    icon: 'success',
+                    title: $scope.lang === 'vi' ? 'Đã vô hiệu hoá tài khoản' : 'Account has been deactivated'
+                })
+            }
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
+        });
+    }
 })

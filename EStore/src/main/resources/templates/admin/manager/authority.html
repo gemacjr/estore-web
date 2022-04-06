@@ -1,7 +1,7 @@
 <!-- Title-->
 <div class="d-sm-flex flex-wrap justify-content-between align-items-center border-bottom pb-4 mb-4">
     <h2 class="h3 m-0 text-center text-sm-start">
-        <span th:text="#{global.user_authorization}"></span>
+        <span th:text="#{global.permission_and_status}"></span>
     </h2>
 </div>
 <!-- Table-->
@@ -14,6 +14,8 @@
         <th class="align-middle text-center">ROLE_CUSTOMER</th>
         <th class="align-middle text-center">ROLE_STAFF</th>
         <th class="align-middle text-center">ROLE_DIRECTOR</th>
+        <!--<th class="align-middle text-center" ng-repeat="role in roles">{{role.name}}</th>-->
+        <th class="align-middle text-center border-start" th:text="#{global.status}"></th>
     </thead>
     <tbody>
     <tr ng-repeat="user in users">
@@ -25,8 +27,20 @@
         <td class="align-middle">{{user.fullname}}</td>
         <td class="align-middle border-end">{{user.email}}</td>
         <td class="align-middle text-center" ng-repeat="role in roles">
-            <input type="checkbox" class="form-check-input" ng-checked="authorityCheck(user, role)"
+            <input type="checkbox" class="form-check-input pointer" ng-checked="authorityCheck(user, role)"
                 ng-click="changeAuthority(user, role)">
+        </td>
+        <td class="align-middle pointer text-center border-start" ng-click="changeUserStatus(user, $index)">
+            <div ng-if="user.enabled == 'false'">
+                <button type="button" class="btn bg-faded-danger btn-icon"><i
+                        class="fa-solid fa-lock"></i></button>
+                <span class="badge bg-danger">{{lang == 'vi' ? 'Vô hiệu hoá' : 'Disabled'}}</span>
+            </div>
+            <div ng-if="user.enabled == 'true'">
+                <button type="button" class="btn bg-faded-success btn-icon"><i
+                        class="fa-solid fa-unlock"></i></button>
+                <span class="badge bg-success">{{lang == 'vi' ? 'Kích hoạt' : 'Enabled'}}</span>
+            </div>
         </td>
     </tr>
     </tbody>
