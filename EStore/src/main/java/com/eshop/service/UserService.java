@@ -29,4 +29,5 @@ public interface UserService {
     User updateProfile(User user, Profile profile);
     UserDTO save(UserDTO userDTO);
     void delete(Integer userId);
+    void updateStatus(Integer id, Boolean status);
 }

@@ -15,9 +15,15 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping("/{id}/{status}")
+    public ResponseEntity<?> updateStatus(@PathVariable Integer id, @PathVariable Boolean status) {
+        userService.updateStatus(id, status);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<UserDTO> users = userService.getAllIsEnabled();
+        List<UserDTO> users = userService.getAll();
         return ResponseEntity.ok(users);
     }
 

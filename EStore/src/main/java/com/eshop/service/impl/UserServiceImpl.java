@@ -294,6 +294,13 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(userId);
     }
 
+    @Override
+    public void updateStatus(Integer id, Boolean status) {
+        User user = userRepository.getById(id);
+        user.setEnabled(status);
+        userRepository.save(user);
+    }
+
     private void uploadFile(User user, MultipartFile photoFile) {
         if (photoFile.getOriginalFilename() != null && !photoFile.getOriginalFilename().isBlank()) {
             try {

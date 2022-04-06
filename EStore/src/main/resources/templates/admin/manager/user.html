@@ -17,7 +17,8 @@
                         </div>
                         <div class="file-drop-icon ci-cloud-upload"></div>
                         <span class="file-drop-message" th:text="#{admin.upload.message}"></span>
-                        <input type="file" class="file-drop-input" id="unp-user-photo" name="photoFile" accept="image/**"
+                        <input type="file" class="file-drop-input" id="unp-user-photo" name="photoFile"
+                               accept="image/**"
                                file-model="user.photoFile">
                         <button type="button" class="file-drop-btn btn btn-primary btn-sm" id="upload-photo-btn"
                                 th:text="#{admin.upload.dropButton}"></button>
@@ -126,13 +127,13 @@
         <th class="align-middle" th:text="#{global.full_name}"></th>
         <th class="align-middle" th:text="#{global.username}"></th>
         <th class="align-middle" th:text="#{global.email}"></th>
-        <th class="align-middle" th:text="#{global.createDate}"></th>
-        <th class="align-middle text-center" th:text="#{global.status}"></th>
+        <!--<th class="align-middle" th:text="#{global.createDate}"></th>-->
+        <th class="align-middle" th:text="#{global.status}"></th>
         <th></th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="user in users track by $index">
+    <tr ng-repeat="user in users track by $index" ng-hide="user.email === emailCurrentUser">
         <td class="align-middle">
             <img class="img-fluid rounded-circle" alt="{{user.username}}"
                  ng-src="/assets/user/img/avatar/{{user.photo ? user.photo : 'default.png'}}"
@@ -141,11 +142,18 @@
         <td class="align-middle">{{user.fullname}}</td>
         <td class="align-middle">{{user.username}}</td>
         <td class="align-middle">{{user.email}}</td>
-        <td class="align-middle">{{user.createdDate | date: 'dd/MM/yyyy'}}</td>
-        <td class="align-middle text-center">
-            <span ng-if="user.enabled" class="badge bg-success">{{lang == 'vi' ? 'Đã kích hoạt' : 'Activated'}}</span>
-            <span ng-if="!user.enabled"
-                  class="badge bg-danger">{{lang == 'vi' ? 'Chưa kích hoạt' : 'Not activated'}}</span>
+        <!--<td class="align-middle">{{user.createdDate | date: 'dd/MM/yyyy'}}</td>-->
+        <td class="align-middle">
+            <div ng-if="user.enabled == 'false'" ng-click="changeStatus(user, $index)">
+                <button type="button" class="btn bg-faded-danger btn-icon"><i
+                        class="fa-solid fa-lock"></i></button>
+                <span class="badge bg-danger">{{lang == 'vi' ? 'Vô hiệu hoá' : 'Disabled'}}</span>
+            </div>
+            <div ng-if="user.enabled == 'true'" ng-click="changeStatus(user, $index)">
+                <button type="button" class="btn bg-faded-success btn-icon"><i
+                        class="fa-solid fa-unlock"></i></button>
+                <span class="badge bg-success">{{lang == 'vi' ? 'Kích hoạt' : 'Enabled'}}</span>
+            </div>
         </td>
         <td class="align-middle">
             <div class="d-flex justify-content-center">

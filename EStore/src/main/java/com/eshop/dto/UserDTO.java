@@ -26,5 +26,4 @@ public class UserDTO implements Serializable {
     private Timestamp createdDate;
     private String enabled;
     private MultipartFile photoFile;
-
 }

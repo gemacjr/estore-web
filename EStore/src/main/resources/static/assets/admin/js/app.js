@@ -604,7 +604,7 @@ app.controller('userManagerCtrl', function ($scope, $http, $rootScope) {
         pageLength: 5,
         columnDefs: [
             {
-                targets: [0, 4, 6],
+                targets: [0, 4],
                 orderable: false
             }
         ]
@@ -726,6 +726,18 @@ app.controller('userManagerCtrl', function ($scope, $http, $rootScope) {
                     })
                 });
             }
+        });
+    }
+    $scope.changeStatus = function (user, index) {
+        let isEnabled = user.enabled === 'true' ? 'false' : 'true';
+        let url = '/api/users/' + user.id + '/' + isEnabled;
+        $http.get(url).then(function (response) {
+            $scope.users[index].enabled = isEnabled;
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
         });
     }
 });
