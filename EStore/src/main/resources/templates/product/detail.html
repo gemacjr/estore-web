@@ -21,11 +21,11 @@
                             <a class="text-nowrap" th:href="@{|/product-list/${product.category.slug}|}"
                                th:text="${categoryName}"></a>
                         </li>
-                        <li class="breadcrumb-item">
+                        <!--<li class="breadcrumb-item">
                             <a class="text-nowrap"
                                th:href="@{|/product-list/${product.category.slug}?brand=${product.brand.slug}|}"
                                th:text="${product.name}"></a>
-                        </li>
+                        </li>-->
                         <!--<li class="breadcrumb-item text-nowrap active" aria-current="page">${product.name}</li>-->
                     </ol>
                 </nav>
@@ -146,7 +146,7 @@
                                             <option value="5">5</option>
                                         </select>
                                         <button class="btn btn-primary btn-shadow d-block w-100" type="button"
-                                                th:onclick="'addToCart([[${product.id}]])'">
+                                                th:onclick="addToCart([[${product.id}]])">
                                             <i class="ci-cart fs-lg me-2"></i>
                                             <span th:text="#{global.add_to_cart}"></span>
                                         </button>
