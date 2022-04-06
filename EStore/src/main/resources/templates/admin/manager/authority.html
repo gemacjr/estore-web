@@ -11,8 +11,9 @@
         <th class="align-middle" th:text="#{global.avatar}"></th>
         <th class="align-middle" th:text="#{global.full_name}"></th>
         <th class="align-middle border-end" th:text="#{global.email}"></th>
-        <th class="align-middle text-center" ng-repeat="role in roles">{{role.name}}</th>
-    </tr>
+        <th class="align-middle text-center">ROLE_CUSTOMER</th>
+        <th class="align-middle text-center">ROLE_STAFF</th>
+        <th class="align-middle text-center">ROLE_DIRECTOR</th>
     </thead>
     <tbody>
     <tr ng-repeat="user in users">
@@ -24,7 +25,8 @@
         <td class="align-middle">{{user.fullname}}</td>
         <td class="align-middle border-end">{{user.email}}</td>
         <td class="align-middle text-center" ng-repeat="role in roles">
-            <input type="checkbox" >
+            <input type="checkbox" class="form-check-input" ng-checked="authorityCheck(user, role)"
+                ng-click="changeAuthority(user, role)">
         </td>
     </tr>
     </tbody>

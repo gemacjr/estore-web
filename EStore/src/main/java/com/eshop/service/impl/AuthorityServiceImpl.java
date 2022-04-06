@@ -17,4 +17,14 @@ public class AuthorityServiceImpl implements AuthorityService {
     public List<Authority> getAll() {
         return authorityRepo.findAll();
     }
+
+    @Override
+    public Authority save(Authority authority) {
+        return authorityRepo.save(authority);
+    }
+
+    @Override
+    public void delete(Long authorityId) {
+        authorityRepo.deleteById(authorityId);
+    }
 }

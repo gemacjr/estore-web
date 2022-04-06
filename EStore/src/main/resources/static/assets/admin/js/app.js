@@ -3,12 +3,12 @@ let app = angular.module('adminApp', ['ngRoute', 'datatables', 'datetime']);
 app.directive('fileModel', ['$parse', function ($parse) {
     return {
         restrict: 'A',
-        link: function(scope, element, attrs) {
+        link: function (scope, element, attrs) {
             var model = $parse(attrs.fileModel);
             var modelSetter = model.assign;
 
-            element.bind('change', function(){
-                scope.$apply(function(){
+            element.bind('change', function () {
+                scope.$apply(function () {
                     modelSetter(scope, element[0].files[0]);
                 });
             });
@@ -878,7 +878,7 @@ app.controller('authorityManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.dtOptions = {
         language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
         responsive: true
-    };
+    }
 
     $scope.users = [];
     $scope.getUsers = function () {
@@ -897,7 +897,6 @@ app.controller('authorityManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.getRoles = function () {
         $http.get('/api/roles').then(function (response) {
             $scope.roles = response.data;
-            console.log($scope.roles);
         }).catch(function (error) {
             $rootScope.toast.fire({
                 icon: 'error',
@@ -906,4 +905,64 @@ app.controller('authorityManagerCtrl', function ($scope, $http, $rootScope) {
         });
     };
     $scope.getRoles();
+
+    $scope.authorities = [];
+    $scope.getAuthorities = function () {
+        $http.get('/api/authorities').then(function (response) {
+            $scope.authorities = response.data;
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
+        });
+    };
+    $scope.getAuthorities();
+
+    $scope.authorityCheck = function (user, role) {
+        if ($scope.authorities) {
+            return $scope.authorities.find(authority => authority.user.id === user.id && authority.role.id === role.id);
+        }
+    };
+
+    $scope.revokeAuthority = function (authority) {
+        $http.delete('/api/authorities/' + authority.id).then(function (response) {
+            let index = $scope.authorities.indexOf(authority);
+            $scope.authorities.splice(index, 1);
+            $rootScope.toast.fire({
+                icon: 'success',
+                title: $scope.lang === 'vi' ? 'Hủy quyền thành công' : 'Revoke authority successfully'
+            })
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
+        });
+    }
+
+    $scope.grantAuthority = function (authority) {
+        $http.post('/api/authorities', authority).then(function (response) {
+            $scope.authorities.push(response.data);
+            $rootScope.toast.fire({
+                icon: 'success',
+                title: $scope.lang === 'vi' ? 'Cấp quyền thành công' : 'Grant authority successfully'
+            })
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
+        });
+    }
+
+    $scope.changeAuthority = function (user, role) {
+        let authority = $scope.authorityCheck(user, role);
+        if (authority) {
+            $scope.revokeAuthority(authority);
+        } else {
+            authority = {user: user, role: role};
+            $scope.grantAuthority(authority);
+        }
+    };
 })
