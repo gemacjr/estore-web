@@ -183,12 +183,12 @@ public class UserServiceImpl implements UserService {
     public String verifyRegistrationWithToken(String verificationToken, Locale locale) {
         User user = userRepository.findByVerificationTokenToken(verificationToken);
         if (!verificationToken.contains("register") || user == null) {
-            return messageUtils.getMessage("Auth.verificationToken.failed");
+            return messageUtils.getMessage("Auth.verifyRegistration.failed");
         }
         user.setEnabled(true);
         userRepository.save(user);
         verifyRepo.delete(verifyRepo.findByToken(verificationToken));
-        return messageUtils.getMessage("Auth.verificationToken.success");
+        return messageUtils.getMessage("Auth.verifyRegistration.success");
     }
 
     @Override

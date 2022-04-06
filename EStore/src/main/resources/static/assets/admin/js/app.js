@@ -270,7 +270,6 @@ app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.getBrands = function () {
         $http.get('/api/brands').then(function (response) {
             $scope.brands = response.data;
-            console.log($scope.brands);
         });
     };
     $scope.newBrand = function () {
@@ -481,7 +480,6 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         let url = '/api/products?brand=' + $scope.brandSlug + '&category=' + $scope.categorySlug;
         $http.get(url).then(function (response) {
             $scope.products = response.data;
-            console.log($scope.products);
         }).catch(function (error) {
             console.error(error);
         });
@@ -508,7 +506,6 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         $('#productModal').modal('show');
     };
     $scope.addProduct = function (product) {
-        console.log(product);
         if ($scope.productForm.$invalid) {
             $scope.productForm.$setSubmitted();
             return;
@@ -539,9 +536,16 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         }
         let url = '/api/products/' + product.id;
         $http.put(url, product).then(function (response) {
-            $scope.categorySlug = angular.copy(product.categorySlug);
-            $scope.brandSlug = angular.copy(product.brandSlug);
-            $scope.getProducts();
+            // $scope.categorySlug = angular.copy(product.categorySlug);
+            // $scope.brandSlug = angular.copy(product.brandSlug);
+            // $scope.getProducts();
+
+            $scope.products[$scope.index].image = product.image;
+            $scope.products[$scope.index].name = product.name;
+            $scope.products[$scope.index].quantity = product.quantity;
+            $scope.products[$scope.index].price = product.price
+            $scope.products[$scope.index].available = product.available;
+            $scope.products[$scope.index].discountId = product.discountId;
 
             $('#productModal').modal('hide');
 
@@ -604,7 +608,7 @@ app.controller('userManagerCtrl', function ($scope, $http, $rootScope) {
         pageLength: 5,
         columnDefs: [
             {
-                targets: [0, 4],
+                targets: [0],
                 orderable: false
             }
         ]
@@ -614,7 +618,6 @@ app.controller('userManagerCtrl', function ($scope, $http, $rootScope) {
     $scope.getUsers = function () {
         $http.get('/api/users').then(function (response) {
             $scope.users = response.data;
-            console.log($scope.users);
         }).catch(function (error) {
             console.error(error);
         });
@@ -646,9 +649,9 @@ app.controller('userManagerCtrl', function ($scope, $http, $rootScope) {
 
         let formData = new FormData($('#user-form')[0]);
 
-        formData.forEach((value, key) => {
-            console.log(key + ': ' + value);
-        });
+        // formData.forEach((value, key) => {
+        //     console.log(key + ': ' + value);
+        // });
 
         $http.post('/api/users', formData, {
             headers: {
@@ -678,9 +681,9 @@ app.controller('userManagerCtrl', function ($scope, $http, $rootScope) {
 
         let formData = new FormData($('#user-form')[0]);
 
-        formData.forEach((value, key) => {
-            console.log(key + ': ' + value);
-        });
+        // formData.forEach((value, key) => {
+        //     console.log(key + ': ' + value);
+        // });
 
         $http.put('/api/users/' + user.id, formData, {
             headers: {
@@ -768,7 +771,6 @@ app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datet
     $scope.getDiscounts = function () {
         $http.get('/api/discounts').then(function (response) {
             $scope.discounts = response.data;
-            console.log($scope.discounts);
         }).catch(function (error) {
             console.error(error);
         });
