@@ -4,3 +4,28 @@
         <span th:text="#{global.user_authorization}"></span>
     </h2>
 </div>
+<!-- Table-->
+<table class="table table-sm" id="user-manager-table" datatable="ng" dt-options="dtOptions" >
+    <thead>
+    <tr>
+        <th class="align-middle" th:text="#{global.avatar}"></th>
+        <th class="align-middle" th:text="#{global.full_name}"></th>
+        <th class="align-middle border-end" th:text="#{global.email}"></th>
+        <th class="align-middle text-center" ng-repeat="role in roles">{{role.name}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="user in users">
+        <td class="align-middle">
+            <img class="img-fluid rounded-circle" alt="{{user.username}}"
+                 ng-src="/assets/user/img/avatar/{{user.photo ? user.photo : 'default.png'}}"
+                 style="width: 70px">
+        </td>
+        <td class="align-middle">{{user.fullname}}</td>
+        <td class="align-middle border-end">{{user.email}}</td>
+        <td class="align-middle text-center" ng-repeat="role in roles">
+            <input type="checkbox" >
+        </td>
+    </tr>
+    </tbody>
+</table>

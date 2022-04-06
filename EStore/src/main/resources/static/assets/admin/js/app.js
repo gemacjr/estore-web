@@ -872,5 +872,38 @@ app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datet
     $scope.getDiscounts();
 });
 app.controller('authorityManagerCtrl', function ($scope, $http, $rootScope) {
-    
+    $('<script></script>').attr('src', '/assets/user/js/theme.min.js').appendTo('body');
+    $('<script></script>').attr('src', '/assets/admin/js/main.js').appendTo('body');
+
+    $scope.dtOptions = {
+        language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
+        responsive: true
+    };
+
+    $scope.users = [];
+    $scope.getUsers = function () {
+        $http.get('/api/users').then(function (response) {
+            $scope.users = response.data;
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
+        });
+    };
+    $scope.getUsers();
+
+    $scope.roles = [];
+    $scope.getRoles = function () {
+        $http.get('/api/roles').then(function (response) {
+            $scope.roles = response.data;
+            console.log($scope.roles);
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
+        });
+    };
+    $scope.getRoles();
 })
