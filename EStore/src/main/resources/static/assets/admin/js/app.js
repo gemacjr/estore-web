@@ -209,14 +209,13 @@ app.controller('categoryManagerCtrl', function ($scope, $http, $rootScope) {
     };
     $scope.deleteCategory = function (category) {
         Swal.fire({
-            title: lang === "en" ? "Delete category?" : "Xóa danh mục?",
-            text: lang === "en" ? "You won't be able to revert this!" : "Bạn sẽ không thể khôi phục lại!",
+            title: $rootScope.lang === 'vi' ? 'Xoá danh mục này?' : 'Delete this category?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: lang === "en" ? "Delete" : "Xóa",
-            cancelButtonText: lang === "en" ? "Cancel" : "Hủy"
+            confirmButtonText: $rootScope.lang === "en" ? "Delete" : "Xóa",
+            cancelButtonText: $rootScope.lang === "en" ? "Cancel" : "Hủy"
         }).then((result) => {
             if (result.isConfirmed) {
                 $http.delete('/api/categories/' + category.id).then(function (response) {
@@ -323,14 +322,13 @@ app.controller('brandManagerCtrl', function ($scope, $http, $rootScope) {
     };
     $scope.deleteBrand = function (brand) {
         Swal.fire({
-            title: lang === "en" ? "Delete brand?" : "Xóa thương hiệu này?",
-            text: lang === "en" ? "You won't be able to revert this!" : "Bạn sẽ không thể khôi phục lại!",
+            title: $rootScope.lang === 'vi' ? 'Xoá thương hiệu này?' : 'Delete this brand?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: lang === "en" ? "Delete" : "Xóa",
-            cancelButtonText: lang === "en" ? "Cancel" : "Hủy"
+            confirmButtonText: $rootScope.lang === "en" ? "Delete" : "Xóa",
+            cancelButtonText: $rootScope.lang === "en" ? "Cancel" : "Hủy"
         }).then((result) => {
             if (result.isConfirmed) {
                 $http.delete('/api/brands/' + brand.id).then(function (response) {
@@ -398,9 +396,9 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
             inputValue: $rootScope.validateUrl($productImageUrl) ? $productImageUrl : '',
             input: 'url',
             confirmButtonColor: '#fe696a',
-            confirmButtonText: lang === "en" ? "Save" : "Lưu",
+            confirmButtonText: $rootScope.lang === "en" ? "Save" : "Lưu",
             showCancelButton: true,
-            cancelButtonText: lang === "en" ? "Cancel" : "Hủy",
+            cancelButtonText: $rootScope.lang === "en" ? "Cancel" : "Hủy",
         });
 
         if (url) {
@@ -439,13 +437,13 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
             inputPlaceholder: 'Video ID',
             inputValidator: (value) => {
                 if (!value) {
-                    return lang === 'en' ? 'Please enter video ID!' : 'Vui lòng nhập ID video!';
+                    return $rootScope.lang === 'en' ? 'Please enter video ID!' : 'Vui lòng nhập ID video!';
                 }
             },
             confirmButtonColor: '#fe696a',
-            confirmButtonText: lang === "en" ? "Save" : "Lưu",
+            confirmButtonText: $rootScope.lang === "en" ? "Save" : "Lưu",
             showCancelButton: true,
-            cancelButtonText: lang === "en" ? "Cancel" : "Hủy",
+            cancelButtonText: $rootScope.lang === "en" ? "Cancel" : "Hủy",
         });
 
         if (id) {
@@ -559,17 +557,29 @@ app.controller('productManagerCtrl', function ($scope, $http, $rootScope) {
         });
     };
     $scope.deleteProduct = function (product, index) {
-        $http.delete('/api/products/' + product.id).then(function (response) {
-            $scope.products.splice(index, 1);
-            $rootScope.toast.fire({
-                icon: 'success',
-                title: $scope.lang === 'vi' ? 'Xoá sản phẩm thành công' : 'Product deleted'
-            })
-        }).catch(function (error) {
-            $rootScope.toast.fire({
-                icon: 'error',
-                title: error.data.message
-            })
+        Swal.fire({
+            title: $rootScope.lang === 'vi' ? 'Xoá sản phẩm này?' : 'Delete this product?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: $rootScope.lang === "en" ? "Delete" : "Xóa",
+            cancelButtonText: $rootScope.lang === "en" ? "Cancel" : "Hủy"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $http.delete('/api/products/' + product.id).then(function (response) {
+                    $scope.products.splice(index, 1);
+                    $rootScope.toast.fire({
+                        icon: 'success',
+                        title: $scope.lang === 'vi' ? 'Xoá sản phẩm thành công' : 'Product deleted'
+                    })
+                }).catch(function (error) {
+                    $rootScope.toast.fire({
+                        icon: 'error',
+                        title: error.data.message
+                    })
+                });
+            }
         });
     };
 
@@ -625,9 +635,99 @@ app.controller('userManagerCtrl', function ($scope, $http, $rootScope) {
         $scope.index = index;
 
         $scope.userForm.$setUntouched();
-
         $('#user-modal').modal('show');
     };
+    // Use FormData to send file
+    $scope.addUser = function (user) {
+        if ($scope.userForm.$invalid) {
+            $scope.userForm.$setSubmitted();
+            return;
+        }
+
+        let formData = new FormData($('#user-form')[0]);
+
+        formData.forEach((value, key) => {
+            console.log(key + ': ' + value);
+        });
+
+        $http.post('/api/users', formData, {
+            headers: {
+                'Content-Type': undefined
+            },
+            transformRequest: angular.identity
+        }).then(function (response) {
+            $scope.users.push(response.data);
+            $('#user-modal').modal('hide');
+
+            $rootScope.toast.fire({
+                icon: 'success',
+                title: $scope.lang === 'vi' ? 'Thêm người dùng thành công' : 'Add user successfully'
+            })
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
+        });
+    };
+    $scope.updateUser = function (user) {
+        if ($scope.userForm.$invalid) {
+            $scope.userForm.$setSubmitted();
+            return;
+        }
+
+        let formData = new FormData($('#user-form')[0]);
+
+        formData.forEach((value, key) => {
+            console.log(key + ': ' + value);
+        });
+
+        $http.put('/api/users/' + user.id, formData, {
+            headers: {
+                'Content-Type': undefined
+            },
+            transformRequest: angular.identity
+        }).then(function (response) {
+            $scope.users[$scope.index] = response.data;
+            $('#user-modal').modal('hide');
+
+            $rootScope.toast.fire({
+                icon: 'success',
+                title: $scope.lang === 'vi' ? 'Cập nhật người dùng thành công' : 'Update user successfully'
+            })
+        }).catch(function (error) {
+            $rootScope.toast.fire({
+                icon: 'error',
+                title: error.data.message
+            })
+        });
+    }
+    $scope.deleteUser = function (user, index) {
+        Swal.fire({
+            title: $rootScope.lang === 'en' ? 'Delete this user?' : 'Xoá người dùng này?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: $rootScope.lang === "en" ? "Delete" : "Xóa",
+            cancelButtonText: $rootScope.lang === "en" ? "Cancel" : "Hủy"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $http.delete('/api/users/' + user.id).then(function (response) {
+                    $scope.users.splice(index, 1);
+                    $rootScope.toast.fire({
+                        icon: 'success',
+                        title: $scope.lang === 'vi' ? 'Xoá người dùng thành công' : 'User deleted'
+                    })
+                }).catch(function (error) {
+                    $rootScope.toast.fire({
+                        icon: 'error',
+                        title: error.data.message
+                    })
+                });
+            }
+        });
+    }
 });
 app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datetime) {
     $('<script></script>').attr('src', '/assets/user/js/theme.min.js').appendTo('body');
@@ -725,14 +825,14 @@ app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datet
     };
     $scope.deleteDiscount = function (discount) {
         Swal.fire({
-            title: lang === 'vi' ? 'Tiếp tục xoá?' : 'Continue delete?',
-            text: lang === "vi" ? 'Khuyến mãi sẽ kết thúc' : 'Discount will be ended',
+            title: $rootScope.lang === 'vi' ? 'Tiếp tục xoá?' : 'Continue delete?',
+            text: $rootScope.lang === "vi" ? 'Khuyến mãi sẽ kết thúc' : 'Discount will be ended',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: lang === "en" ? "Delete" : "Xóa",
-            cancelButtonText: lang === "en" ? "Cancel" : "Hủy"
+            confirmButtonText: $rootScope.lang === "en" ? "Delete" : "Xóa",
+            cancelButtonText: $rootScope.lang === "en" ? "Cancel" : "Hủy"
         }).then((result) => {
             if (result.isConfirmed) {
                 $http.delete('/api/discounts/' + discount.id).then(function (response) {

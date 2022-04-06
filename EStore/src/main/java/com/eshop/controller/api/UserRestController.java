@@ -22,12 +22,12 @@ public class UserRestController {
     }
 
    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> update(@PathVariable Integer id, @ModelAttribute UserDTO userDTO) {
         return ResponseEntity.ok(userService.save(userDTO));
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> save(@ModelAttribute UserDTO userDTO) {
         return ResponseEntity.ok(userService.save(userDTO));
     }
 
