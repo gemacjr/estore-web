@@ -87,18 +87,21 @@ public class OrderServiceImpl implements OrderService {
         Order savedOrder = orderRepository.save(order);
 
         // Create order details
-        List<ShoppingCart> productsInCart = cartRepo.findByUser(user);
-        for (ShoppingCart product : productsInCart) {
+        List<ShoppingCart> carts = cartRepo.findByUser(user);
+        for (ShoppingCart cart : carts) {
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrder(savedOrder);
-            orderDetail.setProduct(product.getProduct());
-            orderDetail.setQuantity(product.getQuantity());
-            orderDetail.setPrice(product.getProduct().getPrice());
+            orderDetail.setProduct(cart.getProduct());
+            orderDetail.setQuantity(cart.getQuantity());
+            orderDetail.setPrice(cart.getProduct().getPrice());
             orderDetailRepo.save(orderDetail);
+
+            // Subtract quantity of products purchased
+            cart.getProduct().setQuantity(cart.getProduct().getQuantity() - cart.getQuantity());
         }
 
         // Delete all products in cart
-        cartRepo.deleteAll(productsInCart);
+        cartRepo.deleteAll(carts);
 
         try {
             String link = paramUtils.getSiteURL() + "/order-history";

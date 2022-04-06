@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface ProductService {
+    List<Product> getTop8Products();
+
     List<Product> getPromotionalProducts();
     List<Product> getByProduct(String productName);
     List<Product> getAll();

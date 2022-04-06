@@ -71,6 +71,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getTop8Products(){
+    	return productRepo.findTop8ByOrderByCreatedDateDesc();
+    }
+
+    @Override
     public List<Product> getPromotionalProducts() {
         List<Product> products = productRepo.findByDiscountNotNull();
         if (products.size() == 0) {

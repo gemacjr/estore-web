@@ -77,7 +77,7 @@ public class ProductController {
             Model model,
             @PathVariable("productSlug") String productSlug
     ) {
-        model.addAttribute("discountProducts", MapperUtils.mapAll(productService.getPromotionalProducts(), ProductDTO.class));
+        model.addAttribute("discountProducts", MapperUtils.mapAll(productService.getTop8Products(), ProductDTO.class));
         ProductDTO product = MapperUtils.map(productService.getProduct(productSlug), ProductDTO.class);
         model.addAttribute("product", product);
         return "product/detail";

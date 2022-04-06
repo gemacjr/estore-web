@@ -339,7 +339,7 @@
                 <li class="border-bottom mb-0">
                     <a class="nav-link-style d-flex align-items-center px-4 py-3"
                        th:href="@{'#!discount-management'}">
-                        <i class="ci-user-circle opacity-60 me-2"></i><span
+                        <i class="ci-lable opacity-60 me-2"></i><span
                             class="m_title" th:text="#{global.promotion}"></span>
                     </a>
                 </li>
@@ -350,8 +350,13 @@
                 <h3 class="fs-sm mb-0 text-muted" th:text="#{global.account}"></h3>
             </div>
             <ul class="list-unstyled mb-0">
+                <li class="border-bottom mb-0">
+                    <a class="nav-link-style d-flex align-items-center px-4 py-3" th:href="@{'#!authority-management'}">
+                        <i class="ci-locked opacity-60 me-2"></i><span th:text="#{global.authorization}"></span>
+                    </a>
+                </li>
                 <li class="mb-0">
-                    <a class="nav-link-style d-flex align-items-center px-4 py-3" href="/logout">
+                    <a class="nav-link-style d-flex align-items-center px-4 py-3" th:href="@{'/logout'}">
                         <i class="ci-sign-out opacity-60 me-2"></i><span th:text="#{global.sign_out}"></span>
                     </a>
                 </li>
@@ -434,7 +439,7 @@
             <span class="handheld-toolbar-icon">
                 <i class="ci-menu"></i>
             </span>
-                <span class="handheld-toolbar-label" th:text="#{global.menu}"></span></a>
+            <span class="handheld-toolbar-label" th:text="#{global.menu}"></span></a>
             <a class="d-table-cell handheld-toolbar-item" th:href="@{/shopping-cart}">
             <span class="handheld-toolbar-icon">
                 <i class="ci-cart"></i>

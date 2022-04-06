@@ -30,26 +30,6 @@ public class DashboardController {
     @Autowired
     private DiscountService discountService;
 
-    @RequestMapping
-    public String showDashboardPage() {
-        return "admin/index";
-    }
-
-    @RequestMapping("/category-management")
-    public String showCategoryManagerPage() {
-        return "admin/manager/category";
-    }
-
-    @RequestMapping("/brand-management")
-    public String showBrandManagerPage(Model model) {
-        return "admin/manager/brand";
-    }
-
-    @RequestMapping("/product-management")
-    public String showProductManagerPage(Model model) {
-        return "admin/manager/product";
-    }
-
     @RequestMapping("/report")
     public String showReportPage(Model model, @RequestParam Optional<String> brand,
                                  @RequestParam Optional<String> startDate, @RequestParam Optional<String> endDate) throws ParseException {
@@ -88,14 +68,39 @@ public class DashboardController {
         return "admin/report";
     }
 
+    @RequestMapping
+    public String showDashboardPage() {
+        return "admin/index";
+    }
+
+    @RequestMapping("/category-management")
+    public String showCategoryManagerPage() {
+        return "admin/manager/category";
+    }
+
+    @RequestMapping("/brand-management")
+    public String showBrandManagerPage() {
+        return "admin/manager/brand";
+    }
+
+    @RequestMapping("/product-management")
+    public String showProductManagerPage() {
+        return "admin/manager/product";
+    }
+
     @RequestMapping("/user-management")
-    public String showUserManagementPage(Model model) {
+    public String showUserManagementPage() {
         return "admin/manager/user";
     }
 
     @RequestMapping("/discount-management")
-    public String showDiscountManagementPage(Model model) {
+    public String showDiscountManagementPage() {
         return "admin/manager/discount";
+    }
+
+    @RequestMapping("/authority-management")
+    public String showAuthorityManagementPage() {
+        return "admin/manager/authority";
     }
 
 }

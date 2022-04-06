@@ -38,6 +38,10 @@ app.config(function ($routeProvider) {
             templateUrl: '/dashboard/discount-management',
             controller: 'discountManagerCtrl'
         })
+        .when('/authority-management', {
+            templateUrl: '/dashboard/authority-management',
+            controller: 'authorityManagerCtrl'
+        })
         .otherwise({
             redirectTo: '/category-management'
         });
@@ -867,3 +871,6 @@ app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datet
 
     $scope.getDiscounts();
 });
+app.controller('authorityManagerCtrl', function ($scope, $http, $rootScope) {
+    
+})
