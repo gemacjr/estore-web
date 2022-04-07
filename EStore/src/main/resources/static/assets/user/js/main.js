@@ -47,9 +47,9 @@ function changePageNumber(pageNumber, categorySlug) {
 /* Cart ------------------------------------------------------------------------------------------------------------- */
 /* Add to cart */
 function addToCart(productId) {
-    let quantity = $('#select-quantity').val();
+    /*let quantity = $('#select-quantity').val();
     $.ajax({
-        url: baseUrl + '/api/shopping-cart',
+        url: baseUrl + '/api/carts',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
@@ -59,13 +59,21 @@ function addToCart(productId) {
         success: function() {
             location.reload();
         }
+    });*/
+
+    let quantity = $('#select-quantity').val() || 1;
+    let url = baseUrl + '/shopping-cart/add-to-cart?productId=' + productId + '&quantity=' + quantity;
+
+    // $('#view-cart-fragment').load(url);
+    $.get(url).done(function (fragment) {
+        $('#view-cart-fragment').replaceWith(fragment);
     });
 }
 
 /* Remove product of cart */
 function removeForCart(productId) {
     $.ajax({
-        url: baseUrl + '/api/shopping-cart/' + productId,
+        url: baseUrl + '/api/carts/' + productId,
         type: 'DELETE',
         success: function () {
             location.reload();
@@ -76,7 +84,7 @@ function removeForCart(productId) {
 /* Update quantity product of cart */
 function updateQuantity(id, quantity) {
     $.ajax({
-        url: baseUrl + '/api/shopping-cart/' + id,
+        url: baseUrl + '/api/carts/' + id,
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({

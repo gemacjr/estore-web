@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -32,6 +33,13 @@ public class CartController {
     @RequestMapping("/shopping-cart")
     public String showShoppingCartPage(Model model) {
         return "cart/shopping_cart";
+    }
+
+    @GetMapping("/shopping-cart/add-to-cart")
+    public String addCart(@RequestParam("productId") Integer productId,
+                        @RequestParam("quantity") Integer quantity) {
+        cartService.addCart(productId, quantity);
+        return "layout/fragments::#view-cart-fragment";
     }
 
     @RequestMapping("/checkout-detail")
