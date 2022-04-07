@@ -37,7 +37,6 @@ $("#sorting").change(function () {
 function changePageNumber(pageNumber, categorySlug) {
     const urlParams = new URLSearchParams(window.location.search);
     const brandParam = urlParams.get('brand');
-    console.log("/product-list/" + categorySlug + "?p=" + pageNumber);
     if (!brandParam) {
         window.location.href = "/product-list/" + categorySlug + "?p=" + pageNumber;
     } else {
@@ -64,7 +63,6 @@ function addToCart(productId) {
     let quantity = $('#select-quantity').val() || 1;
     let url = baseUrl + '/shopping-cart/add-to-cart?productId=' + productId + '&quantity=' + quantity;
 
-    // $('#view-cart-fragment').load(url);
     $.get(url).done(function (fragment) {
         $('#view-cart-fragment').replaceWith(fragment);
     });
