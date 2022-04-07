@@ -74,8 +74,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/assets/**", "/login/**", "/logout/**", "/register/**", "/home/**", "/product-list/**",
                         "/product-detail/**", "/forgot-password/**", "/verify", "/reset-password/**", "/error/**", "/api/**").permitAll()
                 .antMatchers( "/change-password/**", "/user-profile/**", "/shopping-cart/**",
-                        "/order-history/**", "/checkout-detail/**").access("hasAnyRole('ROLE_STAFF', 'ROLE_CUSTOMER')")
-                .antMatchers( "/dashboard/**").access("hasAnyRole('ROLE_DIRECTOR')")
+                        "/order-history/**", "/checkout-detail/**").access("hasAnyRole('ROLE_CUSTOMER')")
+                .antMatchers( "/dashboard/**").access("hasAnyRole('ROLE_STAFF', 'ROLE_DIRECTOR')")
                 .anyRequest().authenticated();
         http.formLogin()
                 .loginPage("/login")

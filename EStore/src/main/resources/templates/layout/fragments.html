@@ -350,7 +350,7 @@
                 <h3 class="fs-sm mb-0 text-muted" th:text="#{global.account}"></h3>
             </div>
             <ul class="list-unstyled mb-0">
-                <li class="border-bottom mb-0">
+                <li class="border-bottom mb-0" sec:authorize="hasRole('ROLE_DIRECTOR')">
                     <a class="nav-link-style d-flex align-items-center px-4 py-3" th:href="@{'#!authority-management'}">
                         <i class="ci-locked opacity-60 me-2"></i><span th:text="#{global.authorization_and_status}"></span>
                     </a>
