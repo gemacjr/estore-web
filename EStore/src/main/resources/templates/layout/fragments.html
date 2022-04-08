@@ -139,7 +139,7 @@
             <div class="container">
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <!-- Search -->
-                    <form th:action="@{/product-search}" method="POST" class="input-group d-lg-none my-3">
+                    <form th:action="@{/product-search}" method="GET" class="input-group d-lg-none my-3">
                         <input class="form-control rounded-start" type="text" name="keyword" th:value="${keyword}"
                                th:placeholder="#{global.search_of_products}">
                         <button class="btn btn-primary" type="submit">
