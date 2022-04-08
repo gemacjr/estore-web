@@ -72,9 +72,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .cors().disable();
         http.authorizeRequests()
                 .antMatchers("/", "/assets/**", "/login/**", "/logout/**", "/register/**", "/home/**", "/product-list/**",
-                        "/product-detail/**", "/forgot-password/**", "/verify", "/reset-password/**", "/error/**", "/api/**").permitAll()
-                .antMatchers( "/change-password/**", "/user-profile/**", "/shopping-cart/**",
-                        "/order-history/**", "/checkout-detail/**").access("hasAnyRole('ROLE_CUSTOMER')")
+                        "/product-detail/**", "/forgot-password/**", "/verify", "/reset-password/**", "/error/**").permitAll()
+                /*.antMatchers( "/change-password/**", "/user-profile/**", "/order-history/**",
+                        "/checkout-detail/**").access("hasAnyRole('ROLE_CUSTOMER', 'ROLE_STAFF', 'ROLE_DIRECTOR')")*/
+                .antMatchers( "/shopping-cart/**", "/api/carts").access("hasRole('ROLE_CUSTOMER')")
                 .antMatchers( "/dashboard/**").access("hasAnyRole('ROLE_STAFF', 'ROLE_DIRECTOR')")
                 .anyRequest().authenticated();
         http.formLogin()
@@ -83,10 +84,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/home", false)
                 .successHandler(successHandler());
                 //.failureHandler(authenticationFailureHandler())
+        http.exceptionHandling().accessDeniedPage("/error/forbidden");
         http.logout()
 				.deleteCookies("JSESSIONID")
     			.permitAll();
-        http.exceptionHandling().accessDeniedPage("/error/forbidden");
         http.rememberMe()
     	        .key("uniqueAndSecret")
     	        .tokenRepository(persistentTokenRepository())

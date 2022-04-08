@@ -10,7 +10,7 @@ public interface CartService {
 
     ShoppingCart addCart(Integer productId, Integer quantity);
 
-    ShoppingCart updateCart(Integer cartId, Integer quantity);
+    ShoppingCart updateQuantity(Integer cartId, Integer quantity);
 
     void deleteCart(Integer cartId);
 }

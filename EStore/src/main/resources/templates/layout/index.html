@@ -21,6 +21,7 @@
 </head>
 <body class="handheld-toolbar-enabled">
 <input type="hidden" id="lang" th:value="${#locale.language}">
+<input type="hidden" id="is-customer" value="true" sec:authorize="hasRole('ROLE_CUSTOMER')">
 <main class="page-wrapper">
     <!-- Header -->
     <div th:replace="~{/layout/fragments::header-default}"></div>

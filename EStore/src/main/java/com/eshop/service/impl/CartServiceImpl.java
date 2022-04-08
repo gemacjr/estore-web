@@ -8,6 +8,7 @@ import com.eshop.repository.ShoppingCartRepository;
 import com.eshop.repository.UserRepository;
 import com.eshop.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -60,8 +61,16 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public ShoppingCart updateCart(Integer cartId, Integer quantity) {
+    public ShoppingCart updateQuantity(Integer cartId, Integer quantity) {
         ShoppingCart cart = cartRepo.getById(cartId);
+        if (cart.getProduct().getQuantity() < quantity) {
+            if (LocaleContextHolder.getLocale().getLanguage().equals("vi")) {
+                throw new RuntimeException("Số lượng sản phẩm không đủ (" + cart.getProduct().getQuantity() + " sản phẩm có sẵn)");
+            } else {
+                throw new RuntimeException("The quantity of product is not enough (" + cart.getProduct().getQuantity() + " product available)");
+            }
+
+        }
         cart.setQuantity(quantity);
         return cartRepo.save(cart);
     }

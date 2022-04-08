@@ -42,8 +42,8 @@ public class CartRestController {
     }
 
 	@PutMapping("/{cartId}")
-    public ResponseEntity<ShoppingCart> updateCart(@PathVariable("cartId") Integer cartId, @RequestBody Map<String, Object> data) {
-        ShoppingCart result = cartService.updateCart(cartId, Integer.parseInt(data.get("quantity").toString()));
+    public ResponseEntity<ShoppingCart> updateQuantity(@PathVariable("cartId") Integer cartId, @RequestBody Map<String, Object> data) {
+        ShoppingCart result = cartService.updateQuantity(cartId, Integer.parseInt(data.get("quantity").toString()));
         return result == null ? ResponseEntity.badRequest().build() : ResponseEntity.ok().body(result);
     }
 

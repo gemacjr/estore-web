@@ -60,6 +60,15 @@ function addToCart(productId) {
         }
     });*/
 
+    if (!$('#is-customer').val()) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: lang == 'vi' ? 'Bạn không có quyền thực hiện chức năng này!' : 'You do not have permission to do this!',
+        })
+        return false;
+    }
+
     let quantity = $('#select-quantity').val() || 1;
     let url = baseUrl + '/shopping-cart/add-to-cart?productId=' + productId + '&quantity=' + quantity;
 
@@ -90,6 +99,15 @@ function updateQuantity(id, quantity) {
         }),
         success: function () {
             location.reload();
+        },
+        error: function (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: err.responseJSON.message
+            }).then(() => {
+                location.reload();
+            });
         }
     });
 }
@@ -141,7 +159,7 @@ $("#checkout-frm").submit(function (event) {
         },
         error: function (err) {
             iziToast.error({
-                message: err.message,
+                message: err.responseJSON.message,
                 position: 'topRight'
             });
         }

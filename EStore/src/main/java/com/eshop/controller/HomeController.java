@@ -37,8 +37,8 @@ public class HomeController {
         return "home/index";
     }
 
-    @GetMapping("/error/403")
+    @GetMapping("/error/forbidden")
     public String showError403Page() {
-        return "forbidden";
+        return "error/forbidden";
     }
 }

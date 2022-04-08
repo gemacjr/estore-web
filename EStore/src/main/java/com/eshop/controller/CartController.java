@@ -36,8 +36,7 @@ public class CartController {
     }
 
     @GetMapping("/shopping-cart/add-to-cart")
-    public String addCart(@RequestParam("productId") Integer productId,
-                        @RequestParam("quantity") Integer quantity) {
+    public String addCart(@RequestParam("productId") Integer productId, @RequestParam("quantity") Integer quantity) {
         cartService.addCart(productId, quantity);
         return "layout/fragments::#view-cart-fragment";
     }
