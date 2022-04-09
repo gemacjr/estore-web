@@ -44,8 +44,11 @@ public class CartServiceImpl implements CartService {
             cart.setUser(user);
             cart.setProduct(product);
             cart.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+
+
             cart.setQuantity(quantity);
         } else {
+
             cart.setQuantity(cart.getQuantity() + quantity);
         }
 

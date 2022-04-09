@@ -64,7 +64,7 @@ function addToCart(productId) {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: lang == 'vi' ? 'Bạn không có quyền thực hiện chức năng này!' : 'You do not have permission to do this!',
+            text: lang == 'vi' ? 'Không thể thực hiện thao tác này!' : 'You can not perform this action!',
         })
         return false;
     }
@@ -110,6 +110,20 @@ function updateQuantity(id, quantity) {
             });
         }
     });
+}
+
+function imposeMinMax(el){
+    if(el.value !== ""){
+        if(parseInt(el.value) < parseInt(el.min)){
+            el.value = el.min;
+        }
+        if(parseInt(el.value) > parseInt(el.max)){
+            el.value = el.max;
+        }
+    }
+    if (el.value === "") {
+        el.value = el.min;
+    }
 }
 
 /* Order ------------------------------------------------------------------------------------------------------------ */

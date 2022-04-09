@@ -117,7 +117,7 @@
                             </div>
                             <div class="mb-3 flex-grow-1">
                                 <div class="position-relative me-n4 mb-3">
-                                    <h6 class="fs-base mb-2 pb-1" th:text="#{global.product_info}"></h6>
+                                    <h6 class="fs-lg mb-2 pb-1" th:text="#{global.product_info}"></h6>
                                     <div th:if="${product.available==0}" class="product-badge product-available mt-n1">
                                         <i class="ci-security-check"></i>
                                         <span th:text="#{global.in_stock}"></span>
@@ -133,24 +133,23 @@
                                         <span th:text="#{global.sold_out}"></span>
                                     </div>
                                 </div>
-                                <div class="fs-sm text-muted" th:text="${product.description}"></div>
+                                <div class="fs-md" th:text="${product.description}"></div>
                             </div>
                             <div th:if="${product.available == 0}">
                                 <form class="mb-grid-gutter">
                                     <div class="mb-3 d-flex align-items-center">
-                                        <select class="form-select me-3" style="width: 5rem;" id="select-quantity">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                        </select>
-                                        <button class="btn btn-primary btn-shadow d-block w-100" type="button"
-                                                th:onclick="addToCart([[${product.id}]])">
-                                            <i class="ci-cart fs-lg me-2"></i>
-                                            <span th:text="#{global.add_to_cart}"></span>
-                                        </button>
+                                        <label for="select-quantity" class=" me-3"
+                                               th:text="#{global.quantity} + ':'"></label>
+                                        <input class="form-control me-3" min="1" th:max="${product.quantity}" value="1"
+                                               style="width: 7rem;" type="number" id="select-quantity" onkeyup=imposeMinMax(this)>
+                                        <span class="text-lowercase"
+                                              th:text="${product.quantity} + ' ' + #{global.product_available}"></span>
                                     </div>
+                                    <button class="btn btn-primary btn-shadow d-block w-100" type="button"
+                                            th:onclick="addToCart([[${product.id}]])">
+                                        <i class="ci-cart fs-lg me-2"></i>
+                                        <span th:text="#{global.add_to_cart}"></span>
+                                    </button>
                                 </form>
                             </div>
                         </div>
