@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Locale;
 
-public class CustomerAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+public class AuthenticationFailureHandlerCustom extends SimpleUrlAuthenticationFailureHandler {
     @Autowired
     private MessageSource messages;
 

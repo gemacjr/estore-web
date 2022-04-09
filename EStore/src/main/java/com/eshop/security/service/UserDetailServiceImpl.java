@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomerUserDetailService implements UserDetailsService {
+public class UserDetailServiceImpl implements UserDetailsService {
     @Autowired
     UserService userService;
 
@@ -19,6 +19,6 @@ public class CustomerUserDetailService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("No user found with email: " + username);
         }
-        return new CustomerUserDetails(user);
+        return new UserDetailsImpl(user);
     }
 }

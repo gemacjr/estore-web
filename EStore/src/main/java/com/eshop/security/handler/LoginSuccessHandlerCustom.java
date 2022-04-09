@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class CustomerLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
-    public CustomerLoginSuccessHandler(String defaultTargetUrl) {
+public class LoginSuccessHandlerCustom extends SavedRequestAwareAuthenticationSuccessHandler {
+    public LoginSuccessHandlerCustom(String defaultTargetUrl) {
         setDefaultTargetUrl(defaultTargetUrl);
     }
 

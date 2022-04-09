@@ -15,9 +15,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CustomerUserDetails implements UserDetails {
-    @Serial
-    private static final long serialVersionUID = -4956702249140270519L;
+public class UserDetailsImpl implements UserDetails {
     private User user;
 
     @Override
