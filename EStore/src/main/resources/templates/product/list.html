@@ -55,11 +55,12 @@
                                 </div>
                                 <ul class="widget-list widget-filter-list pt-1" data-simplebar
                                     data-simplebar-auto-hide="false">
-                                    <li class="widget-list-item widget-filter-item"
+                                    <li class="widget-list-item widget-filter-item" th:data-value="*{slug}"
+                                        onclick="filterProduct('category', this.getAttribute('data-value'))"
                                         th:each="category:${categories}" th:object="${category}"
                                         th:if="${category.products.size() > 0}">
                                         <a class="widget-list-link d-flex justify-content-between align-items-center"
-                                           th:href="|/product-list/*{slug}|">
+                                           href="javascript:void(0)">
                                             <span class="widget-filter-item-text" th:if="${#locale.language == 'vi'}"
                                                   th:text="*{nameVI}"></span>
                                             <span class="widget-filter-item-text"
@@ -81,10 +82,11 @@
                                 </div>
                                 <ul class="widget-list widget-filter-list pt-1" data-simplebar
                                     data-simplebar-auto-hide="false">
-                                    <li class="widget-list-item widget-filter-item"
+                                    <li class="widget-list-item widget-filter-item" th:data-value="*{slug}"
+                                        onclick="filterProduct('brand', this.getAttribute('data-value'))"
                                         th:each="brand:${brands}" th:object="${brand}">
                                         <a class="widget-list-link d-flex justify-content-between align-items-center"
-                                           th:href="|/product-list/${category.slug}?brand=*{slug}|">
+                                           href="javascript:void(0)" >
                                             <span class="widget-filter-item-text" th:text="*{name}"></span>
                                             <span class="fs-xs text-muted ms-3"
                                                   th:text="${brand.getNumberBrandByCategory(category.id)}"></span>
@@ -105,7 +107,7 @@
                             <label class="text-light opacity-75 text-nowrap fs-sm me-2 d-none d-sm-block" for="sorting">
                                 [[#{global.sort_by}]]
                             </label>
-                            <select class="form-select" id="sorting" th:attr="data-action=${category.slug}">
+                            <select class="form-select" id="sorting" onchange="filterProduct('orderBy', this.value)">
                                 <option th:selected="${direction=='ASC'}" value="ASC">A - Z</option>
                                 <option th:selected="${direction=='DESC'}" value="DESC">Z - A</option>
                             </select>
@@ -115,7 +117,7 @@
                         </div>
                     </div>
                     <div class="d-flex pb-3">
-                        <div th:onclick="changePageNumber([[${productPage.number - 1}]], [[${category.slug}]])"
+                        <div th:onclick="|filterProduct('p', '${productPage.number - 1}')|"
                              th:unless="${productPage.number - 1 < 0}">
                             <a class="nav-link-style nav-link-light me-3" href="javascript:void(0)">
                                 <i class="ci-arrow-left"></i>
@@ -124,7 +126,7 @@
                         <span class="fs-md text-light"
                               th:text="${productPage.number+1} + ' / ' + ${productPage.totalPages}"></span>
                         <div th:if="${productPage.number + 1 < productPage.totalPages}"
-                             th:onclick="changePageNumber([[${productPage.number + 1}]], [[${category.slug}]])">
+                             th:onclick="|filterProduct('p', '${productPage.number + 1}')|">
                             <a class="nav-link-style nav-link-light ms-3"
                                href="javascript:void(0)">
                                 <i class="ci-arrow-right"></i>
@@ -196,7 +198,7 @@
                         <ul class="pagination">
                             <li class="page-item"
                                 th:unless="${productPage.number - 1 < 0}"
-                                th:onclick="changePageNumber([[${productPage.number - 1}]], [[${category.slug}]])">
+                                th:onclick="|filterProduct('p', '${productPage.number - 1}')|">
                                 <a class="page-link" href="javascript:void(0)">
                                     <i class="ci-arrow-left me-2"></i>
                                     <span th:text="#{global.prev}"></span>
@@ -211,13 +213,13 @@
                             <li th:each="item:${#numbers.sequence(0, productPage.totalPages - 1)}"
                                 class="page-item d-none d-sm-block"
                                 th:classappend="${productPage.number == item ? 'active' : ''}"
-                                th:onclick="changePageNumber([[${item}]],[[${category.slug}]])">
+                                th:onclick="|filterProduct('p', '${item}')|">
                                 <a class="page-link" href="javascript:void(0)" th:text="${item + 1}"></a>
                             </li>
                         </ul>
                         <ul class="pagination">
                             <li class="page-item" th:if="${productPage.number + 1 < productPage.totalPages}"
-                                th:onclick="changePageNumber([[${productPage.number + 1}]],[[${category.slug}]])">
+                                th:onclick="|filterProduct('p', '${productPage.number + 1}')|">
                                 <a class="page-link" href="javascript:void(0)"
                                    aria-label="Next">
                                     <span th:text="#{global.next}"></span><i class="ci-arrow-right ms-2"></i>

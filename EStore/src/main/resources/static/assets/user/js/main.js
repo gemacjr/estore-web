@@ -2,6 +2,36 @@ let lang = $('#lang').val();
 let baseUrl = window.location.origin;
 let isLogin = $('#isLogin').val();
 
+// Active nav item by url
+$(document).ready(function() {
+    let url = window.location.href;
+    $('.widget-filter-item').each(function() {
+        if (url.includes($(this).attr('data-value').replaceAll('#!', ''))) {
+            $(this).addClass('active');
+        } else {
+            $(this).removeClass('active');
+        }
+    });
+});
+
+// Add or update path variables to url
+function addOrUpdateUrl(url, key, value) {
+    let re = new RegExp("([?&])" + key + "=.*?(&|#|$)", "i");
+    if (url.match(re)) {
+        return url.replace(re, '$1' + key + "=" + value + '$2');
+    } else {
+        let hash = '';
+        if (url.indexOf('#') !== -1) {
+            hash = url.replace(/.*#/, '#');
+            url = url.replace(/#.*/, '');
+        }
+        let separator = url.indexOf('?') !== -1 ? "&" : "?";
+        return url + separator + key + "=" + value + hash;
+    }
+}
+
+//
+
 // Change the language
 $("a[href*=lang]").on("click", function () {
     let param = $(this).attr("href");
@@ -25,23 +55,9 @@ $("#search-form").submit(function () {
 });
 
 /* Products --------------------------------------------------------------------------------------------------------- */
-
-// Sorting products by name
-$("#sorting").change(function () {
-    let category = $("#sorting").attr('data-action');
-    let orderBy = this.value;
-    window.location.href = "/product-list/" + category + "?orderBy=" + orderBy;
-});
-
-// Change product page
-function changePageNumber(pageNumber, categorySlug) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const brandParam = urlParams.get('brand');
-    if (!brandParam) {
-        window.location.href = "/product-list/" + categorySlug + "?p=" + pageNumber;
-    } else {
-        window.location.href = "/product-list/" + categorySlug + "?brand=" + brandParam + "&p=" + pageNumber;
-    }
+function filterProduct (key, value) {
+    let url = window.location.href;
+    window.location.href = addOrUpdateUrl(url, key, value);
 }
 /* Cart ------------------------------------------------------------------------------------------------------------- */
 /* Add to cart */

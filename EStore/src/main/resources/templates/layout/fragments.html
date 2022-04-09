@@ -157,7 +157,7 @@
                             <ul class="dropdown-menu">
                                 <a th:each="category : ${categories}" th:object="${category}"
                                    th:if="${category.products.size() > 0}"
-                                   th:href="@{|/product-list/*{slug}|}" class="dropdown-item">
+                                   th:href="@{|/product-list?category=*{slug}|}" class="dropdown-item">
                                     <span th:if="${#locale.language == 'vi'}" th:text="*{nameVI}"></span>
                                     <span th:unless="${#locale.language == 'vi'}" th:text="*{nameEN}"></span>
                                 </a>

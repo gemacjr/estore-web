@@ -33,12 +33,7 @@ public class ProductController {
     @Autowired
     ModelMapper mapper;
 
-    @RequestMapping("/product-list")
-    public String productList() {
-        return "redirect:/product-list/phone";
-    }
-
-    @RequestMapping("/product-list/{categorySlug}")
+   /* @RequestMapping("/product-list/{categorySlug}")
     public String productListByCategory(
             Model model,
             @PathVariable("categorySlug") String categorySlug,
@@ -49,6 +44,30 @@ public class ProductController {
         int page = p.orElse(0);
         int size = 6;
         String direction = orderByOptional.orElse("ASC");
+        String brandSlug = brandSlugOptional.orElse("");
+
+        Page<ProductDTO> productPage = productService.getAllByCategoryAndBrand(categorySlug, brandSlug, page, size, direction)
+                .map(product -> mapper.map(product, ProductDTO.class));
+
+        model.addAttribute("direction", direction);
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("category", MapperUtils.map(categoryService.get(categorySlug), CategoryDTO.class));
+        model.addAttribute("brands", MapperUtils.mapAll(brandService.getAllByCategory(categorySlug), BrandDTO.class));
+        return "product/list";
+    }*/
+
+    @RequestMapping("/product-list")
+    public String productListByCategory(
+            Model model,
+            @RequestParam("p") Optional<Integer> p,
+            @RequestParam("orderBy") Optional<String> orderByOptional,
+            @RequestParam("category") Optional<String> categorySlugOptional,
+            @RequestParam("brand") Optional<String> brandSlugOptional
+    ) {
+        int page = p.orElse(0);
+        int size = 6;
+        String direction = orderByOptional.orElse("ASC");
+        String categorySlug = categorySlugOptional.orElse("phone");
         String brandSlug = brandSlugOptional.orElse("");
 
         Page<ProductDTO> productPage = productService.getAllByCategoryAndBrand(categorySlug, brandSlug, page, size, direction)
