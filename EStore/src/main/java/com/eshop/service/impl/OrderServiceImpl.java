@@ -98,6 +98,9 @@ public class OrderServiceImpl implements OrderService {
 
             // Subtract quantity of products purchased
             cart.getProduct().setQuantity(cart.getProduct().getQuantity() - cart.getQuantity());
+            if (cart.getProduct().getQuantity() == 0) {
+                cart.getProduct().setAvailable(1);
+            }
         }
 
         // Delete all products in cart
