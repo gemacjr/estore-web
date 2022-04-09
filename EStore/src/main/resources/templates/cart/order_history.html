@@ -89,12 +89,12 @@
                                                              style="width: 100px; height: 100px" alt="Product">
                                                     </a>
                                                     <div class="ps-sm-4 pt-2">
-                                                        <h3 class="product-title fs-sm mb-2">
+                                                        <h3 class="product-title fs-base mb-2">
                                                             <a th:href="@{|/product-detail/${orderDetail.product.slug}|}"
                                                                th:text="${orderDetail.product.name}">
                                                             </a>
                                                         </h3>
-                                                        <div class="fs-sm text-accent pt-2"
+                                                        <div class="fs-md text-accent pt-2"
                                                              th:text="${#numbers.formatDecimal(orderDetail.getPrice(),0,'POINT',0,'NONE')+'₫'}">
                                                         </div>
                                                     </div>

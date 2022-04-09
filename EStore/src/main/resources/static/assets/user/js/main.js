@@ -2,6 +2,18 @@ let lang = $('#lang').val();
 let baseUrl = window.location.origin;
 let isLogin = $('#isLogin').val();
 
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 1000,
+    timerProgressBar: false,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+})
+
 // Active nav item by url
 $(document).ready(function() {
     let url = window.location.href;
@@ -80,7 +92,7 @@ function addToCart(productId) {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: lang == 'vi' ? 'Không thể thực hiện thao tác này!' : 'You can not perform this action!',
+            text: lang === 'vi' ? 'Không thể thực hiện thao tác này!' : 'You can not perform this action!',
         })
         return false;
     }
@@ -90,6 +102,10 @@ function addToCart(productId) {
 
     $.get(url).done(function (fragment) {
         $('#view-cart-fragment').replaceWith(fragment);
+        Toast.fire({
+            icon: 'success',
+            title: lang === 'vi' ? 'Thêm vào giỏ hàng thành công!' : 'Add to cart successfully!',
+        })
     });
 }
 
