@@ -1,6 +1,6 @@
 package com.eshop.controller;
 
-import com.eshop.dto.account.*;
+import com.eshop.dto.user.*;
 import com.eshop.entity.User;
 import com.eshop.service.UserService;
 import org.modelmapper.ModelMapper;

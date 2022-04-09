@@ -1,10 +1,10 @@
 package com.eshop.service.impl;
 
-import com.eshop.customer.exception.UserAlreadyExistException;
-import com.eshop.customer.exception.UserNotFoundException;
+import com.eshop.exception.UserAlreadyExistException;
+import com.eshop.exception.UserNotFoundException;
 import com.eshop.dto.UserDTO;
-import com.eshop.dto.account.Profile;
-import com.eshop.dto.account.Register;
+import com.eshop.dto.user.Profile;
+import com.eshop.dto.user.Register;
 import com.eshop.entity.*;
 import com.eshop.repository.AuthorityRepository;
 import com.eshop.repository.RoleRepository;
