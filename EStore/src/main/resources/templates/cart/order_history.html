@@ -35,7 +35,7 @@
             <section class="col-lg-12">
                 <!-- Orders list-->
                 <div class="table-responsive fs-md mb-4">
-                    <table id="order-history-table" class="table table-hover mb-0">
+                    <table id="order-history-table table-sm" class="table table-hover mb-0">
                         <thead>
                         <tr>
                             <th th:text="#{global.order} + ' #'"></th>
@@ -89,13 +89,13 @@
                                                              style="width: 100px; height: 100px" alt="Product">
                                                     </a>
                                                     <div class="ps-sm-4 pt-2">
-                                                        <h3 class="product-title fs-base mb-2">
+                                                        <h3 class="product-title fs-sm mb-2">
                                                             <a th:href="@{|/product-detail/${orderDetail.product.slug}|}"
                                                                th:text="${orderDetail.product.name}">
                                                             </a>
                                                         </h3>
-                                                        <div class="fs-lg text-accent pt-2"
-                                                             th:text="${#numbers.formatDecimal(orderDetail.product.getPromotionalPrice(),0,'POINT',0,'NONE')+'₫'}">
+                                                        <div class="fs-sm text-accent pt-2"
+                                                             th:text="${#numbers.formatDecimal(orderDetail.getPrice(),0,'POINT',0,'NONE')+'₫'}">
                                                         </div>
                                                     </div>
                                                 </div>

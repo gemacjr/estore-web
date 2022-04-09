@@ -93,7 +93,14 @@ public class OrderServiceImpl implements OrderService {
             orderDetail.setOrder(savedOrder);
             orderDetail.setProduct(cart.getProduct());
             orderDetail.setQuantity(cart.getQuantity());
-            orderDetail.setPrice(cart.getProduct().getPrice());
+
+            Double price = cart.getProduct().getPrice();
+            if (cart.getProduct().getDiscount() != null) {
+                orderDetail.setPrice(price - price * cart.getProduct().getDiscount().getSaleOff() / 100);
+            } else {
+                orderDetail.setPrice(price);
+            }
+
             orderDetailRepo.save(orderDetail);
 
             // Subtract quantity of products purchased
