@@ -58,11 +58,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> getAllByCategoryAndBrand(String categorySlug, String brandSlug, int page, int size, String direction) {
         Sort sort = Sort.by(direction.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, "name");
-        if (brandSlug.isBlank()) {
-            return productRepo.findByCategorySlug(categorySlug, PageRequest.of(page, size, sort));
+        /*if (brandSlug.isBlank()) {
+            return productRepo.findByCategorySlugAndAvailable(categorySlug, 0, PageRequest.of(page, size, sort));
         } else {
-            return productRepo.findByCategorySlugAndBrandSlug(categorySlug, brandSlug, PageRequest.of(page, size, sort));
-        }
+            return productRepo.findByCategorySlugAndBrandSlugAndAvailable(categorySlug, brandSlug, 0, PageRequest.of(page, size, sort));
+        }*/
+        return productRepo.findByCategorySlugContainingAndBrandSlugContainingAndAvailable(categorySlug, brandSlug, 0, PageRequest.of(page, size, sort));
     }
 
     @Override
@@ -86,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductDTO> getPromotionalProducts(int page, int size) {
-        Page<Product> products = productRepo.findByDiscountNotNull(PageRequest.of(page, size));
+        Page<Product> products = productRepo.findByDiscountNotNullAndAvailable(0, PageRequest.of(page, size));
         if (products.getTotalElements() == 0) {
             List<Product> lstProduct = productRepo.findTop8ByOrderByCreatedDateDesc();
             products = new PageImpl<Product>(lstProduct, PageRequest.of(page, size), lstProduct.size());
