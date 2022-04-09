@@ -99,9 +99,9 @@
                                  th:with="money=${product.price - (product.price * product.discount.saleOff / 100)}">
                                 <span class="h3 fw-normal text-accent me-1"
                                       th:text="${#numbers.formatDecimal(money,0,'POINT',0,'NONE')}+'₫'"></span>
-                                <del class="text-muted fs-lg me-3"
+                                <del class="text-muted fs-lg me-2"
                                      th:text="${#numbers.formatDecimal(product.price,0,'POINT',0,'NONE')}+'₫'"></del>
-                                <span class="badge bg-danger badge-shadow align-middle mt-n2">
+                                <span class="badge bg-danger badge-shadow align-middle">
                                     <span th:if="${#locale.language == 'vi'}"
                                           th:text="${'Giảm ' + #numbers.formatInteger(product.discount.saleOff, 0, 'NONE') + '%'}">
                                     </span>

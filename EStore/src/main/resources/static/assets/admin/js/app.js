@@ -744,7 +744,7 @@ app.controller('discountManagerCtrl', function ($scope, $http, $rootScope, datet
 
     $scope.dtOptions = {
         scrollY: false,
-        order: [[4, 'asc']],
+        order: [[4, 'desc']],
         language: $rootScope.lang === 'en' ? $rootScope.datatableEN : $rootScope.datatableVI,
         responsive: true,
         pageLength: 5,
