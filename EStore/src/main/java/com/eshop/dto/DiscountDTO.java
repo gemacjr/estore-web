@@ -1,5 +1,6 @@
 package com.eshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,5 +24,6 @@ public class DiscountDTO implements Serializable {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date endDate;
     private Date createdDate;
+    @JsonIgnore
     private List<ProductDTO> products;
 }

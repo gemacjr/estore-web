@@ -1,5 +1,6 @@
 package com.eshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +34,9 @@ public class ProductDTO implements Serializable {
     private CategoryDTO category;
     private BrandDTO brand;
     private DiscountDTO discount;
+    @JsonIgnore
     private List<ShoppingCartDTO> shoppingCarts;
+    @JsonIgnore
     private List<OrderDetailDTO> orderDetails;
 
     public Double getPromotionalPrice() {

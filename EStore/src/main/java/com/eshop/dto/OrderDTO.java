@@ -1,5 +1,6 @@
 package com.eshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,7 @@ public class OrderDTO implements Serializable {
     private String fullname;
     private String phoneNumber;
     private String email;
+    @JsonIgnore
     private List<OrderDetailDTO> orderDetails;
 
     public Double getTotal(){

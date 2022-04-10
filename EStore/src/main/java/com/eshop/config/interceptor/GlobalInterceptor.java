@@ -48,10 +48,16 @@ public class GlobalInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest req, HttpServletResponse res,
             Object handler, ModelAndView mv) throws Exception {
+        /* Current user */
+        User currentUser = userService.getCurrentUser();
+        if (currentUser != null) {
+            req.setAttribute("currentUser", currentUser);
+        }
+
         /* Category */
         req.setAttribute("categories", MapperUtils.mapAll(categoryService.getAll(), CategoryDTO.class));
         /* Cart */
-        List<ShoppingCart> list = cartService.getCartByUser(userService.getCurrentUser());
+        List<ShoppingCart> list = cartService.getCartByUser(currentUser);
         List<ShoppingCartDTO> productsInCart = list.stream()
                 .map(cart -> mapper.map(cart, ShoppingCartDTO.class)).toList();
         Double totalPrice = productsInCart.stream()
@@ -61,11 +67,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
         req.setAttribute("totalPrice", totalPrice);
         req.setAttribute("totalQuantity", totalQuantity);
         req.setAttribute("productsInCart", productsInCart);
-        /* Current user */
-        User currentUser = userService.getCurrentUser();
-        if (currentUser != null) {
-            req.setAttribute("currentUser", currentUser);
-        }
+
 
         /* Vô hiệu hoá các khuyến mãi đã hết hạn */
         List<Discount> discounts = discountService.getByActivated();
