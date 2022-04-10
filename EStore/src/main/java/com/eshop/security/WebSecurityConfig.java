@@ -2,6 +2,8 @@ package com.eshop.security;
 
 import com.eshop.security.handler.AuthenticationFailureHandlerCustom;
 import com.eshop.security.handler.LoginSuccessHandlerCustom;
+import com.eshop.security.jwt.AuthEntryPointJwt;
+import com.eshop.security.jwt.AuthTokenFilter;
 import com.eshop.security.service.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +14,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +31,14 @@ import javax.sql.DataSource;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private AuthEntryPointJwt unauthorizedHandler;
+
+    @Bean
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter();
+    }
 
     @Bean
     public UserDetailsService userDetailService() {
@@ -84,7 +95,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/home", false)
                 .successHandler(successHandler());
                 //.failureHandler(authenticationFailureHandler())
-        http.exceptionHandling().accessDeniedPage("/error/forbidden");
+        http.exceptionHandling()
+                .accessDeniedPage("/error/forbidden");
+        //        .authenticationEntryPoint(unauthorizedHandler);
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.logout()
 				.deleteCookies("JSESSIONID")
     			.permitAll();
@@ -93,11 +107,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	        .tokenRepository(persistentTokenRepository())
     	        .userDetailsService(userDetailService())
     	        .tokenValiditySeconds(24 * 60 * 60);
-        		
+
+        //http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
     }
+
 }
